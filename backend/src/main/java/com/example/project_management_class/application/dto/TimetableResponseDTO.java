@@ -13,4 +13,5 @@ public class TimetableResponseDTO {
     private DayOfWeek dayOfWeek;
     private int period;
     private String room;
+    private String note;
 }

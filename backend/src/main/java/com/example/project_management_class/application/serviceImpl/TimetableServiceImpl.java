@@ -32,6 +32,7 @@ public class TimetableServiceImpl implements TimetableService {
                                 .dayOfWeek(t.getDayOfWeek())
                                 .period(t.getPeriod())
                                 .room(t.getRoom())
+                                .note(t.getNote())
                                 .build()
                 );
             }
