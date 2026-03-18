@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface StudentClassRepository extends MongoRepository<StudentClass, String> {
     List<StudentClass> findByStudentId(String studentId);
+    List<StudentClass> findByClassId(String classId);
     Optional<StudentClass> findByStudentIdAndAcademicYearId(String studentId, String academicYearId);
 }

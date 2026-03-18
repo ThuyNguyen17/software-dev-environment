@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: [
-      'unmilitarized-sylvester-workable.ngrok-free.dev' // Thay bằng mã ngrok 5173 của bạn
+      'unprecipitous-amya-saliently.ngrok-free.dev' // Thay bằng mã ngrok 5173 của bạn
     ],
     proxy: {
       '/api': {
@@ -17,4 +17,4 @@ export default defineConfig({
       }
     }
   }
-})
+})  

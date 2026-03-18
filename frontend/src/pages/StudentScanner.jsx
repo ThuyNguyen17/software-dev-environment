@@ -25,24 +25,31 @@ const StudentScanner = () => {
         setStudent(s);
         studentRef.current = s;
 
-        // Check for GPS
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const locStr = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
-                    console.log("Location obtained:", locStr);
-                    setLocation(locStr);
-                    locationRef.current = locStr;
-                },
-                (err) => {
-                    console.warn("Location error:", err);
-                    const errStr = '0.0, 0.0 (Denied)';
-                    setLocation(errStr);
-                    locationRef.current = errStr;
-                },
-                { enableHighAccuracy: true }
-            );
-        }
+        // Define function to get location inside effect
+        const fetchInitialLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const locStr = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
+                        console.log("Location obtained:", locStr);
+                        setLocation(locStr);
+                        locationRef.current = locStr;
+                    },
+                    (err) => {
+                        console.warn("Location error:", err);
+                        const errStr = `0.0, 0.0 (Lỗi: ${err.message})`;
+                        setLocation(errStr);
+                        locationRef.current = errStr;
+                    },
+                    { enableHighAccuracy: true, timeout: 5000 }
+                );
+            } else {
+                setLocation('0.0, 0.0 (Lỗi: GPS không được hỗ trợ)');
+                locationRef.current = '0.0, 0.0 (Lỗi: GPS không được hỗ trợ)';
+            }
+        };
+
+        fetchInitialLocation();
 
         // Check for session in URL (direct scan)
         const queryParams = new URLSearchParams(window.location.search);
@@ -95,6 +102,24 @@ const StudentScanner = () => {
         }
     };
 
+    const getLocationPromise = () => {
+        return new Promise((resolve) => {
+            if (!navigator.geolocation) {
+                resolve('0.0, 0.0 (Lỗi: GPS không được hỗ trợ)');
+                return;
+            }
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    resolve(`${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`);
+                },
+                (err) => {
+                    resolve(`0.0, 0.0 (Lỗi: ${err.message})`);
+                },
+                { enableHighAccuracy: true, timeout: 5000 }
+            );
+        });
+    };
+
     const handleRecordAttendance = async (sessionId, token, directStudent = null) => {
         const studentData = directStudent || studentRef.current || student;
         if (!studentData) {
@@ -104,6 +129,14 @@ const StudentScanner = () => {
         }
 
         setStatus('recording');
+        
+        let finalLocation = locationRef.current;
+        if (finalLocation === 'Đang lấy vị trí...') {
+            finalLocation = await getLocationPromise();
+            setLocation(finalLocation);
+            locationRef.current = finalLocation;
+        }
+
         try {
             await recordAttendance({
                 sessionId,
@@ -111,7 +144,7 @@ const StudentScanner = () => {
                 studentId: studentData.studentId,
                 studentName: studentData.fullName,
                 studentClass: studentData.className,
-                location: locationRef.current,
+                location: finalLocation,
                 note: ""
             });
             setStatus('success');

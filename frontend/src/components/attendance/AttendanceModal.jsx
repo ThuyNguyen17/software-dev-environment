@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { startSession, updateQrToken, getAttendances, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';
+import { startSession, updateQrToken, getAttendances, getMissingStudents, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';
 import './AttendanceModal.css';
 
 const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester, className }) => {
@@ -9,6 +9,7 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
     const [sessionId, setSessionId] = useState(null);
     const [currentQrToken, setCurrentQrToken] = useState('');
     const [attendances, setAttendances] = useState([]);
+    const [missingStudents, setMissingStudents] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -17,7 +18,24 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
         const initSession = async () => {
             try {
                 setLoading(true);
-                const session = await startSession(effectiveAssignmentId, date, period, semester);
+                
+                // Get teacher location
+                let lat = null;
+                let lng = null;
+                
+                if (navigator.geolocation) {
+                    try {
+                        const position = await new Promise((resolve, reject) => {
+                            navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 });
+                        });
+                        lat = position.coords.latitude;
+                        lng = position.coords.longitude;
+                    } catch (e) {
+                         console.warn("Could not get teacher location", e);
+                    }
+                }
+
+                const session = await startSession(effectiveAssignmentId, date, period, semester, lat, lng);
                 setSessionId(session.id);
                 await updateToken(session.id);
             } catch (error) {
@@ -66,6 +84,8 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
             try {
                 const data = await getAttendances(sessionId);
                 setAttendances(data);
+                const missing = await getMissingStudents(sessionId);
+                setMissingStudents(missing);
             } catch (err) {
                 console.error("Error fetching attendances", err);
             }
@@ -151,68 +171,111 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
                         </div>
                     </div>
 
-                    <div className="attendee-list-container">
-                        <div className="list-header">
-                            <h3>Danh sách đã điểm danh</h3>
-                            <span className="count-badge">{attendances.length} học sinh</span>
+                    <div className="attendee-lists-wrapper">
+                        <div className="attendee-list-container">
+                            <div className="list-header">
+                                <h3>Danh sách đã điểm danh</h3>
+                                <span className="count-badge">{attendances.length} học sinh</span>
+                            </div>
+
+                            <div className="table-wrapper">
+                                <div className="table-body-scroll">
+                                    <table className="attendance-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Học sinh</th>
+                                                <th>Thời gian</th>
+                                                <th>Vị trí</th>
+                                                <th>Trạng thái</th>
+                                                <th>Ghi chú</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {attendances.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="5" className="empty-state">Chưa có ai điểm danh...</td>
+                                                </tr>
+                                            ) : (
+                                                attendances.map((a, idx) => {
+                                                    const isSafe = a.location && !a.location.includes("denied") && !a.location.includes("Lỗi") && !a.location.includes("Denied");
+                                                    return (
+                                                        <tr key={idx} className="attendee-row animate-in">
+                                                            <td>
+                                                                <div className="name-cell">
+                                                                    <span className="student-name">{a.studentName}</span>
+                                                                    <span className="student-class">{a.studentClass}</span>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <span className="time-text">{formatTime(a.checkInTime)}</span>
+                                                            </td>
+                                                            <td>
+                                                                <span className="location-text" title={a.location}>
+                                                                    {a.location ? (a.location.length > 20 ? a.location.substring(0, 20) + '...' : a.location) : '-'}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <span className={`status-pill ${isSafe ? 'safe' : 'warning'}`}>
+                                                                    {isSafe ? '✅ Hợp lệ' : '⚠️ Cảnh báo'}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="text"
+                                                                    defaultValue={a.note || ''}
+                                                                    onBlur={(e) => handleNoteChange(a.id, e.target.value)}
+                                                                    className="table-input"
+                                                                    placeholder="..."
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="table-wrapper">
-                            <div className="table-body-scroll">
-                                <table className="attendance-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Học sinh</th>
-                                            <th>Thời gian</th>
-                                            <th>Vị trí</th>
-                                            <th>Trạng thái</th>
-                                            <th>Ghi chú</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {attendances.length === 0 ? (
+                        <div className="attendee-list-container missing-list">
+                            <div className="list-header">
+                                <h3>Danh sách chưa điểm danh</h3>
+                                <span className="count-badge missing-badge">{missingStudents.length} học sinh</span>
+                            </div>
+
+                            <div className="table-wrapper">
+                                <div className="table-body-scroll">
+                                    <table className="attendance-table missing-table">
+                                        <thead>
                                             <tr>
-                                                <td colSpan="5" className="empty-state">Chưa có ai điểm danh...</td>
+                                                <th>Mã VS</th>
+                                                <th>Học sinh</th>
                                             </tr>
-                                        ) : (
-                                            attendances.map((a, idx) => {
-                                                const isSafe = a.location && !a.location.includes("denied") && !a.location.includes("Lỗi") && !a.location.includes("Denied");
-                                                return (
+                                        </thead>
+                                        <tbody>
+                                            {missingStudents.length === 0 ? (
+                                                <tr>
+                                                    <td colSpan="2" className="empty-state">Đã điểm danh đủ (hoặc không có data)</td>
+                                                </tr>
+                                            ) : (
+                                                missingStudents.map((ms, idx) => (
                                                     <tr key={idx} className="attendee-row animate-in">
                                                         <td>
+                                                            <span className="student-code">{ms.studentCode}</span>
+                                                        </td>
+                                                        <td>
                                                             <div className="name-cell">
-                                                                <span className="student-name">{a.studentName}</span>
-                                                                <span className="student-class">{a.studentClass}</span>
+                                                                <span className="student-name">{ms.studentName}</span>
+                                                                <span className="student-class">{ms.studentClass}</span>
                                                             </div>
                                                         </td>
-                                                        <td>
-                                                            <span className="time-text">{formatTime(a.checkInTime)}</span>
-                                                        </td>
-                                                        <td>
-                                                            <span className="location-text" title={a.location}>
-                                                                {a.location ? (a.location.length > 20 ? a.location.substring(0, 20) + '...' : a.location) : '-'}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <span className={`status-pill ${isSafe ? 'safe' : 'warning'}`}>
-                                                                {isSafe ? '✅ Hợp lệ' : '⚠️ Cảnh báo'}
-                                                            </span>
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                defaultValue={a.note || ''}
-                                                                onBlur={(e) => handleNoteChange(a.id, e.target.value)}
-                                                                className="table-input"
-                                                                placeholder="..."
-                                                            />
-                                                        </td>
                                                     </tr>
-                                                );
-                                            })
-                                        )}
-                                    </tbody>
-                                </table>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
