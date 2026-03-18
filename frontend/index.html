@@ -149,7 +149,37 @@
       cursor: pointer;
       width: 30px;
     }
+
+    /* Ẩn nội dung cho đến khi xác thực xong */
+    body {
+      display: none;
+    }
   </style>
+  <script>
+    // Kiểm tra quyền truy cập ngay khi trang bắt đầu load
+    (function () {
+      const userData = localStorage.getItem('user');
+      if (!userData) {
+        window.location.href = '/student/login';
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userData);
+        if (user.role !== 'ADMIN' && user.role !== 'LECTURER') {
+          // Nếu không phải admin hoặc giáo viên, chuyển hướng về login
+          window.location.href = '/student/login';
+        } else {
+          // Nếu hợp lệ, hiển thị nội dung trang
+          document.addEventListener('DOMContentLoaded', () => {
+            document.body.style.display = 'block';
+          });
+        }
+      } catch (e) {
+        window.location.href = '/student/login';
+      }
+    })();
+  </script>
 </head>
 
 <body>
@@ -190,7 +220,6 @@
           <th>NX của GV</th>
           <th>Ngày</th>
           <th>Ghi chú</th>
-          <th>Owner</th>
           <th></th>
         </tr>
       </thead>
@@ -222,8 +251,8 @@
                         <td class="text-italic-red">Empty</td>
                         <td>${item.date || '04-05-2017'}</td>
                         <td class="text-italic-red">Empty</td>
-                        <td>Admin</td>
-                        <td class="delete-icon">✖</td>
+                        // <td>Admin</td>
+                        // <td class="delete-icon">✖</td>
                     `;
           tbody.appendChild(tr);
         });
