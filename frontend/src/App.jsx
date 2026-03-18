@@ -5,12 +5,14 @@ import StudentDashboard from "./pages/StudentDashboard";
 import StudentScanner from "./pages/StudentScanner";
 import AttendanceHistory from "./pages/AttendanceHistory";
 import SubjectAttendance from "./pages/SubjectAttendance";
+import ImportExportUI from "./pages/ImportExportUI";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/" element={<TeacherTimetable />} />
       <Route path="/teacher/timetable" element={<TeacherTimetable />} />
+      <Route path="/teacher/import" element={<ImportExportUI />} />
 
       {/* Student Routes */}
       <Route path="/student/login" element={<StudentLogin />} />
@@ -21,6 +23,7 @@ export default function App() {
 
       <Route path="/attendance" element={<Navigate to="/student/scan" replace />} />
       <Route path="*" element={<div><h1>Path not found: {window.location.pathname}</h1></div>} />
+      
     </Routes>
   );
 }
