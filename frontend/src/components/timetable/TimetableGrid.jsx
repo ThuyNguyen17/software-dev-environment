@@ -9,7 +9,7 @@ const TimetableGrid = ({
     onCellClick // New prop
 }) => {
     return (
-        <div className="table-wrapper">
+        <div className="timetable-table-wrapper">
             <table className="timetable-grid">
                 <thead>
                     <tr>

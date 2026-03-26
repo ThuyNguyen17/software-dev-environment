@@ -5,7 +5,7 @@ import { PERIODS, DAYS } from "../utils/timetableConstants";
 import {
   getCurrentAcademicInfo,
   getCurrentWeek,
-  getSemestersForYear,
+  generateAllSemesterOptions,
   generateWeeksForSemester,
 } from "../utils/academicUtils";
 import TimetableGrid from "../components/timetable/TimetableGrid";
@@ -41,7 +41,8 @@ function TeacherTimetable() {
   const [teacher, setTeacher] = useState(null);
   const teacherId = teacher?.teacherId || "";
 
-  const semesterOptions = getSemestersForYear(currentAcademicInfo.academicYear);
+  // Allow selecting other academic years (useful when the DB has older/newer seed data)
+  const semesterOptions = generateAllSemesterOptions(2, 1);
   const weekOptions = generateWeeksForSemester(
     selectedSemester,
     selectedAcademicYear
@@ -57,9 +58,18 @@ function TeacherTimetable() {
       }
       const user = JSON.parse(storedUser);
       console.log("Parsed User Object:", user);
-      if (!user || user.role !== 'LECTURER') {
-        console.log("Invalid role or no user, redirecting to dashboard");
+      if (!user) {
+        navigate('/student/login');
+        return;
+      }
+
+      // Backend roles: STUDENT | TEACHER | ADMIN
+      if (user.role === 'STUDENT') {
         navigate('/student/dashboard');
+        return;
+      }
+      if (user.role !== 'TEACHER') {
+        navigate('/student/login');
         return;
       }
       setTeacher(user);

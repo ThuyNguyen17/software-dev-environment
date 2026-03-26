@@ -59,4 +59,38 @@ public class TimetableServiceImpl implements TimetableService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TimetableResponseDTO> getClassTimetable(String className, int week, int academicYear, int semester) {
+        List<TeachingAssignment> assignments = teachingAssignmentRepository
+                .findByClassNameAndAcademicYearAndSemester(className, academicYear, semester);
+
+        if (assignments.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<String> assignmentIds = assignments.stream()
+                .map(TeachingAssignment::getId)
+                .collect(Collectors.toList());
+
+        Map<String, TeachingAssignment> assignmentMap = assignments.stream()
+                .collect(Collectors.toMap(TeachingAssignment::getId, a -> a));
+
+        List<Timetable> timetables = timetableRepository.findByTeachingAssignmentIdInAndWeek(assignmentIds, week);
+
+        return timetables.stream()
+                .map(timetable -> {
+                    TeachingAssignment assignment = assignmentMap.get(timetable.getTeachingAssignmentId());
+                    return TimetableResponseDTO.builder()
+                            .teachingAssignmentId(timetable.getTeachingAssignmentId())
+                            .dayOfWeek(timetable.getDayOfWeek())
+                            .period(timetable.getPeriod())
+                            .subject(assignment != null ? assignment.getSubjectName() : "Unknown Subject")
+                            .className(assignment != null ? assignment.getClassName() : "Unknown Class")
+                            .room(timetable.getRoom())
+                            .note(timetable.getNote())
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }

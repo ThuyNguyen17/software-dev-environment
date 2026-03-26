@@ -12,4 +12,5 @@ public interface StudentService {
     StudentLoginResponse login(String studentCode);
     List<Map<String, Object>> getStudentSubjects(String studentId);
     List<Map<String, Object>> getAttendanceDetails(String studentId, String assignmentId);
+    List<Map<String, Object>> getStudentsByClass(String className);
 }

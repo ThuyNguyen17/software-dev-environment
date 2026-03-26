@@ -13,14 +13,30 @@ const SubjectAttendance = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                navigate('/student/login');
+                return;
+            }
+            const s = JSON.parse(storedUser);
+            if (!s) {
+                navigate('/student/login');
+                return;
+            }
+            if (s.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+                return;
+            }
+            if (s.role !== 'STUDENT') {
+                navigate('/student/login');
+                return;
+            }
+            setStudent(s);
+            fetchSessions(s.studentId);
+        } catch (e) {
             navigate('/student/login');
-            return;
         }
-        const s = JSON.parse(storedUser);
-        setStudent(s);
-        fetchSessions(s.studentId);
     }, [assignmentId, navigate]);
 
     const fetchSessions = async (studentId) => {

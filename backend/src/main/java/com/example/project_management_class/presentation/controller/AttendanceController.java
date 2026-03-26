@@ -2,6 +2,7 @@ package com.example.project_management_class.presentation.controller;
 
 import com.example.project_management_class.application.dto.AttendanceRecordRequest;
 import com.example.project_management_class.application.dto.NoteRequest;
+import com.example.project_management_class.application.dto.PendingStudentsResponse;
 import com.example.project_management_class.application.dto.SessionStartRequest;
 import com.example.project_management_class.application.dto.UpdateTokenRequest;
 import com.example.project_management_class.application.service.AttendanceService;
@@ -65,6 +66,11 @@ public class AttendanceController {
     @GetMapping("/session/{sessionId}/attendances")
     public ResponseEntity<List<Attendance>> getAttendances(@PathVariable String sessionId) {
         return ResponseEntity.ok(attendanceService.getAttendances(sessionId));
+    }
+
+    @GetMapping("/session/{sessionId}/pending-students")
+    public ResponseEntity<PendingStudentsResponse> getPendingStudents(@PathVariable String sessionId) {
+        return ResponseEntity.ok(attendanceService.getPendingStudents(sessionId));
     }
 
     @PostMapping("/session/{sessionId}/close")

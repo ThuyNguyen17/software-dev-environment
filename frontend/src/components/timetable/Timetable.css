@@ -113,7 +113,7 @@
 }
 
 /* Table Wrapper */
-.table-wrapper {
+.timetable-table-wrapper {
     background-color: var(--white);
     overflow-x: auto;
     padding: 0;
@@ -397,7 +397,7 @@
         overflow: visible !important;
     }
 
-    .table-wrapper {
+    .timetable-table-wrapper {
         margin: 0 !important;
         padding: 0 !important;
         border: none !important;
@@ -466,7 +466,7 @@
     }
 
     /* Add Header Title */
-    .table-wrapper::before {
+    .timetable-table-wrapper::before {
         content: "THỜI KHÓA BIỂU GIÁO VIÊN";
         display: block;
         text-align: center;

@@ -13,36 +13,96 @@ const StudentScanner = () => {
     const scannerRef = useRef(null);
     const studentRef = useRef(null);
     const locationRef = useRef('Đang lấy vị trí...');
+    const coordsRef = useRef(null);
     const navigate = useNavigate();
 
+    const isInvalidLocation = (loc) => {
+        if (!loc) return true;
+        const s = String(loc).trim();
+        if (!s) return true;
+        const lower = s.toLowerCase();
+        if (lower.includes('không thể lấy vị trí')) return true;
+        if (lower.includes('khong the lay vi tri')) return true;
+        if (lower.includes('từ chối')) return true;
+        if (lower.includes('tu choi')) return true;
+        if (lower.includes('đang lấy vị trí')) return true;
+        if (lower.includes('dang lay vi tri')) return true;
+        if (lower.includes('denied')) return true;
+        return false;
+    };
+
+    const reverseGeocodeViaBackend = async (lat, lon) => {
+        const res = await fetch(`/api/geocode/reverse?lat=${lat}&lon=${lon}`);
+        if (!res.ok) throw new Error(`Reverse geocode failed: ${res.status}`);
+        const data = await res.json();
+        return data?.address || '';
+    };
+
+    const ensureLocation = async () => {
+        if (!isInvalidLocation(locationRef.current) && coordsRef.current) return;
+
+        if (!navigator.geolocation) {
+            const errStr = 'Không thể lấy vị trí (Thiết bị không hỗ trợ GPS)';
+            setLocation(errStr);
+            locationRef.current = errStr;
+            throw new Error(errStr);
+        }
+
+        const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, {
+                enableHighAccuracy: true,
+                timeout: 8000,
+                maximumAge: 0
+            });
+        });
+
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        coordsRef.current = { lat, lon };
+
+        let address = '';
+        try {
+            address = await reverseGeocodeViaBackend(lat, lon);
+        } catch {
+            address = '';
+        }
+
+        const coordStr = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+        const finalLoc = address ? `${address} (${coordStr})` : coordStr;
+        setLocation(finalLoc);
+        locationRef.current = finalLoc;
+    };
+
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
+        let s = null;
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                navigate('/student/login');
+                return;
+            }
+            s = JSON.parse(storedUser);
+            if (!s) {
+                navigate('/student/login');
+                return;
+            }
+            if (s.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+                return;
+            }
+            if (s.role !== 'STUDENT') {
+                navigate('/student/login');
+                return;
+            }
+            setStudent(s);
+            studentRef.current = s;
+        } catch (e) {
             navigate('/student/login');
             return;
         }
-        const s = JSON.parse(storedUser);
-        setStudent(s);
-        studentRef.current = s;
 
-        // Check for GPS
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const locStr = `${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`;
-                    console.log("Location obtained:", locStr);
-                    setLocation(locStr);
-                    locationRef.current = locStr;
-                },
-                (err) => {
-                    console.warn("Location error:", err);
-                    const errStr = '0.0, 0.0 (Denied)';
-                    setLocation(errStr);
-                    locationRef.current = errStr;
-                },
-                { enableHighAccuracy: true }
-            );
-        }
+        // Preload location early so it is ready when scanning succeeds.
+        ensureLocation().catch(() => {});
 
         // Check for session in URL (direct scan)
         const queryParams = new URLSearchParams(window.location.search);
@@ -105,6 +165,7 @@ const StudentScanner = () => {
 
         setStatus('recording');
         try {
+            await ensureLocation();
             await recordAttendance({
                 sessionId,
                 qrToken: token,
@@ -137,7 +198,7 @@ const StudentScanner = () => {
                         <div id="reader"></div>
                         <div className="location-info">
                             <MapPin size={16} />
-                            <span>GPS: {location || 'Đang xác định...'}</span>
+                            <span>Địa chỉ: {location || 'Đang xác định...'}</span>
                         </div>
                     </div>
                 )}

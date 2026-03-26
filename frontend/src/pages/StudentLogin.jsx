@@ -22,8 +22,10 @@ const StudentLogin = () => {
 
             if (user.role === 'STUDENT') {
                 navigate('/student/dashboard');
-            } else if (user.role === 'LECTURER') {
-                navigate('/');
+            } else if (user.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+            } else {
+                setError('Tai khoan khong co quyen truy cap');
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Tài khoản hoặc mật khẩu không đúng');
