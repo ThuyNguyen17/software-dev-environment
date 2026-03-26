@@ -1,6 +1,7 @@
 package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.service.AttendanceService;
+import com.example.project_management_class.application.util.ClassNameUtils;
 import com.example.project_management_class.domain.enums.AttendanceStatus;
 import com.example.project_management_class.domain.model.Attendance;
 import com.example.project_management_class.domain.model.AttendanceSession;
@@ -13,8 +14,19 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.example.project_management_class.domain.model.SchoolClass;
+import com.example.project_management_class.domain.model.Student;
+import com.example.project_management_class.domain.model.StudentClass;
+import com.example.project_management_class.domain.repository.SchoolClassRepository;
+import com.example.project_management_class.domain.repository.StudentClassRepository;
+import com.example.project_management_class.domain.repository.StudentRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -23,14 +35,36 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceSessionRepository sessionRepository;
     private final AttendanceRepository attendanceRepository;
     private final TeachingAssignmentRepository teachingAssignmentRepository;
+    private final SchoolClassRepository schoolClassRepository;
+    private final StudentClassRepository studentClassRepository;
+    private final StudentRepository studentRepository;
+
+    private SchoolClass resolveSchoolClassByIdOrName(String classIdOrName) {
+        if (classIdOrName == null) return null;
+        String raw = classIdOrName.trim();
+        if (raw.isEmpty()) return null;
+
+        // Preferred: StudentClass.classId stores SchoolClass.id
+        SchoolClass byId = schoolClassRepository.findById(raw).orElse(null);
+        if (byId != null) return byId;
+
+        // Backward-compat: StudentClass.classId stores a label like "10A1"
+        String key = ClassNameUtils.normalizeToKey(raw);
+        Integer grade = ClassNameUtils.parseGradeLevel(key);
+        String simpleName = ClassNameUtils.parseClassSimpleName(key);
+        if (grade == null || simpleName == null || simpleName.isBlank()) return null;
+        return schoolClassRepository.findByGradeLevelAndClassNameIgnoreCase(grade, simpleName).orElse(null);
+    }
 
     @Override
-    public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester) {
+    public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester, Double latitude, Double longitude) {
         Optional<AttendanceSession> existing = sessionRepository.findByTeachingAssignmentIdAndDateAndPeriod(assignmentId, date, period);
         if (existing.isPresent()) {
             AttendanceSession session = existing.get();
             if (!session.isOpen()) {
                 session.setOpen(true);
+                if (latitude != null) session.setLatitude(latitude);
+                if (longitude != null) session.setLongitude(longitude);
                 sessionRepository.save(session);
             }
             return session;
@@ -42,6 +76,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         newSession.setPeriod(period);
         newSession.setSemester(semester);
         newSession.setOpen(true);
+        newSession.setLatitude(latitude);
+        newSession.setLongitude(longitude);
         // Initial token or empty
         newSession.setQrToken("");
 
@@ -72,14 +108,90 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new RuntimeException("Bạn đã điểm danh cho buổi học này rồi.");
         }
 
-        // Validate class
+        // Validate class (server-side): do not trust the client-provided class/name.
         String assignmentId = session.getTeachingAssignmentId();
+        Student studentFromDb = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found"));
+
+        String resolvedStudentName = studentFromDb.getFullName();
+        String resolvedStudentClass = studentClass;
+
         if (!"ASS001".equals(assignmentId)) {
-            TeachingAssignment assignment = teachingAssignmentRepository.findById(assignmentId)
+            TeachingAssignment teachingAssignment = teachingAssignmentRepository.findById(assignmentId)
                     .orElseThrow(() -> new RuntimeException("Assignment not found"));
 
-            if (!assignment.getClassName().equalsIgnoreCase(studentClass)) {
-                throw new RuntimeException("Bạn không thuộc lớp này (" + assignment.getClassName() + ")");
+            List<StudentClass> studentClasses = studentClassRepository.findByStudentId(studentId);
+            if (studentClasses.isEmpty()) {
+                throw new RuntimeException("Ban chua duoc xep lop nen khong the diem danh.");
+            }
+
+            String assignmentClassKey = ClassNameUtils.normalizeToKey(teachingAssignment.getClassName());
+            if (assignmentClassKey.isBlank()) {
+                throw new RuntimeException("Khong xac dinh duoc lop cua buoi hoc nay.");
+            }
+
+            // StudentClass has no timestamp/order guarantee. Resolve the student's class that matches the session assignment.
+            resolvedStudentClass = null;
+            List<String> candidateStudentClasses = new ArrayList<>();
+            for (StudentClass sc : studentClasses) {
+                if (sc == null || sc.getClassId() == null || sc.getClassId().isBlank()) continue;
+
+                String rawClassId = sc.getClassId().trim();
+                SchoolClass schoolClass = resolveSchoolClassByIdOrName(rawClassId);
+                if (schoolClass != null && schoolClass.getGradeLevel() != null && schoolClass.getClassName() != null) {
+                    String display = String.valueOf(schoolClass.getGradeLevel()) + schoolClass.getClassName();
+                    String key = ClassNameUtils.normalizeToKey(display);
+                    if (!key.isBlank()) candidateStudentClasses.add(display);
+
+                    if (key.equals(assignmentClassKey)) {
+                        resolvedStudentClass = display;
+                        break;
+                    }
+                    continue;
+                }
+
+                // Fallback: treat classId itself as a class label (e.g. "10A1") even if it doesn't resolve to a SchoolClass.
+                String key = ClassNameUtils.normalizeToKey(rawClassId);
+                if (!key.isBlank()) candidateStudentClasses.add(rawClassId);
+                if (key.equals(assignmentClassKey)) {
+                    resolvedStudentClass = rawClassId;
+                    break;
+                }
+            }
+
+            if (resolvedStudentClass == null) {
+                if (candidateStudentClasses.isEmpty()) {
+                    throw new RuntimeException("Khong xac dinh duoc lop cua ban.");
+                }
+                throw new RuntimeException("Ban khong thuoc lop nay (" + teachingAssignment.getClassName() + "). Lop cua ban: " + String.join(", ", candidateStudentClasses));
+            }
+        }
+
+        // Always validate student location string
+        String sanitizedLoc = location != null ? location.trim() : "";
+        if (sanitizedLoc.isEmpty() || sanitizedLoc.contains("Denied") || sanitizedLoc.contains("Lỗi") || sanitizedLoc.contains("0.0, 0.0") || sanitizedLoc.contains("Đang lấy")) {
+            throw new RuntimeException("Không thể xác định vị trí của bạn. Vui lòng bật GPS và thử lại. (Lỗi: " + sanitizedLoc + ")");
+        }
+
+        // Validate distance if session has location
+        if (session.getLatitude() != null && session.getLongitude() != null) {
+            try {
+                String[] parts = sanitizedLoc.split(",");
+                if (parts.length == 2) {
+                    double studentLat = Double.parseDouble(parts[0].trim());
+                    double studentLng = Double.parseDouble(parts[1].trim());
+
+                    double distance = calculateDistanceInMeters(session.getLatitude(), session.getLongitude(), studentLat, studentLng);
+
+                    // Accept within 50 meters
+                    if (distance > 50.0) {
+                        throw new RuntimeException("Vị trí của bạn quá xa so với lớp học (" + String.format("%.1f", distance) + "m). Vui lòng quét mã tại lớp học.");
+                    }
+                } else {
+                    throw new RuntimeException("Định dạng vị trí không hợp lệ.");
+                }
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Lỗi xử lý vị trí. Yêu cầu bật GPS.");
             }
         }
 
@@ -87,9 +199,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         Attendance attendance = new Attendance();
         attendance.setAttendanceSessionId(sessionId);
         attendance.setStudentId(studentId);
-        attendance.setStudentName(studentName);
-        attendance.setStudentClass(studentClass);
-        attendance.setLocation(location);
+        attendance.setStudentName(resolvedStudentName);
+        attendance.setStudentClass(resolvedStudentClass);
+        attendance.setLocation(sanitizedLoc);
         attendance.setNote(note);
         attendance.setStatus(AttendanceStatus.PRESENT);
         attendance.setAttendanceType("QR");
@@ -112,6 +224,63 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public List<Map<String, Object>> getMissingStudents(String sessionId) {
+        AttendanceSession session = getSession(sessionId);
+        String assignmentId = session.getTeachingAssignmentId();
+
+        List<Map<String, Object>> missingStudents = new ArrayList<>();
+
+        if ("ASS001".equals(assignmentId)) {
+            return missingStudents;
+        }
+
+        TeachingAssignment assignment = teachingAssignmentRepository.findById(assignmentId).orElse(null);
+        if (assignment == null || assignment.getClassName() == null) {
+            return missingStudents;
+        }
+
+        String className = assignment.getClassName();
+
+        SchoolClass targetClass = null;
+        for (SchoolClass sc : schoolClassRepository.findAll()) {
+            if ((sc.getGradeLevel() + sc.getClassName()).equalsIgnoreCase(className)) {
+                targetClass = sc;
+                break;
+            }
+        }
+
+        if (targetClass == null) return missingStudents;
+
+        List<StudentClass> studentClasses = studentClassRepository.findByClassId(targetClass.getId());
+        if (studentClasses.isEmpty()) {
+            // Backward-compat: StudentClass.classId stored as "10A1" (or similar) instead of SchoolClass.id.
+            String display = String.valueOf(targetClass.getGradeLevel()) + targetClass.getClassName();
+            studentClasses = studentClassRepository.findByClassIdIgnoreCase(display);
+            if (studentClasses.isEmpty()) {
+                studentClasses = studentClassRepository.findByClassIdIgnoreCase(ClassNameUtils.normalizeToKey(display));
+            }
+        }
+        List<String> studentIds = studentClasses.stream().map(StudentClass::getStudentId).collect(Collectors.toList());
+        List<Student> allStudents = (List<Student>) studentRepository.findAllById(studentIds);
+
+        List<Attendance> attendances = attendanceRepository.findByAttendanceSessionId(sessionId);
+        List<String> attendedStudentIds = attendances.stream().map(Attendance::getStudentId).collect(Collectors.toList());
+
+        for (Student s : allStudents) {
+            if (!attendedStudentIds.contains(s.getId())) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("studentId", s.getId());
+                map.put("studentCode", s.getStudentCode());
+                map.put("studentName", s.getFullName());
+                map.put("studentClass", className);
+                missingStudents.add(map);
+            }
+        }
+
+        return missingStudents;
+    }
+
+    @Override
     public AttendanceSession updateQrToken(String sessionId, String newToken) {
         AttendanceSession session = getSession(sessionId);
         session.setPreviousQrToken(session.getQrToken()); // Store previous token
@@ -130,5 +299,15 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void deleteAttendancesBySession(String sessionId) {
         attendanceRepository.deleteAllByAttendanceSessionId(sessionId);
     }
-}
 
+    private double calculateDistanceInMeters(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radius of the earth in km
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c * 1000; // convert to meters
+    }
+}

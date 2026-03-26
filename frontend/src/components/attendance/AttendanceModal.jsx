@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
-import { startSession, updateQrToken, getAttendances, getMissingStudents, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';
+import { startSession, updateQrToken, getAttendances, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';
 import { getStudentsByClass } from '../../api/studentApi';
 import './AttendanceModal.css';
 
@@ -11,7 +11,8 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
     const [currentQrToken, setCurrentQrToken] = useState('');
     const [attendances, setAttendances] = useState([]);
     const [allStudents, setAllStudents] = useState([]);
-    const [activeTab, setActiveTab] = useState('attended');    const [loading, setLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState('attended');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -19,6 +20,7 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
         const initSession = async () => {
             try {
                 setLoading(true);
+                const session = await startSession(effectiveAssignmentId, date, period, semester);
                 setSessionId(session.id);
                 await updateToken(session.id);
             } catch (error) {
@@ -272,7 +274,8 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
                             )}
                         </div>
                     </div>
-                      <div className="attendee-list-container">
+
+                    <div className="attendee-list-container">
                         {/* Tab Navigation */}
                         <div className="tab-navigation">
                             <button 
@@ -291,7 +294,7 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
                             </button>
                         </div>
 
- <div className="attendance-table-wrapper">
+                        <div className="attendance-table-wrapper">
                             <div className="table-body-scroll">
                                 <table className="attendance-table">
                                     {renderAttendeeTable(activeTab === 'attended' ? attendances : unattendedStudents, activeTab === 'attended')}
@@ -307,7 +310,7 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
                         if (window.confirm("Xóa hết danh sách này?")) {
                             await clearAttendances(sessionId);
                             setAttendances([]);
-                        }>
+                        }
                     }}>Xóa tất cả</button>
                     <button className="btn-primary" onClick={handleSave}>Hoàn tất điểm danh</button>
                 </footer>

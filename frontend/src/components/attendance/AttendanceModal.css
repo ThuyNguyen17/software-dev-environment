@@ -147,8 +147,9 @@
     font-weight: 600;
 }
 
-
+/* Attendee List */
 .attendee-list-container {
+    padding: 40px 48px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -226,6 +227,7 @@
     border-radius: 10px;
     font-size: 0.9rem;
 }
+
 .list-header {
     display: flex;
     justify-content: space-between;
@@ -237,6 +239,7 @@
     margin: 0;
     font-size: 1.75rem;
     color: #1e293b;
+    font-weight: 900;
     letter-spacing: -0.02em;
 }
 
@@ -272,6 +275,7 @@
     text-align: left;
     font-size: 0.85rem;
     text-transform: uppercase;
+    letter-spacing: 0.12em;
     color: #94a3b8;
     border-bottom: 2px solid #f1f5f9;
     position: sticky;
@@ -283,25 +287,28 @@
 .attendance-table th:nth-child(1) {
     width: 28%;
 }
+
+/* Học sinh/Mã lớp */
 .attendance-table th:nth-child(2) {
     width: 15%;
 }
 
-<<<<<<< .mine
 /* Thời gian / Mã sinh viên */
-=======
-
->>>>>>> .theirs
 .attendance-table th:nth-child(3) {
     width: 18%;
 }
 
+/* Vị trí */
 .attendance-table th:nth-child(4) {
     width: 14%;
+}
 
+/* Trạng thái */
 .attendance-table th:nth-child(5) {
     width: 25%;
 }
+
+/* Ghi chú/Thao tác */
 
 .table-body-scroll {
     flex: 1;
@@ -346,7 +353,7 @@
     font-size: 0.9rem;
     background: #eef2ff;
     padding: 6px 12px;
-    padding: 6px 10px;
+    border-radius: 10px;
 }
 
 .location-text {
@@ -360,6 +367,9 @@
 }
 
 .status-pill {
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
     font-weight: 800;
     display: inline-flex;
     align-items: center;
@@ -369,15 +379,21 @@
 .status-pill.safe {
     background: #dcfce7;
     color: #15803d;
+    box-shadow: 0 4px 6px -1px rgba(21, 128, 61, 0.1);
 }
 
 .status-pill.warning {
     background: #fee2e2;
     color: #b91c1c;
+    box-shadow: 0 4px 6px -1px rgba(185, 28, 28, 0.1);
 }
 
 .table-input {
     width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #f1f5f9;
+    border-radius: 14px;
+    font-size: 0.9rem;
     background: #fcfcfd;
     transition: all 0.2s;
 }
@@ -497,4 +513,4 @@
 
 .table-body-scroll::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
-
+}
