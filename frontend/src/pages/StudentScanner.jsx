@@ -101,10 +101,16 @@ const StudentScanner = () => {
             return;
         }
 
-        // Preload location early so it is ready when scanning succeeds.
+ // Preload location early so it is ready when scanning succeeds.
         ensureLocation().catch(() => {});
 
-        // Check for session in URL (direct scan)
+
+
+
+
+
+
+
         const queryParams = new URLSearchParams(window.location.search);
         const qSessionId = queryParams.get('sessionId');
         const qToken = queryParams.get('token');
@@ -155,6 +161,7 @@ const StudentScanner = () => {
         }
     };
 
+    
     const handleRecordAttendance = async (sessionId, token, directStudent = null) => {
         const studentData = directStudent || studentRef.current || student;
         if (!studentData) {
@@ -164,6 +171,8 @@ const StudentScanner = () => {
         }
 
         setStatus('recording');
+        
+
         try {
             await ensureLocation();
             await recordAttendance({

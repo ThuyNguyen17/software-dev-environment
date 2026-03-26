@@ -9,4 +9,6 @@ public class SessionStartRequest {
     private LocalDate date;
     private Integer period;
     private Integer semester;
+    private Double latitude;
+    private Double longitude;
 }

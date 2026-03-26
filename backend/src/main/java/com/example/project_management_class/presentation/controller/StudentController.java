@@ -44,14 +44,14 @@ public class StudentController {
     }
 
     @GetMapping("/{studentId}/subjects")
-    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable String studentId) {
+    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable("studentId") String studentId) {
         return ResponseEntity.ok(studentService.getStudentSubjects(studentId));
     }
 
     @GetMapping("/{studentId}/subjects/{assignmentId}/attendance")
     public ResponseEntity<List<Map<String, Object>>> getAttendanceDetails(
-            @PathVariable String studentId,
-            @PathVariable String assignmentId) {
+            @PathVariable("studentId") String studentId,
+            @PathVariable("assignmentId") String assignmentId) {
         return ResponseEntity.ok(studentService.getAttendanceDetails(studentId, assignmentId));
     }
 

@@ -10,9 +10,5 @@ import java.util.Optional;
 @Repository
 public interface StudentClassRepository extends MongoRepository<StudentClass, String> {
     List<StudentClass> findByStudentId(String studentId);
-    List<StudentClass> findByClassId(String classId);
-
-    // Backward-compat: some datasets store classId as a human-readable class label (e.g. "10A1") instead of SchoolClass.id.
-    List<StudentClass> findByClassIdIgnoreCase(String classId);
     Optional<StudentClass> findByStudentIdAndAcademicYearId(String studentId, String academicYearId);
 }
