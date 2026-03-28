@@ -1,9 +1,12 @@
 
 
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/studentApi';

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -41,6 +42,8 @@
 
 
 
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTeacherTimetable } from "../api/timetableApi";

@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -50,6 +55,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 package com.example.project_management_class.presentation.controller;
 
 import com.example.project_management_class.application.dto.AttendanceRecordRequest;
@@ -76,23 +85,52 @@ public class AttendanceController {
     @PostMapping("/session/start")
     public ResponseEntity<AttendanceSession> startSession(@RequestBody SessionStartRequest request) {
         AttendanceSession session = attendanceService.createOrGetSession(
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            request.getAssignmentId(),
+            request.getDate(),
+            request.getPeriod(),
+            request.getSemester()
+=======
+>>>>>>> remotes/origin/Update-UX/UI
                 request.getAssignmentId(),
                 request.getDate(),
                 request.getPeriod(),
                 request.getSemester(),
                 request.getLatitude(),
                 request.getLongitude()
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         );
         return ResponseEntity.ok(session);
     }
 
     @GetMapping("/session/{sessionId}")
+<<<<<<< HEAD
     public ResponseEntity<AttendanceSession> getSession(@PathVariable("sessionId") String sessionId) {
+=======
+<<<<<<< HEAD
+    public ResponseEntity<AttendanceSession> getSession(@PathVariable String sessionId) {
+=======
+    public ResponseEntity<AttendanceSession> getSession(@PathVariable("sessionId") String sessionId) {
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(attendanceService.getSession(sessionId));
     }
 
     @PostMapping("/session/{sessionId}/token")
+<<<<<<< HEAD
     public ResponseEntity<AttendanceSession> updateToken(@PathVariable("sessionId") String sessionId, @RequestBody UpdateTokenRequest request) {
+=======
+<<<<<<< HEAD
+    public ResponseEntity<AttendanceSession> updateToken(@PathVariable String sessionId, @RequestBody UpdateTokenRequest request) {
+=======
+    public ResponseEntity<AttendanceSession> updateToken(@PathVariable("sessionId") String sessionId, @RequestBody UpdateTokenRequest request) {
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         AttendanceSession session = attendanceService.updateQrToken(sessionId, request.getToken());
         return ResponseEntity.ok(session);
     }
@@ -100,6 +138,18 @@ public class AttendanceController {
     @PostMapping("/record")
     public ResponseEntity<Attendance> recordAttendance(@RequestBody AttendanceRecordRequest request) {
         Attendance attendance = attendanceService.recordAttendance(
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            request.getSessionId(),
+            request.getStudentId(),
+            request.getStudentName(),
+            request.getStudentClass(),
+            request.getLocation(),
+            request.getQrToken(),
+            request.getNote()
+=======
+>>>>>>> remotes/origin/Update-UX/UI
                 request.getSessionId(),
                 request.getStudentId(),
                 request.getStudentName(),
@@ -107,16 +157,39 @@ public class AttendanceController {
                 request.getLocation(),
                 request.getQrToken(),
                 request.getNote()
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         );
         return ResponseEntity.ok(attendance);
     }
 
     @PutMapping("/{attendanceId}/note")
+<<<<<<< HEAD
     public ResponseEntity<Attendance> updateNote(@PathVariable("attendanceId") String attendanceId, @RequestBody NoteRequest request) {
+=======
+<<<<<<< HEAD
+    public ResponseEntity<Attendance> updateNote(@PathVariable String attendanceId, @RequestBody NoteRequest request) {
+=======
+    public ResponseEntity<Attendance> updateNote(@PathVariable("attendanceId") String attendanceId, @RequestBody NoteRequest request) {
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(attendanceService.updateAttendanceNote(attendanceId, request.getNote()));
     }
 
     @GetMapping("/session/{sessionId}/attendances")
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    public ResponseEntity<List<Attendance>> getAttendances(@PathVariable String sessionId) {
+        return ResponseEntity.ok(attendanceService.getAttendances(sessionId));
+    }
+
+    @PostMapping("/session/{sessionId}/close")
+    public ResponseEntity<Void> closeSession(@PathVariable String sessionId) {
+=======
+>>>>>>> remotes/origin/Update-UX/UI
     public ResponseEntity<List<Attendance>> getAttendances(@PathVariable("sessionId") String sessionId) {
         return ResponseEntity.ok(attendanceService.getAttendances(sessionId));
     }
@@ -128,13 +201,37 @@ public class AttendanceController {
 
     @PostMapping("/session/{sessionId}/close")
     public ResponseEntity<Void> closeSession(@PathVariable("sessionId") String sessionId) {
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         attendanceService.closeSession(sessionId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/session/{sessionId}/clear")
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    public ResponseEntity<Void> clearAttendances(@PathVariable String sessionId) {
+        attendanceService.deleteAttendancesBySession(sessionId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<Attendance>> getAttendancesByStudent(@PathVariable String studentId) {
+        return ResponseEntity.ok(attendanceService.getAttendancesByStudentId(studentId));
+    }
+}
+=======
+>>>>>>> remotes/origin/Update-UX/UI
     public ResponseEntity<Void> clearAttendances(@PathVariable("sessionId") String sessionId) {
         attendanceService.deleteAttendancesBySession(sessionId);
         return ResponseEntity.ok().build();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI

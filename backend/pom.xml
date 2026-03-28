@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -56,6 +61,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -85,7 +94,15 @@
 		<url/>
 	</scm>
 	<properties>
+<<<<<<< HEAD
 		<java.version>22</java.version>
+=======
+<<<<<<< HEAD
+		<java.version>17</java.version>
+=======
+		<java.version>22</java.version>
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 		<kotlin.version>2.2.20</kotlin.version>
 	</properties>
 	<dependencies>
@@ -125,6 +142,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 		<!-- Password hashing (BCrypt) without enabling full Spring Security filter chain -->
 		<dependency>
@@ -132,6 +154,10 @@
 			<artifactId>spring-security-crypto</artifactId>
 		</dependency>
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -148,9 +174,61 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+<<<<<<< HEAD
 	</dependencies>
 
 	<build>
+=======
+<<<<<<< HEAD
+		<!-- Excel Processing -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jetbrains.kotlin</groupId>
+										<artifactId>kotlin-maven-plugin</artifactId>
+										<versionRange>[0.0.1,)</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>test-compile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+=======
+	</dependencies>
+
+	<build>
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -218,5 +296,13 @@
 	</build>
 
 </project>
+<<<<<<< HEAD
 
 
+=======
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI

@@ -1,7 +1,10 @@
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QrCode, History, LogOut, GraduationCap, User, CalendarDays } from 'lucide-react';

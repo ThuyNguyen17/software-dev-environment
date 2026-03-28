@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -8,16 +13,40 @@
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 package com.example.project_management_class.presentation.controller;
 
 import com.example.project_management_class.application.dto.LoginResponse;
 import com.example.project_management_class.application.dto.StudentLoginResponse;
 import com.example.project_management_class.application.service.StudentService;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import com.example.project_management_class.domain.model.Student;
+
+import java.util.HashMap;
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import com.example.project_management_class.presentation.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +59,13 @@ public class StudentController {
     private final StudentService studentService;
     @PostMapping("/login-new")
     public ResponseEntity<LoginResponse> loginNew(@RequestBody Map<String, String> request) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        String username = request.get("username");
+        String password = request.get("password");
+=======
+>>>>>>> remotes/origin/Update-UX/UI
         if (request == null) {
             throw new BadRequestException("Request body la bat buoc");
         }
@@ -38,11 +74,21 @@ public class StudentController {
         if (username == null || username.isBlank() || password == null || password.isBlank()) {
             throw new BadRequestException("username va password la bat buoc");
         }
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.login(username, password));
     }
 
     @PostMapping("/login")
     public ResponseEntity<StudentLoginResponse> login(@RequestBody Map<String, String> request) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        String studentCode = request.get("studentCode");
+=======
+>>>>>>> remotes/origin/Update-UX/UI
         if (request == null) {
             throw new BadRequestException("Request body la bat buoc");
         }
@@ -50,16 +96,97 @@ public class StudentController {
         if (studentCode == null || studentCode.isBlank()) {
             throw new BadRequestException("studentCode la bat buoc");
         }
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.login(studentCode));
     }
 
     @GetMapping("/{studentId}/subjects")
+<<<<<<< HEAD
     public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable("studentId") String studentId) {
+=======
+<<<<<<< HEAD
+    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable String studentId) {
+=======
+    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable("studentId") String studentId) {
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.getStudentSubjects(studentId));
     }
 
     @GetMapping("/{studentId}/subjects/{assignmentId}/attendance")
     public ResponseEntity<List<Map<String, Object>>> getAttendanceDetails(
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            @PathVariable String studentId,
+            @PathVariable String assignmentId) {
+        return ResponseEntity.ok(studentService.getAttendanceDetails(studentId, assignmentId));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable String id) {
+        return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Student>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents());
+    }
+
+    @PostMapping
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.createStudent(student));
+    }
+
+    @PostMapping(value = "/import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> importStudents(@RequestParam("file") MultipartFile file) {
+        try {
+            studentService.importStudentsFromExcel(file);
+            Map<String, String> successResponse = new HashMap<>();
+            successResponse.put("message", "Import thành công");
+            return ResponseEntity.ok(successResponse);
+        } catch (Exception e) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Lỗi khi import file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(errorResponse);
+        }
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<InputStreamResource> exportStudents() {
+        String filename = "students.xlsx";
+        InputStreamResource file = new InputStreamResource(studentService.exportStudentsToExcel());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(file);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> deleteStudent(@PathVariable String id) {
+        studentService.deleteStudent(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Student Deleted!");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateStudent(@PathVariable String id, @RequestBody Student student) {
+        studentService.updateStudent(id, student);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Student Updated!");
+        return ResponseEntity.ok(response);
+    }
+}
+=======
+>>>>>>> remotes/origin/Update-UX/UI
             @PathVariable("studentId") String studentId,
             @PathVariable("assignmentId") String assignmentId) {
         return ResponseEntity.ok(studentService.getAttendanceDetails(studentId, assignmentId));
@@ -83,3 +210,22 @@ public class StudentController {
 
 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI

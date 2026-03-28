@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+package com.example.project_management_class.application.serviceImpl;
+
+import com.example.project_management_class.application.service.StudentService;
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -8,21 +16,66 @@ package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.service.StudentService;
 import com.example.project_management_class.application.util.ClassNameUtils;
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 import com.example.project_management_class.application.dto.LoginResponse;
 import com.example.project_management_class.application.dto.StudentLoginResponse;
 import com.example.project_management_class.domain.enums.Role;
 import com.example.project_management_class.domain.model.*;
 import com.example.project_management_class.domain.repository.*;
 import lombok.RequiredArgsConstructor;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import org.springframework.stereotype.Service;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.ZoneId;
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+public class StudentServiceImpl implements StudentService {
+
+    private final StudentRepository studentRepository;
+    private final SchoolClassRepository schoolClassRepository;
+    private final AttendanceRepository attendanceRepository;
+    private final AttendanceSessionRepository attendanceSessionRepository;
+    private final TeacherRepository teacherRepository;
+    private final TeachingAssignmentRepository teachingAssignmentRepository;
+    private final StudentClassRepository studentClassRepository;
+    private final UserRepository userRepository;
+
+    @Override
+    public LoginResponse login(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Sai tài khoản hoặc mật khẩu"));
+
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Sai tài khoản hoặc mật khẩu");
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 @Slf4j
 public class StudentServiceImpl implements StudentService {
 
@@ -108,6 +161,10 @@ public class StudentServiceImpl implements StudentService {
         }
         if (!ok) {
             throw new RuntimeException("Sai tai khoan hoac mat khau");
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         }
 
         LoginResponse.LoginResponseBuilder builder = LoginResponse.builder()
@@ -116,6 +173,39 @@ public class StudentServiceImpl implements StudentService {
                 .role(user.getRole());
 
         if (user.getRole() == Role.STUDENT) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            Optional<Student> studentOpt = studentRepository.findByUserId(user.getId());
+            if (studentOpt.isPresent()) {
+                Student student = studentOpt.get();
+                builder.studentId(student.getId())
+                        .studentCode(student.getStudentCode())
+                        .fullName(student.getFullName());
+
+                // Get class name
+                List<StudentClass> studentClasses = studentClassRepository.findByStudentId(student.getId());
+                if (!studentClasses.isEmpty()) {
+                    StudentClass sc = studentClasses.get(studentClasses.size() - 1);
+                    SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
+                    if (schoolClass != null) {
+                        builder.className(schoolClass.getGradeLevel() + schoolClass.getClassName());
+                    }
+                }
+            } else {
+                builder.fullName(user.getUsername());
+            }
+        } else if (user.getRole() == Role.LECTURER || user.getRole() == Role.TEACHER) {
+            Optional<Teacher> teacherOpt = teacherRepository.findByUserId(user.getId());
+            if (teacherOpt.isPresent()) {
+                Teacher teacher = teacherOpt.get();
+                builder.teacherId(teacher.getId())
+                        .fullName(teacher.getFullName());
+            } else {
+                builder.fullName(user.getUsername());
+            }
+=======
+>>>>>>> remotes/origin/Update-UX/UI
             // Mongoose commonly stores userId as ObjectId, while this Java model uses String.
             // To stay compatible with seeded demo data (username like "HS001"), fall back to lookups by id/code.
             Student student = studentRepository.findByUserId(user.getId())
@@ -149,6 +239,10 @@ public class StudentServiceImpl implements StudentService {
             
             builder.teacherId(teacher.getId())
                     .fullName(teacher.getFullName());
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         }
 
         return builder.build();
@@ -163,6 +257,14 @@ public class StudentServiceImpl implements StudentService {
         String className = "N/A";
         if (!studentClasses.isEmpty()) {
             StudentClass sc = studentClasses.get(studentClasses.size() - 1);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
+            if (schoolClass != null) {
+                className = schoolClass.getGradeLevel() + schoolClass.getClassName();
+=======
+>>>>>>> remotes/origin/Update-UX/UI
             SchoolClass schoolClass = resolveSchoolClassByIdOrName(sc.getClassId());
             if (schoolClass != null && schoolClass.getGradeLevel() != null && schoolClass.getClassName() != null) {
                 className = ClassNameUtils.formatDisplayClassName(
@@ -171,6 +273,10 @@ public class StudentServiceImpl implements StudentService {
                 );
             } else if (sc.getClassId() != null && !sc.getClassId().isBlank()) {
                 className = ClassNameUtils.formatDisplayClassName(sc.getClassId().trim());
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
             }
         }
 
@@ -188,6 +294,18 @@ public class StudentServiceImpl implements StudentService {
         if (studentClasses.isEmpty()) return Collections.emptyList();
         
         StudentClass sc = studentClasses.get(studentClasses.size() - 1);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
+        if (schoolClass == null) return Collections.emptyList();
+        
+        String className = schoolClass.getGradeLevel() + schoolClass.getClassName();
+
+        List<TeachingAssignment> assignments = teachingAssignmentRepository.findAll().stream()
+                .filter(a -> a.getClassName() != null && a.getClassName().equalsIgnoreCase(className))
+=======
+>>>>>>> remotes/origin/Update-UX/UI
         SchoolClass schoolClass = resolveSchoolClassByIdOrName(sc.getClassId());
         String className = null;
         if (schoolClass != null && schoolClass.getGradeLevel() != null && schoolClass.getClassName() != null) {
@@ -204,6 +322,10 @@ public class StudentServiceImpl implements StudentService {
         List<TeachingAssignment> assignments = teachingAssignmentRepository.findAll().stream()
                 .filter(a -> a.getClassName() != null
                         && ClassNameUtils.normalizeToKey(a.getClassName()).equals(studentClassKey))
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
                 .collect(Collectors.toList());
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -259,6 +381,173 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    public void importStudentsFromExcel(MultipartFile file) {
+        try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rows = sheet.iterator();
+
+            int rowNumber = 0;
+            while (rows.hasNext()) {
+                Row currentRow = rows.next();
+                if (rowNumber == 0) {
+                    rowNumber++;
+                    continue; // Skip header row
+                }
+
+                String studentCode = getCellValueSafely(currentRow.getCell(0));
+                String fullName = getCellValueSafely(currentRow.getCell(1));
+                String gender = getCellValueSafely(currentRow.getCell(3));
+                String phone = getCellValueSafely(currentRow.getCell(4));
+                String email = getCellValueSafely(currentRow.getCell(5));
+                String address = getCellValueSafely(currentRow.getCell(6));
+
+                if (studentCode.isEmpty() || fullName.isEmpty()) {
+                    continue; // Skip invalid rows
+                }
+
+                Student student = studentRepository.findByStudentCode(studentCode).orElse(new Student());
+                student.setStudentCode(studentCode);
+                student.setFullName(fullName);
+                student.setGender(gender);
+
+                if (currentRow.getCell(2) != null && currentRow.getCell(2).getCellType() == CellType.NUMERIC) {
+                    student.setDateOfBirth(currentRow.getCell(2).getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                }
+
+                Contact contact = student.getContact() != null ? student.getContact() : new Contact();
+                contact.setPhone(phone);
+                contact.setEmail(email);
+                contact.setAddress(address);
+                student.setContact(contact);
+
+                studentRepository.save(student);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read Excel data: " + e.getMessage());
+        }
+    }
+
+    private String getCellValueSafely(Cell cell) {
+        if (cell == null) return "";
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue().trim();
+            case NUMERIC:
+                return String.valueOf(cell.getNumericCellValue());
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            default:
+                return "";
+        }
+    }
+
+    @Override
+    public ByteArrayInputStream exportStudentsToExcel() {
+        try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            Sheet sheet = workbook.createSheet("Students");
+
+            // Header
+            Row headerRow = sheet.createRow(0);
+            String[] columns = {"Mã SV", "Họ Tên", "Ngày Sinh", "Giới Tính", "Số Điện Thoại", "Email", "Địa Chỉ"};
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(columns[i]);
+            }
+
+            // Data
+            List<Student> students = studentRepository.findAll();
+            int rowIdx = 1;
+            for (Student student : students) {
+                Row row = sheet.createRow(rowIdx++);
+
+                row.createCell(0).setCellValue(student.getStudentCode() != null ? student.getStudentCode() : "");
+                row.createCell(1).setCellValue(student.getFullName() != null ? student.getFullName() : "");
+                
+                if (student.getDateOfBirth() != null) {
+                    row.createCell(2).setCellValue(student.getDateOfBirth().toString());
+                } else {
+                    row.createCell(2).setCellValue("");
+                }
+                
+                row.createCell(3).setCellValue(student.getGender() != null ? student.getGender() : "");
+
+                if (student.getContact() != null) {
+                    row.createCell(4).setCellValue(student.getContact().getPhone() != null ? student.getContact().getPhone() : "");
+                    row.createCell(5).setCellValue(student.getContact().getEmail() != null ? student.getContact().getEmail() : "");
+                    row.createCell(6).setCellValue(student.getContact().getAddress() != null ? student.getContact().getAddress() : "");
+                } else {
+                    row.createCell(4).setCellValue("");
+                    row.createCell(5).setCellValue("");
+                    row.createCell(6).setCellValue("");
+                }
+            }
+
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to export data to Excel: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public Student getStudentById(String id) {
+        return studentRepository.findById(id)
+                .orElseGet(() -> studentRepository.findByStudentCode(id).orElse(null));
+    }
+
+    @Override
+    public List<Student> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    @Override
+    public void deleteStudent(String id) {
+        studentRepository.deleteById(id);
+    }
+
+    @Override
+    public Student updateStudent(String id, Student student) {
+        Student existingStudent = studentRepository.findById(id)
+                .orElseGet(() -> studentRepository.findByStudentCode(id)
+                        .orElseThrow(() -> new RuntimeException("Student not found with id or code: " + id)));
+
+        if (student.getFullName() != null) existingStudent.setFullName(student.getFullName());
+        if (student.getStudentCode() != null) existingStudent.setStudentCode(student.getStudentCode());
+        if (student.getDateOfBirth() != null) existingStudent.setDateOfBirth(student.getDateOfBirth());
+        if (student.getGender() != null) existingStudent.setGender(student.getGender());
+        
+        if (student.getContact() != null) {
+            Contact existingContact = existingStudent.getContact() != null ? existingStudent.getContact() : new Contact();
+            Contact newContact = student.getContact();
+            
+            if (newContact.getPhone() != null) existingContact.setPhone(newContact.getPhone());
+            if (newContact.getEmail() != null) existingContact.setEmail(newContact.getEmail());
+            if (newContact.getAddress() != null) existingContact.setAddress(newContact.getAddress());
+            
+            existingStudent.setContact(existingContact);
+        }
+
+        return studentRepository.save(existingStudent);
+    }
+
+    @Override
+    public Student createStudent(Student student) {
+        // Create User account for Student
+        User user = new User();
+        user.setUsername(student.getStudentCode() != null ? student.getStudentCode() : student.getFullName().replaceAll("\\s+", "").toLowerCase());
+        user.setPassword("123456"); // Default password
+        user.setRole(Role.STUDENT);
+        user = userRepository.save(user);
+
+        student.setUserId(user.getId());
+        return studentRepository.save(student);
+    }
+}
+=======
+>>>>>>> remotes/origin/Update-UX/UI
     public List<Map<String, Object>> getStudentsByClass(String className) {
         String raw = className == null ? "" : className.trim();
         String classKey = ClassNameUtils.normalizeToKey(raw);
@@ -340,4 +629,9 @@ public class StudentServiceImpl implements StudentService {
         }
         return new ArrayList<>(out);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI

@@ -156,6 +156,7 @@
 
 
 
+<<<<<<< HEAD
 
 
 
@@ -314,6 +315,8 @@
 
 
 
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 .attendance-modal-overlay {
     position: fixed;
     top: 0;
@@ -829,4 +832,8 @@
 
 .table-body-scroll::-webkit-scrollbar-thumb:hover {
     background: #cbd5e1;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> remotes/origin/Update-UX/UI

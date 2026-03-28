@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -16,6 +21,10 @@
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //package com.example.project_management_class.infrastructure.config;
 //
 //import lombok.RequiredArgsConstructor;
@@ -25,7 +34,14 @@
 //import org.bson.Document;
 //import java.time.Instant;
 //import java.util.Date;
+<<<<<<< HEAD
 //import java.util.ArrayList;
+=======
+<<<<<<< HEAD
+=======
+//import java.util.ArrayList;
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //import java.util.List;
 //
 //@Component
@@ -36,6 +52,20 @@
 //
 //    @Override
 //    public void run(String... args) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+//
+//        // Nếu đã có dữ liệu thì không seed lại
+//        if (mongoTemplate.collectionExists("academic_years") &&
+//                mongoTemplate.getCollection("academic_years").countDocuments() > 0) {
+//            System.out.println("Data already exists. Skipping seed.");
+//            return;
+//        }
+//
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //        System.out.println("Start seeding database...");
 //
 //        // ===== 1. Academic Year =====
@@ -43,7 +73,17 @@
 //        Document academicYear = new Document()
 //                .append("_id", "ay2025")
 //                .append("name", "2025-2026")
+<<<<<<< HEAD
 //                .append("startDate", Date.from(Instant.parse("2025-09-01T00:00:00Z")));
+=======
+<<<<<<< HEAD
+//                .append("startDate", Date.from(Instant.parse("2025-09-01T00:00:00Z")))
+//                .append("endDate", Date.from(Instant.parse("2026-06-30T00:00:00Z")))
+//                .append("active", true);
+=======
+//                .append("startDate", Date.from(Instant.parse("2025-09-01T00:00:00Z")));
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //
 //        mongoTemplate.getCollection("academic_years").insertOne(academicYear);
 //
@@ -118,19 +158,44 @@
 //                        .append("teacherId", "t1")
 //                        .append("subjectName", "Toán Học")
 //                        .append("className", "10A1")
+<<<<<<< HEAD
 //                        .append("academicYear", 2025)
 //                        .append("semester", 2),
+=======
+<<<<<<< HEAD
+//                        .append("academicYear", 2024)
+//                        .append("semester", 1),
+=======
+//                        .append("academicYear", 2025)
+//                        .append("semester", 2),
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //
 //                new Document("_id", "ta2")
 //                        .append("teacherId", "t1")
 //                        .append("subjectName", "Vật Lý")
 //                        .append("className", "10A1")
+<<<<<<< HEAD
 //                        .append("academicYear", 2025)
 //                        .append("semester", 2)
+=======
+<<<<<<< HEAD
+//                        .append("academicYear", 2024)
+//                        .append("semester", 1)
+=======
+//                        .append("academicYear", 2025)
+//                        .append("semester", 2)
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //        );
 //
 //        mongoTemplate.getCollection("teaching_assignments").insertMany(teachingAssignments);
 //
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 //        // ===== 6.1 Timetables =====
 //        // Teacher timetable API relies on this collection; without it the UI will be empty.
 //        mongoTemplate.dropCollection("timetables");
@@ -178,6 +243,10 @@
 //        }
 //        mongoTemplate.getCollection("timetables").insertMany(timetables);
 //
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //        // ===== 7. Users =====
 //        mongoTemplate.dropCollection("users");
 //
@@ -210,7 +279,15 @@
 //                .append("_id", "as1")
 //                .append("teachingAssignmentId", "ta1")
 //                .append("date", Date.from(Instant.parse("2026-02-24T00:00:00Z")))
+<<<<<<< HEAD
 //                .append("semester", 2)
+=======
+<<<<<<< HEAD
+//                .append("semester", 1)
+=======
+//                .append("semester", 2)
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 //                .append("period", 1)
 //                .append("open", true)
 //                .append("qrToken", "TEST_TOKEN_123")

@@ -3,11 +3,14 @@
 
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';

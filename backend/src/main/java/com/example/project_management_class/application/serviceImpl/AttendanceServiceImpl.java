@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+package com.example.project_management_class.application.serviceImpl;
+
+import com.example.project_management_class.application.service.AttendanceService;
+import com.example.project_management_class.domain.enums.AttendanceStatus;
+import com.example.project_management_class.domain.model.Attendance;
+import com.example.project_management_class.domain.model.AttendanceSession;
+import com.example.project_management_class.domain.model.TeachingAssignment;
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 
 
 
@@ -14,6 +26,10 @@ import com.example.project_management_class.domain.model.AttendanceSession;
 import com.example.project_management_class.domain.model.AcademicYear;
 import com.example.project_management_class.domain.model.TeachingAssignment;
 import com.example.project_management_class.domain.repository.AcademicYearRepository;
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 import com.example.project_management_class.domain.repository.AttendanceRepository;
 import com.example.project_management_class.domain.repository.AttendanceSessionRepository;
 import com.example.project_management_class.domain.repository.TeachingAssignmentRepository;
@@ -22,6 +38,13 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+import java.util.List;
+import java.util.Optional;
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +60,10 @@ import com.example.project_management_class.domain.model.StudentClass;
 import com.example.project_management_class.domain.repository.SchoolClassRepository;
 import com.example.project_management_class.domain.repository.StudentClassRepository;
 import com.example.project_management_class.domain.repository.StudentRepository;
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
 
 @Service
 @RequiredArgsConstructor
@@ -45,6 +72,14 @@ public class AttendanceServiceImpl implements AttendanceService {
     private final AttendanceSessionRepository sessionRepository;
     private final AttendanceRepository attendanceRepository;
     private final TeachingAssignmentRepository teachingAssignmentRepository;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    @Override
+    public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester) {
+=======
+>>>>>>> remotes/origin/Update-UX/UI
     private final AcademicYearRepository academicYearRepository;
     private final SchoolClassRepository schoolClassRepository;
     private final StudentClassRepository studentClassRepository;
@@ -88,13 +123,25 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester) {
     public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester, Double latitude, Double longitude) {
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         Optional<AttendanceSession> existing = sessionRepository.findByTeachingAssignmentIdAndDateAndPeriod(assignmentId, date, period);
         if (existing.isPresent()) {
             AttendanceSession session = existing.get();
             if (!session.isOpen()) {
                 session.setOpen(true);
+<<<<<<< HEAD
                 if (latitude != null) session.setLatitude(latitude);
                 if (longitude != null) session.setLongitude(longitude);
+=======
+<<<<<<< HEAD
+=======
+                if (latitude != null) session.setLatitude(latitude);
+                if (longitude != null) session.setLongitude(longitude);
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
                 sessionRepository.save(session);
             }
             return session;
@@ -106,6 +153,14 @@ public class AttendanceServiceImpl implements AttendanceService {
         newSession.setPeriod(period);
         newSession.setSemester(semester);
         newSession.setOpen(true);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        // Initial token or empty
+        newSession.setQrToken(""); 
+        
+=======
+>>>>>>> remotes/origin/Update-UX/UI
         newSession.setLatitude(latitude);
         newSession.setLongitude(longitude);
         // Initial token or empty
@@ -113,6 +168,10 @@ public class AttendanceServiceImpl implements AttendanceService {
         
         newSession.setQrToken("");
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return sessionRepository.save(newSession);
     }
 
@@ -129,7 +188,14 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new RuntimeException("Attendance session is closed");
         }
         
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         // Check token validity (allow current or previous token for grace period)
         if (qrToken == null || (!qrToken.equals(session.getQrToken()) && !qrToken.equals(session.getPreviousQrToken()))) {
             throw new RuntimeException("Invalid or expired QR token");
@@ -142,7 +208,14 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
 
         // Validate class
+<<<<<<< HEAD
         // Validate class (server-side): do not trust the client-provided class/name.
+=======
+<<<<<<< HEAD
+=======
+        // Validate class (server-side): do not trust the client-provided class/name.
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         String assignmentId = session.getTeachingAssignmentId();
         if (!"ASS001".equals(assignmentId)) {
             TeachingAssignment assignment = teachingAssignmentRepository.findById(assignmentId)
@@ -150,6 +223,14 @@ public class AttendanceServiceImpl implements AttendanceService {
             
             if (!assignment.getClassName().equalsIgnoreCase(studentClass)) {
                 throw new RuntimeException("Bạn không thuộc lớp này (" + assignment.getClassName() + ")");
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            }
+        }
+        
+=======
+>>>>>>> remotes/origin/Update-UX/UI
         Student studentFromDb = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
@@ -236,6 +317,10 @@ public class AttendanceServiceImpl implements AttendanceService {
             }
         }
 
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         // Create attendance record
         Attendance attendance = new Attendance();
         attendance.setAttendanceSessionId(sessionId);
@@ -243,15 +328,31 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setStudentName(studentName);
         attendance.setStudentClass(studentClass);
         attendance.setLocation(location);
+<<<<<<< HEAD
         attendance.setStudentName(resolvedStudentName);
         attendance.setStudentClass(resolvedStudentClass);
         attendance.setLocation(sanitizedLoc);
+=======
+<<<<<<< HEAD
+=======
+        attendance.setStudentName(resolvedStudentName);
+        attendance.setStudentClass(resolvedStudentClass);
+        attendance.setLocation(sanitizedLoc);
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         attendance.setNote(note);
         attendance.setStatus(AttendanceStatus.PRESENT);
         attendance.setAttendanceType("QR");
         attendance.setCheckInTime(LocalTime.now());
         
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
         return attendanceRepository.save(attendance);
     }
 
@@ -269,6 +370,11 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> remotes/origin/Update-UX/UI
     public List<Map<String, Object>> getMissingStudents(String sessionId) {
         AttendanceSession session = getSession(sessionId);
         String assignmentId = session.getTeachingAssignmentId();
@@ -422,6 +528,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+<<<<<<< HEAD
+=======
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
     public AttendanceSession updateQrToken(String sessionId, String newToken) {
         AttendanceSession session = getSession(sessionId);
         session.setPreviousQrToken(session.getQrToken()); // Store previous token
@@ -440,6 +550,17 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void deleteAttendancesBySession(String sessionId) {
         attendanceRepository.deleteAllByAttendanceSessionId(sessionId);
     }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+    @Override
+    public List<Attendance> getAttendancesByStudentId(String studentId) {
+        return attendanceRepository.findByStudentId(studentId);
+    }
+}
+=======
+>>>>>>> remotes/origin/Update-UX/UI
 }
 
 
@@ -518,4 +639,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c * 1000; // convert to meters
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fix-final
+>>>>>>> remotes/origin/Update-UX/UI
