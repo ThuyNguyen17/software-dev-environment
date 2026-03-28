@@ -1,7 +1,12 @@
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAttendanceDetails } from '../api/studentApi';
 import { ArrowLeft, Calendar, Clock, CheckCircle, XCircle, MapPin, Info } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './SubjectAttendance.css';
 
 const SubjectAttendance = () => {
@@ -13,14 +18,30 @@ const SubjectAttendance = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                navigate('/student/login');
+                return;
+            }
+            const s = JSON.parse(storedUser);
+            if (!s) {
+                navigate('/student/login');
+                return;
+            }
+            if (s.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+                return;
+            }
+            if (s.role !== 'STUDENT') {
+                navigate('/student/login');
+                return;
+            }
+            setStudent({ ...s, className: normalizeClassName(s.className) });
+            fetchSessions(s.studentId);
+        } catch (e) {
             navigate('/student/login');
-            return;
         }
-        const s = JSON.parse(storedUser);
-        setStudent(s);
-        fetchSessions(s.studentId);
     }, [assignmentId, navigate]);
 
     const fetchSessions = async (studentId) => {
@@ -132,4 +153,4 @@ const SubjectAttendance = () => {
     );
 };
 
-export default SubjectAttendance;
+export default SubjectAttendance

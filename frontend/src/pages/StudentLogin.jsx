@@ -1,6 +1,13 @@
+
+
+
+
+
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../api/studentApi';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './StudentLogin.css';
 
 const StudentLogin = () => {
@@ -18,12 +25,17 @@ const StudentLogin = () => {
         setError('');
         try {
             const user = await login(username, password);
-            localStorage.setItem('user', JSON.stringify(user));
+            const normalizedUser = user?.role === 'STUDENT'
+                ? { ...user, className: normalizeClassName(user.className) }
+                : user;
+            localStorage.setItem('user', JSON.stringify(normalizedUser));
 
-            if (user.role === 'STUDENT') {
+            if (normalizedUser.role === 'STUDENT') {
                 navigate('/student/dashboard');
-            } else if (user.role === 'LECTURER') {
-                navigate('/');
+            } else if (normalizedUser.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+            } else {
+                setError('Tai khoan khong co quyen truy cap');
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Tài khoản hoặc mật khẩu không đúng');

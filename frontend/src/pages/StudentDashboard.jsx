@@ -1,6 +1,11 @@
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { QrCode, History, LogOut, GraduationCap, User } from 'lucide-react';
+import { QrCode, History, LogOut, GraduationCap, User, CalendarDays } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
@@ -8,12 +13,29 @@ const StudentDashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                navigate('/student/login');
+                return;
+            }
+            const user = JSON.parse(storedUser);
+            if (!user) {
+                navigate('/student/login');
+                return;
+            }
+            if (user.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+                return;
+            }
+            if (user.role !== 'STUDENT') {
+                navigate('/student/login');
+                return;
+            }
+            setStudent({ ...user, className: normalizeClassName(user.className) });
+        } catch (e) {
             navigate('/student/login');
-            return;
         }
-        setStudent(JSON.parse(storedUser));
     }, [navigate]);
 
     const handleLogout = () => {
@@ -53,6 +75,15 @@ const StudentDashboard = () => {
                 </div>
 
                 <div className="actions-section">
+                    <button className="action-card history-card" onClick={() => navigate('/student/timetable')}>
+                        <div className="icon-wrapper">
+                            <CalendarDays size={32} />
+                        </div>
+                        <div className="action-text">
+                            <h3>Thời khóa biểu</h3>
+                        </div>
+                    </button>
+
                     <button className="action-card scan-card" onClick={() => navigate('/student/scan')}>
                         <div className="icon-wrapper">
                             <QrCode size={32} />

@@ -1,7 +1,16 @@
+
+
+
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStudentSubjects } from '../api/studentApi';
 import { ArrowLeft, BookOpen, ChevronRight, CheckCircle2, XCircle } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './AttendanceHistory.css';
 
 const AttendanceHistory = () => {
@@ -11,14 +20,30 @@ const AttendanceHistory = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        if (!storedUser) {
+        try {
+            const storedUser = localStorage.getItem('user');
+            if (!storedUser) {
+                navigate('/student/login');
+                return;
+            }
+            const s = JSON.parse(storedUser);
+            if (!s) {
+                navigate('/student/login');
+                return;
+            }
+            if (s.role === 'TEACHER') {
+                navigate('/teacher/timetable');
+                return;
+            }
+            if (s.role !== 'STUDENT') {
+                navigate('/student/login');
+                return;
+            }
+            setStudent({ ...s, className: normalizeClassName(s.className) });
+            fetchSubjects(s.studentId);
+        } catch (e) {
             navigate('/student/login');
-            return;
         }
-        const s = JSON.parse(storedUser);
-        setStudent(s);
-        fetchSubjects(s.studentId);
     }, [navigate]);
 
     const fetchSubjects = async (studentId) => {

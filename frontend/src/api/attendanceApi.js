@@ -1,3 +1,25 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import axios from 'axios';
 
 // Khi dùng Vite Proxy, ta chỉ cần gọi đường dẫn tương đối.
@@ -9,13 +31,15 @@ const api = axios.create({
     }
 });
 
-export const startSession = async (assignmentId, date, period, semester) => {
+export const startSession = async (assignmentId, date, period, semester, latitude, longitude) => {
     // Gọi đường dẫn đầy đủ từ gốc
     const response = await api.post('/api/attendance/session/start', {
         assignmentId,
         date,
         period,
-        semester
+        semester,
+        latitude,
+        longitude
     });
     return response.data;
 };
@@ -27,6 +51,11 @@ export const updateQrToken = async (sessionId, token) => {
 
 export const getAttendances = async (sessionId) => {
     const response = await api.get(`/api/attendance/session/${sessionId}/attendances`);
+    return response.data;
+};
+
+export const getMissingStudents = async (sessionId) => {
+    const response = await api.get(`/api/attendance/session/${sessionId}/missing`);
     return response.data;
 };
 

@@ -1,3 +1,46 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { getTeacherTimetable } from "../api/timetableApi";
@@ -41,6 +84,7 @@ function TeacherTimetable() {
   const [teacher, setTeacher] = useState(null);
   const teacherId = teacher?.teacherId || "";
 
+  // Only show the current academic year's semesters (HK1/HK2).
   const semesterOptions = getSemestersForYear(currentAcademicInfo.academicYear);
   const weekOptions = generateWeeksForSemester(
     selectedSemester,
@@ -57,9 +101,18 @@ function TeacherTimetable() {
       }
       const user = JSON.parse(storedUser);
       console.log("Parsed User Object:", user);
-      if (!user || user.role !== 'LECTURER') {
-        console.log("Invalid role or no user, redirecting to dashboard");
+      if (!user) {
+        navigate('/student/login');
+        return;
+      }
+
+      // Backend roles: STUDENT | TEACHER | ADMIN
+      if (user.role === 'STUDENT') {
         navigate('/student/dashboard');
+        return;
+      }
+      if (user.role !== 'TEACHER') {
+        navigate('/student/login');
         return;
       }
       setTeacher(user);

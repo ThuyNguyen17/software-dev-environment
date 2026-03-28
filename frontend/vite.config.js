@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -7,7 +16,8 @@ export default defineConfig({
   server: {
     host: true,
     allowedHosts: [
-      'unmilitarized-sylvester-workable.ngrok-free.dev' // Thay bằng mã ngrok 5173 của bạn
+      'unmilitarized-sylvester-workable.ngrok-free.dev' // Thay b?ng m� ngrok 5173 c?a b?n
+      'unmilitarized-sylvester-workable.ngrok-free.dev'
     ],
     proxy: {
       '/api': {
@@ -18,3 +28,4 @@ export default defineConfig({
     }
   }
 })
+}) 
