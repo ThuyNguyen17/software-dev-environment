@@ -1,3 +1,8 @@
+
+
+
+
+
 package com.example.project_management_class.application.service;
 
 import com.example.project_management_class.application.dto.LoginResponse;
@@ -14,3 +19,7 @@ public interface StudentService {
     List<Map<String, Object>> getAttendanceDetails(String studentId, String assignmentId);
     List<Map<String, Object>> getStudentsByClass(String className);
 }
+
+
+
+

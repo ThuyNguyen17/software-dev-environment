@@ -1,3 +1,26 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import axios from 'axios';
 
 const API_URL = '/api/students';
@@ -21,6 +44,10 @@ export const getAttendanceDetails = async (studentId, assignmentId) => {
     const response = await axios.get(`${API_URL}/${studentId}/subjects/${assignmentId}/attendance`);
     return response.data;
 };
+
+
+
+
 
 export const getStudentsByClass = async (className) => {
     const response = await axios.get(`${API_URL}/class/${encodeURIComponent(className)}`);

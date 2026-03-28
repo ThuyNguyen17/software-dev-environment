@@ -1,3 +1,6 @@
+
+
+
 package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.service.AttendanceService;
@@ -80,6 +83,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester) {
     public AttendanceSession createOrGetSession(String assignmentId, LocalDate date, Integer period, Integer semester, Double latitude, Double longitude) {
         Optional<AttendanceSession> existing = sessionRepository.findByTeachingAssignmentIdAndDateAndPeriod(assignmentId, date, period);
         if (existing.isPresent()) {
@@ -102,6 +106,8 @@ public class AttendanceServiceImpl implements AttendanceService {
         newSession.setLatitude(latitude);
         newSession.setLongitude(longitude);
         // Initial token or empty
+        newSession.setQrToken(""); 
+        
         newSession.setQrToken("");
 
         return sessionRepository.save(newSession);
@@ -119,6 +125,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         if (!session.isOpen()) {
             throw new RuntimeException("Attendance session is closed");
         }
+        
 
         // Check token validity (allow current or previous token for grace period)
         if (qrToken == null || (!qrToken.equals(session.getQrToken()) && !qrToken.equals(session.getPreviousQrToken()))) {
@@ -131,8 +138,15 @@ public class AttendanceServiceImpl implements AttendanceService {
             throw new RuntimeException("Bạn đã điểm danh cho buổi học này rồi.");
         }
 
+        // Validate class
         // Validate class (server-side): do not trust the client-provided class/name.
         String assignmentId = session.getTeachingAssignmentId();
+        if (!"ASS001".equals(assignmentId)) {
+            TeachingAssignment assignment = teachingAssignmentRepository.findById(assignmentId)
+                    .orElseThrow(() -> new RuntimeException("Assignment not found"));
+            
+            if (!assignment.getClassName().equalsIgnoreCase(studentClass)) {
+                throw new RuntimeException("Bạn không thuộc lớp này (" + assignment.getClassName() + ")");
         Student studentFromDb = studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
@@ -154,6 +168,7 @@ public class AttendanceServiceImpl implements AttendanceService {
                 studentClasses = filtered;
             }
         }
+        
         if (studentClasses.isEmpty()) {
             throw new RuntimeException("Ban chua duoc xep lop nen khong the diem danh.");
         }
@@ -222,6 +237,9 @@ public class AttendanceServiceImpl implements AttendanceService {
         Attendance attendance = new Attendance();
         attendance.setAttendanceSessionId(sessionId);
         attendance.setStudentId(studentId);
+        attendance.setStudentName(studentName);
+        attendance.setStudentClass(studentClass);
+        attendance.setLocation(location);
         attendance.setStudentName(resolvedStudentName);
         attendance.setStudentClass(resolvedStudentClass);
         attendance.setLocation(sanitizedLoc);
@@ -229,6 +247,7 @@ public class AttendanceServiceImpl implements AttendanceService {
         attendance.setStatus(AttendanceStatus.PRESENT);
         attendance.setAttendanceType("QR");
         attendance.setCheckInTime(LocalTime.now());
+        
 
         return attendanceRepository.save(attendance);
     }
@@ -418,6 +437,45 @@ public class AttendanceServiceImpl implements AttendanceService {
     public void deleteAttendancesBySession(String sessionId) {
         attendanceRepository.deleteAllByAttendanceSessionId(sessionId);
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private static final Pattern LAT_LON_DECIMAL_PAIR =
             Pattern.compile("(-?\\d{1,3}\\.\\d+)\\s*,\\s*(-?\\d{1,3}\\.\\d+)");

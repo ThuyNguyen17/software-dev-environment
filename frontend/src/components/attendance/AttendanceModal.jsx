@@ -1,3 +1,6 @@
+
+
+
 import React, { useEffect, useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { startSession, updateQrToken, getAttendances, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';

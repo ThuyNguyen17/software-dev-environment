@@ -1,5 +1,21 @@
+/* Color Palette */
+
 /* Color Palette - Use global variables from index.css */
 :root {
+    --primary: #4682A9;
+    --primary-light: #91C8E4;
+    --secondary: #749BC2;
+    --bg-main: #F1F5F9;
+    --bg-card: #F6F4EB;
+    --white: #ffffff;
+    --text-dark: #2D3748;
+    --text-light: #718096;
+    --border: #CBD5E0;
+    --tag-bg: #E2E8F0;
+    --room-tag-bg: #FED7D7;
+    --room-tag-text: #C53030;
+    --class-tag-bg: #EBF8FF;
+    --class-tag-text: #2B6CB0;
     --timetable-primary: var(--primary, #4682A9);
     --timetable-primary-light: var(--primary-hover, #91C8E4);
     --timetable-secondary: var(--bg-card, #749BC2);
@@ -21,6 +37,7 @@
     max-width: 100%;
     margin: 0;
     padding: 0;
+    background-color: var(--bg-main);
     background-color: var(--timetable-bg-main);
     min-height: 100vh;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -29,6 +46,7 @@
 
 /* Controls Section - Compact */
 .timetable-controls {
+    background-color: var(--white);
     background-color: var(--timetable-white);
     padding: 0.75rem 1.25rem;
     display: flex;
@@ -39,6 +57,7 @@
     border-radius: 8px;
     margin: 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
 }
 
@@ -55,6 +74,7 @@
     flex-direction: column;
     gap: 0.25rem;
     font-weight: 600;
+    color: var(--text-dark);
     color: var(--timetable-text-dark);
     font-size: 0.8rem;
 }
@@ -62,17 +82,21 @@
 .timetable-controls select,
 .timetable-controls input[type="number"] {
     padding: 0.4rem 0.75rem;
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
     border-radius: 6px;
     font-size: 0.85rem;
+    background-color: var(--bg-card);
     background-color: var(--timetable-bg-card);
     min-width: 180px;
+    color: var(--text-dark);
     color: var(--timetable-text-dark);
     height: 34px;
 }
 
 .timetable-controls select:focus {
     outline: none;
+    border-color: var(--primary);
     border-color: var(--timetable-primary);
     box-shadow: 0 0 0 2px rgba(70, 130, 169, 0.15);
 }
@@ -81,6 +105,8 @@
 .print-button {
     padding: 0 1.25rem;
     height: 34px;
+    background-color: var(--primary);
+    color: var(--white);
     background-color: var(--timetable-primary);
     color: var(--timetable-white);
     border: none;
@@ -95,24 +121,31 @@
 
 .timetable-controls button:hover,
 .print-button:hover {
+    background-color: var(--secondary);
     background-color: var(--timetable-secondary);
 }
 
 /* Info Text - Compact */
 .info-text {
+    background-color: var(--white);
     background-color: var(--timetable-white);
     padding: 0.5rem 1rem;
     margin: 0 1rem 1rem 1rem;
     border-radius: 6px;
+    border-left: 3px solid var(--primary-light);
+    color: var(--text-dark);
     border-left: 3px solid var(--timetable-primary-light);
     color: var(--timetable-text-dark);
     font-size: 0.8rem;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
     display: inline-block;
 }
 
 /* Table Wrapper */
+.table-wrapper {
+    background-color: var(--white);
 .timetable-table-wrapper {
     background-color: var(--timetable-white);
     overflow-x: auto;
@@ -120,6 +153,7 @@
     margin: 0 1rem 1rem 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
 }
 
@@ -127,11 +161,13 @@
 .timetable-grid {
     width: 100%;
     border-collapse: collapse;
+    background-color: var(--white);
     background-color: var(--timetable-white);
 }
 
 .timetable-grid th,
 .timetable-grid td {
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
     padding: 0.5rem;
     text-align: center;
@@ -140,6 +176,8 @@
 }
 
 .timetable-grid thead th {
+    background-color: var(--primary);
+    color: var(--white);
     background-color: var(--timetable-primary);
     color: var(--timetable-white);
     font-weight: 600;
@@ -150,12 +188,15 @@
 }
 
 .period-header {
+    background-color: var(--primary) !important;
     background-color: var(--timetable-primary) !important;
     width: 60px;
 }
 
 /* Period Cell - Left Column */
 .period-cell {
+    background-color: var(--secondary);
+    color: var(--white);
     background-color: var(--timetable-secondary);
     color: var(--timetable-white);
     font-weight: 600;
@@ -176,6 +217,7 @@
 
 /* Table Body Rows */
 .timetable-grid tbody tr:nth-child(odd) {
+    background-color: var(--white);
     background-color: var(--timetable-white);
 }
 
@@ -199,6 +241,7 @@
 
 .active-cell {
     background-color: rgba(145, 200, 228, 0.15) !important;
+    border-left: 3px solid var(--primary);
     border-left: 3px solid var(--timetable-primary);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -227,6 +270,7 @@
 
 .subject-info {
     font-weight: 700;
+    color: var(--primary);
     color: var(--timetable-primary);
     font-size: 0.9rem;
     display: block;
@@ -255,12 +299,16 @@
 }
 
 .class-tag {
+    background-color: var(--class-tag-bg);
+    color: var(--class-tag-text);
     background-color: var(--timetable-class-tag-bg);
     color: var(--timetable-class-tag-text);
     border: 1px solid rgba(43, 108, 176, 0.2);
 }
 
 .room-tag {
+    background-color: var(--room-tag-bg);
+    color: var(--room-tag-text);
     background-color: var(--timetable-room-tag-bg);
     color: var(--timetable-room-tag-text);
     border: 1px solid rgba(197, 48, 48, 0.2);
@@ -288,6 +336,7 @@
 
 .note-info {
     font-size: 0.7rem;
+    color: var(--text-light);
     color: var(--timetable-text-light);
     font-style: italic;
     line-height: 1.2;
@@ -311,6 +360,8 @@
 .loading-spinner {
     width: 40px;
     height: 40px;
+    border: 3px solid var(--primary-light);
+    border-top-color: var(--primary);
     border: 3px solid var(--timetable-primary-light);
     border-top-color: var(--timetable-primary);
     border-radius: 50%;
@@ -325,6 +376,7 @@
 
 /* Footer Buttons - Compact */
 .footer-buttons {
+    background-color: var(--white);
     background-color: var(--timetable-white);
     padding: 1rem;
     display: flex;
@@ -333,11 +385,15 @@
     border-radius: 8px;
     margin: 0 1rem 1rem 1rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
     border: 1px solid var(--timetable-border);
 }
 
 .footer-buttons button {
     padding: 0.5rem 1.5rem;
+    background-color: var(--white);
+    border: 1px solid var(--primary);
+    color: var(--primary);
     background-color: var(--timetable-white);
     border: 1px solid var(--timetable-primary);
     color: var(--timetable-primary);
@@ -349,6 +405,8 @@
 }
 
 .footer-buttons button:hover:not(:disabled) {
+    background-color: var(--primary);
+    color: var(--white);
     background-color: var(--timetable-primary);
     color: var(--timetable-white);
 }
@@ -630,6 +688,7 @@
         overflow: visible !important;
     }
 
+    .table-wrapper {
     .timetable-table-wrapper {
         margin: 0 !important;
         padding: 0 !important;
@@ -699,6 +758,7 @@
     }
 
     /* Add Header Title */
+    .table-wrapper::before {
     .timetable-table-wrapper::before {
         content: "THỜI KHÓA BIỂU GIÁO VIÊN";
         display: block;

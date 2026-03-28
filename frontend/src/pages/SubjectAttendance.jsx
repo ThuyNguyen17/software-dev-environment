@@ -149,4 +149,4 @@ const SubjectAttendance = () => {
     );
 };
 
-export default SubjectAttendance;
+export default SubjectAttendance

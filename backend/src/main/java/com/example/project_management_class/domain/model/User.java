@@ -1,3 +1,9 @@
+
+
+
+
+
+
 package com.example.project_management_class.domain.model;
 
 import com.example.project_management_class.domain.enums.Role;
@@ -16,6 +22,10 @@ public class User {
     private String username;
     private String password;
     private Role role;      // ADMIN | STUDENT | TEACHER
+    private boolean active;
+}
+
+
 
     // NodeJS seeder stores this as "isActive". Keep the Java name "active" for readability.
     @Field("isActive")
