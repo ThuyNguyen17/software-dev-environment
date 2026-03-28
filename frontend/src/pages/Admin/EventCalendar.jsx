@@ -15,8 +15,13 @@ import {
 
 const EventCalendar = () => {
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [events, setEvents] = useState([]);
     const [newEventText, setNewEventText] = useState('');
+=======
+    const [events, setEvents] = useState({});
+    const [newEvent, setNewEvent] = useState('');
+>>>>>>> fix-final
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -34,6 +39,7 @@ const EventCalendar = () => {
 
     const addEvent = async (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         try{
             await axios.post('http://localhost:8080/api/v1/events', {
                 events: newEventText, // Matches backend 'events' field
@@ -53,6 +59,22 @@ const EventCalendar = () => {
         } catch (error) {
             console.error("Error deleting event: ", error);
         }
+=======
+            try{
+                const response = await axios.post('http://localhost:8080/api/v1/events', {
+                    event: newEvent,
+                });
+                setEvents([...events, response.data.event]);
+                setNewEvent('');
+            }catch (error){
+                console.error("Error adding event: ", error);
+                if(error.response && error.response.data && error.response.data.error){
+                    setError(error.response.data.error);
+                }else{
+                    setError('Error adding event:')
+                }
+            }
+>>>>>>> fix-final
     };
 
     return(
@@ -60,15 +82,23 @@ const EventCalendar = () => {
             <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             <Content isOpen={isOpen}>
                 <h1>Event and Calendar</h1>               
+<<<<<<< HEAD
                 <div>Current Time: {new Date().toLocaleString()}</div>
                 <CalendarContainer>
                     Calendar view placeholder
                 </CalendarContainer>
                 
+=======
+                <div>Current Time: </div>
+                <CalendarContainer>
+                    Calendar
+                </CalendarContainer>
+>>>>>>> fix-final
                 <AddEventForm onSubmit={addEvent}>
                     <h2>Add New Event</h2>
                     <EventInput 
                         type="text"
+<<<<<<< HEAD
                         value={newEventText}
                         onChange={(e) => setNewEventText(e.target.value)}
                         placeholder="Enter event"
@@ -87,6 +117,22 @@ const EventCalendar = () => {
                         </Event>
                     ))}
                 </Events>
+=======
+                        value={newEvent}
+                        onChange={(e) = setNewEvent(e.target.value)}
+                        placeholder="Enter event"
+                    />
+                    <AddEventButton type="submit">Add Event</AddEventButton>
+                </AddEventForm>
+
+                <Events>
+                    <h2>Event</h2>
+                    {events.map((event, index) => (
+                        <Event key={index}>{event}</Event>
+                    ))}
+                </Events>
+                
+>>>>>>> fix-final
             </Content>
         </EventCalendarContainer>
     )

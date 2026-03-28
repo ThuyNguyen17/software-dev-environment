@@ -48,7 +48,11 @@ const Home = () => {
                     <LoremTextContainer>
                         <p> {loremText} </p>
                     </LoremTextContainer>
+<<<<<<< HEAD
                     <AdminRegisterLink to="/admin-signUp">Admin Register</AdminRegisterLink>
+=======
+                    <AdminRegisterLink>Admin Register</AdminRegisterLink>
+>>>>>>> fix-final
                 </SchoolInfo>
                 <SchoolImage src={bg} alt="School" />
             </HomeContainer> 

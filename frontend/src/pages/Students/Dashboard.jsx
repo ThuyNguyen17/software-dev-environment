@@ -14,6 +14,7 @@ import {
 
 const StudentDashboard = () =>{
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [counts, setCounts] = useState({
         assignments: 0,
         library: 0,
@@ -47,6 +48,8 @@ const StudentDashboard = () =>{
             console.error('Error fetching dashboard counts:', error);
         }
     }
+=======
+>>>>>>> fix-final
     
     return(
         <StudentDashboardContainer>
@@ -56,6 +59,7 @@ const StudentDashboard = () =>{
                         <SectionTitle>Overview</SectionTitle>
                         <CardContainer>
                             <Card>
+<<<<<<< HEAD
                                 <CardTitle>Assignments</CardTitle>
                                 <CardContent>{counts.assignments}</CardContent>
                             </Card>
@@ -66,18 +70,36 @@ const StudentDashboard = () =>{
                             <Card>
                                 <CardTitle>Check-ins</CardTitle>
                                 <CardContent>{counts.attendance}</CardContent>
+=======
+                                <CardTitle>Assignment</CardTitle>
+                                <CardContent>5</CardContent>
+                            </Card>
+                            <Card>
+                                <CardTitle>Performance</CardTitle>
+                                <CardContent>550</CardContent>
+                            </Card>
+                            <Card>
+                                <CardTitle>Term</CardTitle>
+                                <CardContent>1</CardContent>
+>>>>>>> fix-final
                             </Card>
                         </CardContainer>
                     </Section>
 
                     <Section>
                         <SectionTitle>Recent Activity</SectionTitle>
+<<<<<<< HEAD
                         <p>No recent activity</p>
+=======
+>>>>>>> fix-final
                     </Section>
 
                     <Section>
                         <SectionTitle>Upcoming Events</SectionTitle>
+<<<<<<< HEAD
                         <p>Weekly School Meeting - Friday</p>
+=======
+>>>>>>> fix-final
                     </Section>
             </Content>
         </StudentDashboardContainer>

@@ -1,11 +1,24 @@
+<<<<<<< HEAD
+=======
+// AnnouncementStyles.js
+>>>>>>> fix-final
 import styled from 'styled-components';
 
 export const AnnouncementContainer = styled.div`
   display: flex;
+<<<<<<< HEAD
+=======
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    padding-left: 0;
+  }
+>>>>>>> fix-final
 `;
 
 export const Content = styled.div`
   flex: 1;
+<<<<<<< HEAD
   padding: 20px;
   margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
   transition: margin-left 0.3s ease;
@@ -34,16 +47,37 @@ export const AnnouncementForm = styled.form`
 
 export const FormGroup = styled.div`
   margin-bottom: 20px;
+=======
+  margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+`;
+
+export const Title = styled.h1`
+  margin-bottom: 20px;
+`;
+
+export const AnnouncementForm = styled.form`
+  margin-bottom: 20px;
+`;
+
+export const FormGroup = styled.div`
+  margin-bottom: 10px;
+>>>>>>> fix-final
 `;
 
 export const Label = styled.label`
   display: block;
   margin-bottom: 5px;
+<<<<<<< HEAD
   color: #666;
+=======
+>>>>>>> fix-final
 `;
 
 export const TextArea = styled.textarea`
   width: 100%;
+<<<<<<< HEAD
   padding: 14px 16px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
@@ -70,6 +104,22 @@ export const Button = styled.button`
   &:hover {
     background-color: #7da1cb; /* Medium Blue hover */
   }
+=======
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+export const Button = styled.button`
+  padding: 8px 16px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+>>>>>>> fix-final
 `;
 
 export const AnnouncementList = styled.ul`
@@ -78,6 +128,7 @@ export const AnnouncementList = styled.ul`
 `;
 
 export const AnnouncementItem = styled.li`
+<<<<<<< HEAD
   background-color: #f9f9f9;
   border-radius: 12px;
   padding: 18px;
@@ -93,4 +144,26 @@ export const SidebarContainer = styled.div`
 export const AnnouncementTitle = styled.h4`
   margin: 0;
   color: #222;
+=======
+  margin-bottom: 10px;
+`;
+
+export const AnnouncementContent = styled.p`
+  font-size: 16px;
+`;
+
+export const SidebarContainer = styled.div`
+  flex: 0 0 250px; /* Sidebar width */
+`;
+
+
+export const AnnouncementHeader = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+
+export const AnnouncementTitle = styled.h3`
+  margin-bottom: 10px;
+>>>>>>> fix-final
 `;

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 :root {
@@ -74,3 +75,283 @@ img {
   display: block;
   max-width: 100%;
 }
+=======
+
+:root {
+  /* System Colors */
+  --primary: #5c38c0;   /* Modern deep violet */
+  --primary-light: #7a54e8;
+  --secondary: #0ea5e9; /* Light modern blue */
+  --accent: #f43f5e;    /* Rose/Pink accent */
+  --success: #10b981;
+  /* Color Palette */
+  --primary: #91C8E4;
+  --primary-hover: #4682A9;
+  --bg-main: #F6F4EB;
+  --bg-card: #749BC2;
+  --bg-table-header: #F1F5F9;
+  --text-dark: #2C3E50;
+  --text-light: #5A6C7D;
+  --border-color: #D1D5DB;
+  --white: #FFFFFF;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  
+  /* Backgrounds & Surfaces */
+  --bg-body: #f1f5f9;  /* Soft slate background */
+  --surface: #ffffff;
+  /* Typography */
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  
+  /* Text */
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  
+  /* Borders & Spacing */
+  --border-light: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows for depth */
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  --shadow-glow: 0 0 20px rgba(92, 56, 192, 0.3);
+  
+  /* Font Family */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Rendering */
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Panel - Dùng chung cho các card chính */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.glass-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-dark);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Animations co b?n */
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+h1 {
+  font-size: 2.5rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+h2 {
+  font-size: 2rem;
+}
+
+/* Tiêu d? mu?t mà (Gradient Text) */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+h3 {
+  font-size: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary);
+  color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:disabled {
+  background-color: #D1D5DB;
+  cursor: not-allowed;
+  transform: none;
+}
+
+input, select {
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: var(--white);
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(145, 200, 228, 0.2);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-main);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover);
+}
+>>>>>>> fix-final

@@ -1,3 +1,24 @@
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
 //package com.example.project_management_class.infrastructure.config;
 //
 //import lombok.RequiredArgsConstructor;
@@ -7,6 +28,10 @@
 //import org.bson.Document;
 //import java.time.Instant;
 //import java.util.Date;
+<<<<<<< HEAD
+=======
+//import java.util.ArrayList;
+>>>>>>> fix-final
 //import java.util.List;
 //
 //@Component
@@ -17,6 +42,7 @@
 //
 //    @Override
 //    public void run(String... args) {
+<<<<<<< HEAD
 //
 //        // Nếu đã có dữ liệu thì không seed lại
 //        if (mongoTemplate.collectionExists("academic_years") &&
@@ -25,6 +51,8 @@
 //            return;
 //        }
 //
+=======
+>>>>>>> fix-final
 //        System.out.println("Start seeding database...");
 //
 //        // ===== 1. Academic Year =====
@@ -32,9 +60,13 @@
 //        Document academicYear = new Document()
 //                .append("_id", "ay2025")
 //                .append("name", "2025-2026")
+<<<<<<< HEAD
 //                .append("startDate", Date.from(Instant.parse("2025-09-01T00:00:00Z")))
 //                .append("endDate", Date.from(Instant.parse("2026-06-30T00:00:00Z")))
 //                .append("active", true);
+=======
+//                .append("startDate", Date.from(Instant.parse("2025-09-01T00:00:00Z")));
+>>>>>>> fix-final
 //
 //        mongoTemplate.getCollection("academic_years").insertOne(academicYear);
 //
@@ -109,19 +141,79 @@
 //                        .append("teacherId", "t1")
 //                        .append("subjectName", "Toán Học")
 //                        .append("className", "10A1")
+<<<<<<< HEAD
 //                        .append("academicYear", 2024)
 //                        .append("semester", 1),
+=======
+//                        .append("academicYear", 2025)
+//                        .append("semester", 2),
+>>>>>>> fix-final
 //
 //                new Document("_id", "ta2")
 //                        .append("teacherId", "t1")
 //                        .append("subjectName", "Vật Lý")
 //                        .append("className", "10A1")
+<<<<<<< HEAD
 //                        .append("academicYear", 2024)
 //                        .append("semester", 1)
+=======
+//                        .append("academicYear", 2025)
+//                        .append("semester", 2)
+>>>>>>> fix-final
 //        );
 //
 //        mongoTemplate.getCollection("teaching_assignments").insertMany(teachingAssignments);
 //
+<<<<<<< HEAD
+=======
+//        // ===== 6.1 Timetables =====
+//        // Teacher timetable API relies on this collection; without it the UI will be empty.
+//        mongoTemplate.dropCollection("timetables");
+//
+//        List<Document> timetables = new ArrayList<>();
+//        for (int week = 1; week <= 18; week++) {
+//            // ta1: Toan Hoc
+//            timetables.add(new Document("_id", "tt_ta1_w" + week + "_mon_p1")
+//                    .append("teachingAssignmentId", "ta1")
+//                    .append("week", week)
+//                    .append("dayOfWeek", "MONDAY")
+//                    .append("period", 1)
+//                    .append("room", "P101")
+//                    .append("note", null));
+//            timetables.add(new Document("_id", "tt_ta1_w" + week + "_wed_p2")
+//                    .append("teachingAssignmentId", "ta1")
+//                    .append("week", week)
+//                    .append("dayOfWeek", "WEDNESDAY")
+//                    .append("period", 2)
+//                    .append("room", "P101")
+//                    .append("note", null));
+//            timetables.add(new Document("_id", "tt_ta1_w" + week + "_fri_p3")
+//                    .append("teachingAssignmentId", "ta1")
+//                    .append("week", week)
+//                    .append("dayOfWeek", "FRIDAY")
+//                    .append("period", 3)
+//                    .append("room", "P101")
+//                    .append("note", null));
+//
+//            // ta2: Vat Ly
+//            timetables.add(new Document("_id", "tt_ta2_w" + week + "_tue_p4")
+//                    .append("teachingAssignmentId", "ta2")
+//                    .append("week", week)
+//                    .append("dayOfWeek", "TUESDAY")
+//                    .append("period", 4)
+//                    .append("room", "P202")
+//                    .append("note", null));
+//            timetables.add(new Document("_id", "tt_ta2_w" + week + "_thu_p5")
+//                    .append("teachingAssignmentId", "ta2")
+//                    .append("week", week)
+//                    .append("dayOfWeek", "THURSDAY")
+//                    .append("period", 5)
+//                    .append("room", "P202")
+//                    .append("note", null));
+//        }
+//        mongoTemplate.getCollection("timetables").insertMany(timetables);
+//
+>>>>>>> fix-final
 //        // ===== 7. Users =====
 //        mongoTemplate.dropCollection("users");
 //
@@ -154,7 +246,11 @@
 //                .append("_id", "as1")
 //                .append("teachingAssignmentId", "ta1")
 //                .append("date", Date.from(Instant.parse("2026-02-24T00:00:00Z")))
+<<<<<<< HEAD
 //                .append("semester", 1)
+=======
+//                .append("semester", 2)
+>>>>>>> fix-final
 //                .append("period", 1)
 //                .append("open", true)
 //                .append("qrToken", "TEST_TOKEN_123")

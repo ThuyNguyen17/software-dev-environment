@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// SettingsProfileStyles.js
+>>>>>>> fix-final
 import styled from 'styled-components';
 
 export const ProfileContainer = styled.div`
@@ -6,6 +10,7 @@ export const ProfileContainer = styled.div`
 
 export const Content = styled.div`
   flex: 1;
+<<<<<<< HEAD
   padding: 30px 24px;
   margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
   transition: margin-left 0.3s ease;
@@ -89,17 +94,61 @@ export const ButtonContainer = styled.div`
   gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
+=======
+  margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
+  transition: margin-left 0.3s ease;
+`;
+
+export const ProfileContent = styled.div`
+  padding: 20px;
+`;
+
+export const ProfileHeader = styled.h1`
+  font-size: 24px;
+  margin-bottom: 20px;
+`;
+
+export const ProfileDetails = styled.div`
+  max-width: 400px;
+`;
+
+export const ProfileLabel = styled.label`
+  font-weight: bold;
+`;
+
+export const ProfileInfo = styled.p`
+  margin-bottom: 10px;
+>>>>>>> fix-final
 `;
 
 export const EditButton = styled.button`
   padding: 10px 20px;
+<<<<<<< HEAD
   background-color: #4b83b5; /* Dark Blue */
+=======
+  background-color: #007bff;
+>>>>>>> fix-final
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+<<<<<<< HEAD
 
   &:hover {
     background-color: #7da1cb; /* Medium Blue hover */
   }
+=======
+`;
+
+export const ProfileDetail = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Label = styled.span`
+  font-weight: bold;
+`;
+
+export const Value = styled.span`
+  margin-left: 10px;
+>>>>>>> fix-final
 `;

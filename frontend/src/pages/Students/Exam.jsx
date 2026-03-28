@@ -10,8 +10,12 @@ import {
     ExamResultsContainer,
     ExamSubject,
     ExamResult,
+<<<<<<< HEAD
     ExamChartContainer,
     ExamContent
+=======
+    ExamChartContainer
+>>>>>>> fix-final
 } from "../../styles/ExamStyles";
 
 import {

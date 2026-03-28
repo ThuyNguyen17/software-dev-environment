@@ -12,7 +12,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/exams")
 @RequiredArgsConstructor
+<<<<<<< HEAD
 @CrossOrigin(origins = "*")
+=======
+>>>>>>> fix-final
 public class ExamController {
     private final ExamService examService;
 

@@ -15,7 +15,11 @@ import {
 
 const StudentSection = () => {
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [newStudent, setNewStudent] = useState({ fullName: '', studentCode: '' });
+=======
+    const [newStudent, setNewStudent] = useState({ fullName: '', studentCode: '', grade: '' });
+>>>>>>> fix-final
     const [students, setStudents] = useState([]);
     const [editingStudent, setEditingStudent] = useState(null);
 
@@ -34,12 +38,20 @@ const StudentSection = () => {
 
     const handleAddStudent = async (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         if (newStudent.fullName.trim() !== '' && newStudent.studentCode.trim() !== '') {
             try {
                 await axios.post('http://localhost:8080/api/students', newStudent);
                 fetchStudents();
                 setNewStudent({ fullName: '', studentCode: '' });
                 alert('Student added!');
+=======
+        if (newStudent.fullName.trim() !== '' && newStudent.studentCode.trim() !== '' && newStudent.grade.trim() !== '') {
+            try {
+                await axios.post('http://localhost:8080/api/students', newStudent);
+                fetchStudents();
+                setNewStudent({ fullName: '', studentCode: '', grade: '' });
+>>>>>>> fix-final
             } catch (error) {
                 console.error("Error adding student: ", error);
             }
@@ -63,7 +75,10 @@ const StudentSection = () => {
             await axios.put(`http://localhost:8080/api/students/${editingStudent.id}`, editingStudent);
             setEditingStudent(null);
             fetchStudents();
+<<<<<<< HEAD
             alert('Student updated!');
+=======
+>>>>>>> fix-final
         } catch (error) {
             console.error('Error updating student: ', error);
         }
@@ -81,43 +96,83 @@ const StudentSection = () => {
                             <h3>Edit Student</h3>
                             <AddStudentInput
                                 type="text"
+<<<<<<< HEAD
                                 placeholder="Full Name"
+=======
+>>>>>>> fix-final
                                 value={editingStudent.fullName}
                                 onChange={(e) => setEditingStudent({ ...editingStudent, fullName: e.target.value })}
                             />
                             <AddStudentInput
                                 type="text"
+<<<<<<< HEAD
                                 placeholder="Student Code"
                                 value={editingStudent.studentCode}
                                 onChange={(e) => setEditingStudent({ ...editingStudent, studentCode: e.target.value })}
                             />
+=======
+                                value={editingStudent.studentCode}
+                                onChange={(e) => setEditingStudent({ ...editingStudent, studentCode: e.target.value })}
+                            />
+                            <AddStudentInput
+                                type="text"
+                                value={editingStudent.grade}
+                                onChange={(e) => setEditingStudent({ ...editingStudent, grade: e.target.value })}
+                            />
+>>>>>>> fix-final
                             <AddStudentButton type="submit">Update</AddStudentButton>
                             <AddStudentButton type="button" onClick={() => setEditingStudent(null)} style={{ marginLeft: '10px', backgroundColor: '#6c757d' }}>Cancel</AddStudentButton>
                         </AddStudentForm>
                     ) : (
                         <AddStudentForm onSubmit={handleAddStudent}>
+<<<<<<< HEAD
                             <h3>Add New Student</h3>
                             <AddStudentInput
                                 type="text"
                                 placeholder="Enter Full Name"
+=======
+                            <AddStudentInput
+                                type="text"
+                                placeholder="Enter Student Full Name"
+>>>>>>> fix-final
                                 value={newStudent.fullName}
                                 onChange={(e) => setNewStudent({ ...newStudent, fullName: e.target.value })}
                             />
                             <AddStudentInput
                                 type="text"
+<<<<<<< HEAD
                                 placeholder="Enter Student Code (e.g., HS001)"
                                 value={newStudent.studentCode}
                                 onChange={(e) => setNewStudent({ ...newStudent, studentCode: e.target.value })}
                             />
+=======
+                                placeholder="Enter Student Code"
+                                value={newStudent.studentCode}
+                                onChange={(e) => setNewStudent({ ...newStudent, studentCode: e.target.value })}
+                            />
+                            <AddStudentInput
+                                type="text"
+                                placeholder="Enter Grade"
+                                value={newStudent.grade}
+                                onChange={(e) => setNewStudent({ ...newStudent, grade: e.target.value })}
+                            />
+>>>>>>> fix-final
                             <AddStudentButton type="submit">Add Student</AddStudentButton>
                         </AddStudentForm>
                     )}
 
                     <StudentList>
+<<<<<<< HEAD
                         {Array.isArray(students) && students.map((student) => (
                             <StudentItem key={student.id}>
                                 <div>
                                     <strong>{student.fullName}</strong> - {student.studentCode}
+=======
+                        {students.map((student) => (
+                            <StudentItem key={student.id}>
+                                <div>
+                                    <strong>{student.fullName}</strong> - {student.studentCode} - {student.grade}
+>>>>>>> fix-final
                                 </div>
                                 <div style={{ marginTop: '10px' }}>
                                     <button onClick={() => setEditingStudent(student)} style={{ marginRight: '10px', padding: '5px 10px', cursor: 'pointer' }}>Edit</button>

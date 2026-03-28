@@ -13,6 +13,7 @@ import {
 } from "../../styles/AttendanceStyles";
 
 const AttendanceSection = () =>{
+<<<<<<< HEAD
     const [isOpen, setIsOpen] = useState(true);
     const [attendance, setAttendance] = useState([]);
 
@@ -33,6 +34,18 @@ const AttendanceSection = () =>{
             console.error('Error fetching attendance: ', error);
         }
     }
+=======
+
+    const [isOpen, setIsOpen] = useState(true);
+
+    const attendance = [
+        { id: 1, date: '2026-01-01', present: true },
+        { id: 2, date: '2026-01-02', present: false },
+        { id: 3, date: '2026-01-03', present: true },
+        { id: 4, date: '2026-01-04', present: true },
+        { id: 5, date: '2026-01-05', present: false }
+    ];
+>>>>>>> fix-final
 
     return(
         <AttendanceContainer>
@@ -40,6 +53,7 @@ const AttendanceSection = () =>{
                 <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             </SidebarContainer>
             <Content isOpen={isOpen}>
+<<<<<<< HEAD
                 <AttendanceHeader>Lịch sử điểm danh</AttendanceHeader>
                 <div style={{ padding: '20px', background: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -73,6 +87,17 @@ const AttendanceSection = () =>{
                         </tbody>
                     </table>
                 </div>
+=======
+                <AttendanceHeader>Attendance</AttendanceHeader>
+                <AttendanceList>
+                    {attendance.map(({ id, date, present }) => (
+                        <AttendanceItem key={id}>
+                            <AttendanceDate>{date}</AttendanceDate>
+                            <AttendanceStatus present={present}>{present ? 'Present' : 'Absent'}</AttendanceStatus>
+                        </AttendanceItem>
+                    ))};
+                </AttendanceList>
+>>>>>>> fix-final
             </Content>
         </AttendanceContainer>
     )

@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
 package com.example.project_management_class.domain.model;
 
 import lombok.Data;
@@ -8,4 +20,7 @@ public class Contact {
     private String email;
     private String address;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> fix-final

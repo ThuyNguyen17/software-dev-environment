@@ -2,6 +2,7 @@ package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.service.TeacherService;
 import com.example.project_management_class.domain.model.Teacher;
+<<<<<<< HEAD
 import com.example.project_management_class.domain.model.User;
 import com.example.project_management_class.domain.repository.TeacherRepository;
 import com.example.project_management_class.domain.repository.UserRepository;
@@ -9,12 +10,18 @@ import com.example.project_management_class.domain.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+=======
+import com.example.project_management_class.domain.repository.TeacherRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+>>>>>>> fix-final
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
     private final TeacherRepository teacherRepository;
+<<<<<<< HEAD
     private final UserRepository userRepository;
 
     @Override
@@ -27,6 +34,11 @@ public class TeacherServiceImpl implements TeacherService {
         user = userRepository.save(user);
 
         teacher.setUserId(user.getId());
+=======
+
+    @Override
+    public Teacher createTeacher(Teacher teacher) {
+>>>>>>> fix-final
         return teacherRepository.save(teacher);
     }
 

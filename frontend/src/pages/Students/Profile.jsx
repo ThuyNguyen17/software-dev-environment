@@ -6,6 +6,7 @@ import {
     Content,
     ProfileContent,
     ProfileHeader,
+<<<<<<< HEAD
     ProfileCard,
     ProfileAvatar,
     ProfileDetails,
@@ -14,10 +15,17 @@ import {
     Value,
     ButtonContainer,
     EditButton
+=======
+    ProfileInfo,
+    ProfileDetail,
+    Label,
+    Value
+>>>>>>> fix-final
 } from "../../styles/SettingsProfileStyles";
 
 const ProfileSection = () => {
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [studentProfile, setStudentProfile] = useState({
         name: "",
         studentCode: "",
@@ -177,6 +185,15 @@ const ProfileSection = () => {
         } finally {
             setSaving(false);
         }
+=======
+
+    const studentProfile = {
+        name: "John Doe",
+        age: 20,
+        grade: "A",
+        school: "XYZ High School",
+        email: "john.doe@example.com"
+>>>>>>> fix-final
     };
 
     return (
@@ -184,6 +201,7 @@ const ProfileSection = () => {
             <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             <Content isOpen={isOpen}>
                 <ProfileContent>
+<<<<<<< HEAD
                     <ProfileHeader>Student Profile Details</ProfileHeader>
                     <ProfileCard>
                         {!isEditing ? (
@@ -304,6 +322,31 @@ const ProfileSection = () => {
                             </form>
                         )}
                     </ProfileCard>
+=======
+                    <ProfileHeader>Student Profile</ProfileHeader>
+                    <ProfileInfo>
+                        <ProfileDetail>
+                            <Label>Name:</Label>
+                            <Value>{studentProfile.name}</Value>
+                        </ProfileDetail>
+                        <ProfileDetail>
+                            <Label>Age:</Label>
+                            <Value>{studentProfile.age}</Value>
+                        </ProfileDetail>
+                        <ProfileDetail>
+                            <Label>Grade:</Label>
+                            <Value>{studentProfile.grade}</Value>
+                        </ProfileDetail>
+                        <ProfileDetail>
+                            <Label>School:</Label>
+                            <Value>{studentProfile.school}</Value>
+                        </ProfileDetail>
+                        <ProfileDetail>
+                            <Label>Email:</Label>
+                            <Value>{studentProfile.email}</Value>
+                        </ProfileDetail>
+                    </ProfileInfo>
+>>>>>>> fix-final
                 </ProfileContent>
             </Content>
         </ProfileContainer>

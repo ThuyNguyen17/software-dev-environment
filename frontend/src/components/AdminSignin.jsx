@@ -49,6 +49,7 @@ const AdminSignin = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+<<<<<<< HEAD
                 <SubmitButton type="submit">
                     Sign In
                 </SubmitButton>
@@ -58,6 +59,18 @@ const AdminSignin = () => {
                         onClick={() => navigate('/admin-signUp')}
                     >Register here</span>
                 </p>
+=======
+                <button type="submit" style={{
+                    padding: '10px 20px',
+                    backgroundColor: '#1E1E1E',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '5px',
+                    cursor: 'pointer'
+                }}>
+                    Sign In
+                </button>
+>>>>>>> fix-final
             </FormContainer>
         </AdminSignInContainer>
     )

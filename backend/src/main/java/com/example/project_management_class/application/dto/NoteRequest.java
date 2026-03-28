@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
 package com.example.project_management_class.application.dto;
 
 import lombok.Data;
@@ -5,4 +22,8 @@ import lombok.Data;
 @Data
 public class NoteRequest {
     private String note;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> fix-final

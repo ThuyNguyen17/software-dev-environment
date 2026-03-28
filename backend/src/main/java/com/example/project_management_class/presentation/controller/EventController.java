@@ -12,7 +12,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/events")
 @RequiredArgsConstructor
+<<<<<<< HEAD
 @CrossOrigin(origins = "*")
+=======
+>>>>>>> fix-final
 public class EventController {
     private final EventService eventService;
 

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect, useRef } from "react";
+=======
+import React, { useState, useEffect } from "react";
+>>>>>>> fix-final
 import Sidebar from "./Sidebar";
 import axios from "axios";
 import {
@@ -6,6 +10,7 @@ import {
     Content,
     StudentsContent,
     StudentsHeader,
+<<<<<<< HEAD
     StudentsPageHeader,
     StudentsHeaderDescription,
     ActionRow,
@@ -18,6 +23,10 @@ import {
     StudentCode,
     StudentActions,
     FileLabel,
+=======
+    StudentList,
+    StudentItem,
+>>>>>>> fix-final
     AddStudentForm,
     AddStudentInput,
     AddStudentButton,
@@ -25,6 +34,7 @@ import {
 
 const Students = () =>{
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [newStudent, setNewStudent] = useState({fullName: '', studentCode: ''});
     const [students, setStudents] = useState([]);
     const [editingStudent, setEditingStudent] = useState(null);
@@ -32,6 +42,10 @@ const Students = () =>{
     const [importing, setImporting] = useState(false);
     const [exporting, setExporting] = useState(false);
     const fileInputRef = useRef(null);
+=======
+    const [newStudent, setNewStudent] = useState({fullName: '', studentCode: '', grade: ''});
+    const [students, setStudents] = useState([]);
+>>>>>>> fix-final
 
     useEffect(() => {
         fetchStudents();
@@ -39,8 +53,14 @@ const Students = () =>{
 
     const fetchStudents = async () => {
         try{
+<<<<<<< HEAD
             const response = await axios.get('http://localhost:8080/api/students');
             setStudents(response.data || []);
+=======
+            const response = await axios.get('http://localhost:4000/api/students');
+            // From cuatoi backend, response is just a List<Student>
+            setStudents(response.data);
+>>>>>>> fix-final
         }catch (error){
             console.error('Error fetching students: ', error);
         }
@@ -50,16 +70,24 @@ const Students = () =>{
         e.preventDefault();
         if(newStudent.fullName.trim() !== '' && newStudent.studentCode.trim() !== ''){
             try{
+<<<<<<< HEAD
                 const response = await axios.post('http://localhost:8080/api/students', newStudent);
                 setStudents([...students, response.data]);
                 setNewStudent({ fullName: '', studentCode: '' });
                 alert('Student added!');
+=======
+                const response = await axios.post('http://localhost:4000/api/students', newStudent);
+                console.log('Response data: ', response.data)
+                setStudents([...students, response.data]);
+                setNewStudent({ fullName: '', studentCode: '', grade: '' });
+>>>>>>> fix-final
             }catch (error){
                 console.error("Error adding student: ", error);
             }
         }
     };
 
+<<<<<<< HEAD
     const handleUpdateStudent = async (e) => {
         e.preventDefault();
         if (editingStudent.fullName.trim() !== '' && editingStudent.studentCode.trim() !== '') {
@@ -139,11 +167,14 @@ const Students = () =>{
         }
     };
 
+=======
+>>>>>>> fix-final
     return(
         <StudentsContainer>
             <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             <Content isOpen={isOpen}>
                 <StudentsContent>
+<<<<<<< HEAD
                     <StudentsPageHeader>
                         <div>
                             <StudentsHeader>Students Management</StudentsHeader>
@@ -233,6 +264,37 @@ const Students = () =>{
                         ))}
                     </StudentList>
                     </SectionCard>
+=======
+                    <StudentsHeader>
+                        <AddStudentForm onSubmit={handleAddStudent}>
+                        <AddStudentInput 
+                            type="Text"
+                            placeholder="Enter Student Full Name"
+                            value={newStudent.fullName}
+                            onChange={(e) => setNewStudent({ ...newStudent, fullName: e.target.value })}
+                        />
+                        <AddStudentInput 
+                            type="Text"
+                            placeholder="Enter Student Code"
+                            value={newStudent.studentCode}
+                            onChange={(e) => setNewStudent({ ...newStudent, studentCode: e.target.value })}
+                        />
+                        <AddStudentInput 
+                            type="Text"
+                            placeholder="Enter Grade" 
+                            value={newStudent.grade}
+                            onChange={(e) => setNewStudent({ ...newStudent, grade: e.target.value })}
+                        />
+                        <AddStudentButton type="submit">Add Student</AddStudentButton>
+                        </AddStudentForm>
+
+                        <StudentList>
+                            {students.map((student) => (
+                                <StudentItem key={student.id}>{student.fullName} - {student.studentCode} - {student.grade}</StudentItem>
+                            ))}
+                        </StudentList>
+                    </StudentsHeader>       
+>>>>>>> fix-final
                 </StudentsContent>
             </Content>
         </StudentsContainer>

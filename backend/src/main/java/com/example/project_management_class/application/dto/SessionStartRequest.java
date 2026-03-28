@@ -1,3 +1,28 @@
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
 package com.example.project_management_class.application.dto;
 
 import lombok.Data;
@@ -10,3 +35,10 @@ public class SessionStartRequest {
     private Integer period;
     private Integer semester;
 }
+<<<<<<< HEAD
+=======
+
+    private Double latitude;
+    private Double longitude;
+}
+>>>>>>> fix-final

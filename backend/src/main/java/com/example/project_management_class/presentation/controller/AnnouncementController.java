@@ -10,9 +10,14 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/api/v1/announcements")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
+=======
+@RequestMapping("/api/v1/announcement")
+@RequiredArgsConstructor
+>>>>>>> fix-final
 public class AnnouncementController {
     private final AnnouncementService announcementService;
 

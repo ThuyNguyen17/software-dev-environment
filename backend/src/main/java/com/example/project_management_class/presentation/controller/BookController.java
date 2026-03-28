@@ -12,7 +12,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/library")
 @RequiredArgsConstructor
+<<<<<<< HEAD
 @CrossOrigin(origins = "*")
+=======
+>>>>>>> fix-final
 public class BookController {
     private final BookService bookService;
 

@@ -12,6 +12,7 @@ import {
 
 const CheckPerformanceSection = () =>{
     const [isOpen, setIsOpen] = useState(true);
+<<<<<<< HEAD
     const [performanceData, setPerformanceData] = useState({
         averageScore: 0,
         totalStudents: 0,
@@ -47,12 +48,27 @@ const CheckPerformanceSection = () =>{
             console.error('Error fetching performance: ', error);
         }
     }
+=======
+    //
+    const schoolPerformanceData = {
+        averageScore: 85,
+        totalStudents: 100,
+    };
+
+    //
+    const individualPerformanceData = [
+        { id: 1, name: "John Doe", score: 90 },
+        { id: 2, name: "Jane Smith", score: 80 },
+        { id: 3, name: "Alice Johnson", score: 85 },
+    ];
+>>>>>>> fix-final
 
     return(
         <PerformanceContainer>
             <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             <Content isOpen={isOpen}>
                 <PerformanceContent>
+<<<<<<< HEAD
                     <PerformanceHeader>School Performance Overview</PerformanceHeader>
                     <div style={{ background: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginBottom: '30px' }}>
                         <p><strong>Average Score:</strong> {performanceData.averageScore}%</p>
@@ -67,6 +83,21 @@ const CheckPerformanceSection = () =>{
                             </div>
                         ))}
                     </div>
+=======
+                    <PerformanceHeader>School Performance</PerformanceHeader>
+                    <SchoolPerformance>
+                        <p>Average Score: {schoolPerformanceData.averageScore}</p>
+                        <p>Total Students: {schoolPerformanceData.totalStudents}</p>
+                    </SchoolPerformance>
+                    <PerformanceHeader>Individual Performance</PerformanceHeader>
+                    <IndividualPerformance>
+                        {individualPerformanceData.map(student => (
+                            <p key={student.id}>
+                                {student.name}: {student.score}
+                            </p>
+                        ))}
+                    </IndividualPerformance>
+>>>>>>> fix-final
                 </PerformanceContent>
             </Content>
         </PerformanceContainer>

@@ -5,7 +5,11 @@ export const AdminRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+<<<<<<< HEAD
   background: linear-gradient(45deg, #fdfdfa, #9bcbea, #7da1cb); /* New Blue Gradient */
+=======
+  background: linear-gradient(45deg, #FF69B4, #FFA07A, #90EE90); /* Gradient background */
+>>>>>>> fix-final
   height: 100vh; /* Full height of the viewport */
 `;
 
@@ -36,7 +40,11 @@ export const SubmitButton = styled.button`
   margin-top: 20px;
   border: none;
   border-radius: 8px;
+<<<<<<< HEAD
   background-color: #4b83b5; /* Dark Blue */
+=======
+  background-color: #FF4500;
+>>>>>>> fix-final
   color: white;
   font-size: 18px;
   text-align: center;
@@ -44,7 +52,11 @@ export const SubmitButton = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
+<<<<<<< HEAD
     background-color: #7da1cb; /* Medium Blue on hover */
+=======
+    background-color: #FF6347;
+>>>>>>> fix-final
   }
   
   @media screen and (max-width: 768px) {

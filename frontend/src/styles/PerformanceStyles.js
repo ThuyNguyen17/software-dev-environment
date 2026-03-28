@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// PerformanceStyles.js
+>>>>>>> fix-final
 import styled from 'styled-components';
 
 export const PerformanceContainer = styled.div`
@@ -6,6 +10,7 @@ export const PerformanceContainer = styled.div`
 
 export const Content = styled.div`
   flex: 1;
+<<<<<<< HEAD
   padding: 20px;
   margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
   transition: margin-left 0.3s ease;
@@ -18,11 +23,21 @@ export const PerformanceContent = styled.div`
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+=======
+  margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+`;
+
+export const PerformanceContent = styled.div`
+  padding: 20px;
+>>>>>>> fix-final
 `;
 
 export const PerformanceHeader = styled.h2`
   font-size: 24px;
   margin-bottom: 20px;
+<<<<<<< HEAD
   color: #333;
 `;
 
@@ -57,4 +72,31 @@ export const TotalMarks = styled.p`
   margin: 0;
   font-weight: 600;
   color: #333;
+=======
+`;
+
+export const SchoolPerformance = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const IndividualPerformance = styled.div``;
+
+export const SidebarContainer = styled.div`
+  flex: 0 0 250px; /* Sidebar width */
+`;
+
+export const PerformanceInfo = styled.div`
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+`;
+
+export const PerformanceGraphContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const TotalMarks = styled.div`
+  font-weight: bold;
+>>>>>>> fix-final
 `;

@@ -36,6 +36,7 @@ const AssignmentSection = () => {
 
     const handleAddAssignment = async (e) => {
         e.preventDefault();
+<<<<<<< HEAD
         const { title, description, grade, deadline } = newAssignment;
         if (!title.trim() || !description.trim() || !grade.trim() || !deadline.trim()) {
             alert('Please fill in all fields (Title, Description, Grade, Deadline) before adding an assignment.');
@@ -50,6 +51,17 @@ const AssignmentSection = () => {
         } catch (error) {
             console.error("Error adding assignment: ", error);
             alert('Failed to create assignment. Please check your backend connection.');
+=======
+        if (newAssignment.title.trim() !== '' && newAssignment.description.trim() !== '' && newAssignment.grade.trim() !== '' && newAssignment.deadline.trim() !== '') {
+            try {
+                await axios.post('http://localhost:8080/api/v1/assignments', newAssignment);
+                fetchAssignments();
+                setNewAssignment({ title: '', description: '', grade: '', deadline: '' });
+                alert('Assignment created successfully!');
+            } catch (error) {
+                console.error("Error adding assignment: ", error);
+            }
+>>>>>>> fix-final
         }
     };
 

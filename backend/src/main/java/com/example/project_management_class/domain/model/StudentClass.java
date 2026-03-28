@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> fix-final
 package com.example.project_management_class.domain.model;
 
 import lombok.Data;
@@ -11,8 +27,15 @@ public class StudentClass {
     @Id
     private String id;
 
+<<<<<<< HEAD
     private String studentId;
     private String classId;
     private String academicYearId;
 }
 
+=======
+    private String academicYearId;   // ⭐ thêm cái này
+    private String studentId;
+    private String classId;
+}
+>>>>>>> fix-final
