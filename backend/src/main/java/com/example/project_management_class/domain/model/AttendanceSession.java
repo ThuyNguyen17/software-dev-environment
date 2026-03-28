@@ -16,6 +16,10 @@ public class AttendanceSession {
     private String teachingAssignmentId;
     private LocalDate date;
     private Integer semester;
+    private Integer period;
     private boolean open;
     private String qrToken;
+    private String previousQrToken;
+    private Double latitude;
+    private Double longitude;
 }
