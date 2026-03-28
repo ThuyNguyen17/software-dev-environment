@@ -23,6 +23,6 @@ export const getAttendanceDetails = async (studentId, assignmentId) => {
 };
 
 export const getStudentsByClass = async (className) => {
-    const response = await axios.get(`${API_URL}/class/${className}`);
+    const response = await axios.get(`${API_URL}/class/${encodeURIComponent(className)}`);
     return response.data;
 };

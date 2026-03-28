@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStudentSubjects } from '../api/studentApi';
 import { ArrowLeft, BookOpen, ChevronRight, CheckCircle2, XCircle } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './AttendanceHistory.css';
 
 const AttendanceHistory = () => {
@@ -30,7 +31,7 @@ const AttendanceHistory = () => {
                 navigate('/student/login');
                 return;
             }
-            setStudent(s);
+            setStudent({ ...s, className: normalizeClassName(s.className) });
             fetchSubjects(s.studentId);
         } catch (e) {
             navigate('/student/login');

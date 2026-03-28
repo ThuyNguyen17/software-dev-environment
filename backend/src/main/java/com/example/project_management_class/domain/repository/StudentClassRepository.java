@@ -14,5 +14,7 @@ public interface StudentClassRepository extends MongoRepository<StudentClass, St
 
     // Backward-compat: some datasets store classId as a human-readable class label (e.g. "10A1") instead of SchoolClass.id.
     List<StudentClass> findByClassIdIgnoreCase(String classId);
+    List<StudentClass> findByAcademicYearIdAndClassId(String academicYearId, String classId);
+    List<StudentClass> findByAcademicYearIdAndClassIdIgnoreCase(String academicYearId, String classId);
     Optional<StudentClass> findByStudentIdAndAcademicYearId(String studentId, String academicYearId);
 }

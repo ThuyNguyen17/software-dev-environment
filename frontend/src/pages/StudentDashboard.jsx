@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { QrCode, History, LogOut, GraduationCap, User, CalendarDays } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './StudentDashboard.css';
 
 const StudentDashboard = () => {
@@ -27,7 +28,7 @@ const StudentDashboard = () => {
                 navigate('/student/login');
                 return;
             }
-            setStudent(user);
+            setStudent({ ...user, className: normalizeClassName(user.className) });
         } catch (e) {
             navigate('/student/login');
         }

@@ -5,9 +5,10 @@ import { PERIODS, DAYS } from "../utils/timetableConstants";
 import {
   getCurrentAcademicInfo,
   getCurrentWeek,
-  generateAllSemesterOptions,
+  getSemestersForYear,
   generateWeeksForSemester,
 } from "../utils/academicUtils";
+import { normalizeClassName } from "../utils/classNameUtils";
 import TimetableGrid from "../components/timetable/TimetableGrid";
 import TimetableControls from "../components/timetable/TimetableControls";
 import TimetablePagination from "../components/timetable/TimetablePagination";
@@ -32,9 +33,10 @@ export default function StudentTimetable() {
   const [selectedWeek, setSelectedWeek] = useState(currentWeekNum);
   const [loading, setLoading] = useState(false);
 
-  const className = student?.className || "";
+  const className = normalizeClassName(student?.className || "");
 
-  const semesterOptions = generateAllSemesterOptions(2, 1);
+  // Only show the current academic year's semesters (HK1/HK2).
+  const semesterOptions = getSemestersForYear(currentAcademicInfo.academicYear);
   const weekOptions = generateWeeksForSemester(selectedSemester, selectedAcademicYear);
 
   useEffect(() => {

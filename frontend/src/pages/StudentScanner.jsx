@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Html5Qrcode } from 'html5-qrcode';
 import { recordAttendance } from '../api/attendanceApi';
 import { ArrowLeft, MapPin, CheckCircle, AlertCircle } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './StudentScanner.css';
 
 const StudentScanner = () => {
@@ -94,8 +95,9 @@ const StudentScanner = () => {
                 navigate('/student/login');
                 return;
             }
-            setStudent(s);
-            studentRef.current = s;
+            const normalized = { ...s, className: normalizeClassName(s.className) };
+            setStudent(normalized);
+            studentRef.current = normalized;
         } catch (e) {
             navigate('/student/login');
             return;

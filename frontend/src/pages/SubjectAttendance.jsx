@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAttendanceDetails } from '../api/studentApi';
 import { ArrowLeft, Calendar, Clock, CheckCircle, XCircle, MapPin, Info } from 'lucide-react';
+import { normalizeClassName } from '../utils/classNameUtils';
 import './SubjectAttendance.css';
 
 const SubjectAttendance = () => {
@@ -32,7 +33,7 @@ const SubjectAttendance = () => {
                 navigate('/student/login');
                 return;
             }
-            setStudent(s);
+            setStudent({ ...s, className: normalizeClassName(s.className) });
             fetchSessions(s.studentId);
         } catch (e) {
             navigate('/student/login');

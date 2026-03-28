@@ -5,7 +5,7 @@ import { PERIODS, DAYS } from "../utils/timetableConstants";
 import {
   getCurrentAcademicInfo,
   getCurrentWeek,
-  generateAllSemesterOptions,
+  getSemestersForYear,
   generateWeeksForSemester,
 } from "../utils/academicUtils";
 import TimetableGrid from "../components/timetable/TimetableGrid";
@@ -41,8 +41,8 @@ function TeacherTimetable() {
   const [teacher, setTeacher] = useState(null);
   const teacherId = teacher?.teacherId || "";
 
-  // Allow selecting other academic years (useful when the DB has older/newer seed data)
-  const semesterOptions = generateAllSemesterOptions(2, 1);
+  // Only show the current academic year's semesters (HK1/HK2).
+  const semesterOptions = getSemestersForYear(currentAcademicInfo.academicYear);
   const weekOptions = generateWeeksForSemester(
     selectedSemester,
     selectedAcademicYear

@@ -9,4 +9,5 @@ public interface TeachingAssignmentRepository extends MongoRepository<TeachingAs
     List<TeachingAssignment> findByTeacherId(String teacherId);
     List<TeachingAssignment> findByTeacherIdAndAcademicYearAndSemester(String teacherId, int academicYear, int semester);
     List<TeachingAssignment> findByClassNameAndAcademicYearAndSemester(String className, int academicYear, int semester);
+    List<TeachingAssignment> findByClassNameIgnoreCaseAndAcademicYearAndSemester(String className, int academicYear, int semester);
 }

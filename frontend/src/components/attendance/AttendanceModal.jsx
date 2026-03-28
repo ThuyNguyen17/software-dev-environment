@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import { startSession, updateQrToken, getAttendances, closeSession, updateAttendanceNote, clearAttendances } from '../../api/attendanceApi';
 import { getStudentsByClass } from '../../api/studentApi';
+import { normalizeClassName } from '../../utils/classNameUtils';
 import './AttendanceModal.css';
 
 const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester, className }) => {
@@ -78,13 +79,15 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
         return () => clearInterval(interval);
     }, [sessionId]);
 
+    const normalizedClassName = normalizeClassName(className || "");
+
     // Fetch all students in class
     useEffect(() => {
-        if (!isOpen || !className) return;
+        if (!isOpen || !normalizedClassName) return;
 
         const fetchAllStudents = async () => {
             try {
-                const students = await getStudentsByClass(className);
+                const students = await getStudentsByClass(normalizedClassName);
                 setAllStudents(students);
             } catch (err) {
                 console.error("Error fetching students:", err);
@@ -92,7 +95,7 @@ const AttendanceModal = ({ isOpen, onClose, assignmentId, date, period, semester
         };
 
         fetchAllStudents();
-    }, [isOpen, className]);
+    }, [isOpen, normalizedClassName]);
 
     const handleNoteChange = async (attendanceId, newNote) => {
         try {
