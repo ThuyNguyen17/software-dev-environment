@@ -1,3 +1,47 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 package com.example.project_management_class.domain.model;
 
 import lombok.Data;
@@ -18,8 +62,8 @@ public class AttendanceSession {
     private Integer semester;
     private Integer period;
     private boolean open;
-
     private String qrToken;
     private String previousQrToken;
+    private Double latitude;
+    private Double longitude;
 }
-
