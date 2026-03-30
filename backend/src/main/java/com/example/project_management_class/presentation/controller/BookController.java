@@ -12,10 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/library")
 @RequiredArgsConstructor
-<<<<<<< HEAD
-@CrossOrigin(origins = "*")
-=======
->>>>>>> fix-final
 public class BookController {
     private final BookService bookService;
 
@@ -34,6 +30,24 @@ public class BookController {
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("books", books);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateBook(@PathVariable String id, @RequestBody Book book) {
+        bookService.updateBook(id, book);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Book Updated!");
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> deleteBook(@PathVariable String id) {
+        bookService.deleteBook(id);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Book Deleted!");
         return ResponseEntity.ok(response);
     }
 }

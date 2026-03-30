@@ -1,81 +1,29 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-package com.example.project_management_class.application.serviceImpl;
-
-import com.example.project_management_class.application.service.StudentService;
-=======
->>>>>>> remotes/origin/Update-UX/UI
-
-
-
-
-
-
 package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.service.StudentService;
 import com.example.project_management_class.application.util.ClassNameUtils;
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
 import com.example.project_management_class.application.dto.LoginResponse;
 import com.example.project_management_class.application.dto.StudentLoginResponse;
 import com.example.project_management_class.domain.enums.Role;
 import com.example.project_management_class.domain.model.*;
 import com.example.project_management_class.domain.repository.*;
 import lombok.RequiredArgsConstructor;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import org.springframework.stereotype.Service;
-
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.ZoneId;
-=======
->>>>>>> remotes/origin/Update-UX/UI
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-public class StudentServiceImpl implements StudentService {
-
-    private final StudentRepository studentRepository;
-    private final SchoolClassRepository schoolClassRepository;
-    private final AttendanceRepository attendanceRepository;
-    private final AttendanceSessionRepository attendanceSessionRepository;
-    private final TeacherRepository teacherRepository;
-    private final TeachingAssignmentRepository teachingAssignmentRepository;
-    private final StudentClassRepository studentClassRepository;
-    private final UserRepository userRepository;
-
-    @Override
-    public LoginResponse login(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Sai tài khoản hoặc mật khẩu"));
-
-        if (!user.getPassword().equals(password)) {
-            throw new RuntimeException("Sai tài khoản hoặc mật khẩu");
-=======
->>>>>>> remotes/origin/Update-UX/UI
 @Slf4j
 public class StudentServiceImpl implements StudentService {
 
@@ -147,7 +95,7 @@ public class StudentServiceImpl implements StudentService {
         User user = userRepository.findByUsername(normalizedUsername)
                 .orElseThrow(() -> new RuntimeException("Sai tai khoan hoac mat khau"));
 
-        if (Boolean.FALSE.equals(user.getActive())) {
+        if (Boolean.FALSE.equals(user.isActive())) {
             throw new RuntimeException("Tai khoan da bi khoa");
         }
 
@@ -161,10 +109,6 @@ public class StudentServiceImpl implements StudentService {
         }
         if (!ok) {
             throw new RuntimeException("Sai tai khoan hoac mat khau");
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
         }
 
         LoginResponse.LoginResponseBuilder builder = LoginResponse.builder()
@@ -173,46 +117,13 @@ public class StudentServiceImpl implements StudentService {
                 .role(user.getRole());
 
         if (user.getRole() == Role.STUDENT) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-            Optional<Student> studentOpt = studentRepository.findByUserId(user.getId());
-            if (studentOpt.isPresent()) {
-                Student student = studentOpt.get();
-                builder.studentId(student.getId())
-                        .studentCode(student.getStudentCode())
-                        .fullName(student.getFullName());
-
-                // Get class name
-                List<StudentClass> studentClasses = studentClassRepository.findByStudentId(student.getId());
-                if (!studentClasses.isEmpty()) {
-                    StudentClass sc = studentClasses.get(studentClasses.size() - 1);
-                    SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
-                    if (schoolClass != null) {
-                        builder.className(schoolClass.getGradeLevel() + schoolClass.getClassName());
-                    }
-                }
-            } else {
-                builder.fullName(user.getUsername());
-            }
-        } else if (user.getRole() == Role.LECTURER || user.getRole() == Role.TEACHER) {
-            Optional<Teacher> teacherOpt = teacherRepository.findByUserId(user.getId());
-            if (teacherOpt.isPresent()) {
-                Teacher teacher = teacherOpt.get();
-                builder.teacherId(teacher.getId())
-                        .fullName(teacher.getFullName());
-            } else {
-                builder.fullName(user.getUsername());
-            }
-=======
->>>>>>> remotes/origin/Update-UX/UI
             // Mongoose commonly stores userId as ObjectId, while this Java model uses String.
             // To stay compatible with seeded demo data (username like "HS001"), fall back to lookups by id/code.
             Student student = studentRepository.findByUserId(user.getId())
                     .or(() -> studentRepository.findById(user.getUsername()))
                     .or(() -> studentRepository.findByStudentCode(user.getUsername()))
                     .orElseThrow(() -> new RuntimeException("Thông tin học sinh không tồn tại"));
-            
+
             builder.studentId(student.getId())
                     .studentCode(student.getStudentCode())
                     .fullName(student.getFullName());
@@ -236,13 +147,9 @@ public class StudentServiceImpl implements StudentService {
             Teacher teacher = teacherRepository.findByUserId(user.getId())
                     .or(() -> teacherRepository.findById(user.getUsername()))
                     .orElseThrow(() -> new RuntimeException("Thông tin giáo viên không tồn tại"));
-            
+
             builder.teacherId(teacher.getId())
                     .fullName(teacher.getFullName());
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
         }
 
         return builder.build();
@@ -257,14 +164,6 @@ public class StudentServiceImpl implements StudentService {
         String className = "N/A";
         if (!studentClasses.isEmpty()) {
             StudentClass sc = studentClasses.get(studentClasses.size() - 1);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-            SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
-            if (schoolClass != null) {
-                className = schoolClass.getGradeLevel() + schoolClass.getClassName();
-=======
->>>>>>> remotes/origin/Update-UX/UI
             SchoolClass schoolClass = resolveSchoolClassByIdOrName(sc.getClassId());
             if (schoolClass != null && schoolClass.getGradeLevel() != null && schoolClass.getClassName() != null) {
                 className = ClassNameUtils.formatDisplayClassName(
@@ -273,10 +172,6 @@ public class StudentServiceImpl implements StudentService {
                 );
             } else if (sc.getClassId() != null && !sc.getClassId().isBlank()) {
                 className = ClassNameUtils.formatDisplayClassName(sc.getClassId().trim());
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
             }
         }
 
@@ -292,20 +187,8 @@ public class StudentServiceImpl implements StudentService {
     public List<Map<String, Object>> getStudentSubjects(String studentId) {
         List<StudentClass> studentClasses = studentClassRepository.findByStudentId(studentId);
         if (studentClasses.isEmpty()) return Collections.emptyList();
-        
-        StudentClass sc = studentClasses.get(studentClasses.size() - 1);
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        SchoolClass schoolClass = schoolClassRepository.findById(sc.getClassId()).orElse(null);
-        if (schoolClass == null) return Collections.emptyList();
-        
-        String className = schoolClass.getGradeLevel() + schoolClass.getClassName();
 
-        List<TeachingAssignment> assignments = teachingAssignmentRepository.findAll().stream()
-                .filter(a -> a.getClassName() != null && a.getClassName().equalsIgnoreCase(className))
-=======
->>>>>>> remotes/origin/Update-UX/UI
+        StudentClass sc = studentClasses.get(studentClasses.size() - 1);
         SchoolClass schoolClass = resolveSchoolClassByIdOrName(sc.getClassId());
         String className = null;
         if (schoolClass != null && schoolClass.getGradeLevel() != null && schoolClass.getClassName() != null) {
@@ -322,10 +205,6 @@ public class StudentServiceImpl implements StudentService {
         List<TeachingAssignment> assignments = teachingAssignmentRepository.findAll().stream()
                 .filter(a -> a.getClassName() != null
                         && ClassNameUtils.normalizeToKey(a.getClassName()).equals(studentClassKey))
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
                 .collect(Collectors.toList());
 
         List<Map<String, Object>> result = new ArrayList<>();
@@ -333,7 +212,7 @@ public class StudentServiceImpl implements StudentService {
             Map<String, Object> map = new HashMap<>();
             map.put("assignmentId", assignment.getId());
             map.put("subjectName", assignment.getSubjectName());
-            
+
             Teacher teacher = teacherRepository.findById(assignment.getTeacherId()).orElse(null);
             map.put("teacherName", teacher != null ? teacher.getFullName() : "N/A");
 
@@ -355,13 +234,13 @@ public class StudentServiceImpl implements StudentService {
     public List<Map<String, Object>> getAttendanceDetails(String studentId, String assignmentId) {
         List<AttendanceSession> sessions = attendanceSessionRepository.findByTeachingAssignmentId(assignmentId);
         List<Map<String, Object>> result = new ArrayList<>();
-        
+
         for (AttendanceSession session : sessions) {
             Map<String, Object> map = new HashMap<>();
             map.put("sessionId", session.getId());
             map.put("date", session.getDate());
             map.put("period", session.getPeriod());
-            
+
             Optional<Attendance> attendanceOpt = attendanceRepository.findByAttendanceSessionIdAndStudentId(session.getId(), studentId);
             if (attendanceOpt.isPresent()) {
                 Attendance attendance = attendanceOpt.get();
@@ -380,10 +259,22 @@ public class StudentServiceImpl implements StudentService {
         return result;
     }
 
-    @Override
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+    private static List<String> buildClassIdCandidates(String raw, String classKey, Integer gradeLevel, String classSimpleName) {
+        LinkedHashSet<String> out = new LinkedHashSet<>();
+        if (raw != null && !raw.isBlank()) {
+            out.add(raw.trim());
+            out.add(raw.trim().replaceAll("\\s+", ""));
+            out.add(ClassNameUtils.formatDisplayClassName(raw));
+        }
+        if (classKey != null && !classKey.isBlank()) {
+            out.add(classKey);
+        }
+        if (gradeLevel != null && classSimpleName != null && !classSimpleName.isBlank()) {
+            out.add(String.valueOf(gradeLevel) + classSimpleName);
+            out.add(String.valueOf(gradeLevel) + classSimpleName.toUpperCase(Locale.ROOT));
+        }
+        return new ArrayList<>(out);
+    }
     public void importStudentsFromExcel(MultipartFile file) {
         try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
             Sheet sheet = workbook.getSheetAt(0);
@@ -429,7 +320,6 @@ public class StudentServiceImpl implements StudentService {
             throw new RuntimeException("Failed to read Excel data: " + e.getMessage());
         }
     }
-
     private String getCellValueSafely(Cell cell) {
         if (cell == null) return "";
         switch (cell.getCellType()) {
@@ -465,13 +355,13 @@ public class StudentServiceImpl implements StudentService {
 
                 row.createCell(0).setCellValue(student.getStudentCode() != null ? student.getStudentCode() : "");
                 row.createCell(1).setCellValue(student.getFullName() != null ? student.getFullName() : "");
-                
+
                 if (student.getDateOfBirth() != null) {
                     row.createCell(2).setCellValue(student.getDateOfBirth().toString());
                 } else {
                     row.createCell(2).setCellValue("");
                 }
-                
+
                 row.createCell(3).setCellValue(student.getGender() != null ? student.getGender() : "");
 
                 if (student.getContact() != null) {
@@ -491,7 +381,6 @@ public class StudentServiceImpl implements StudentService {
             throw new RuntimeException("Failed to export data to Excel: " + e.getMessage());
         }
     }
-
     @Override
     public Student getStudentById(String id) {
         return studentRepository.findById(id)
@@ -518,15 +407,15 @@ public class StudentServiceImpl implements StudentService {
         if (student.getStudentCode() != null) existingStudent.setStudentCode(student.getStudentCode());
         if (student.getDateOfBirth() != null) existingStudent.setDateOfBirth(student.getDateOfBirth());
         if (student.getGender() != null) existingStudent.setGender(student.getGender());
-        
+
         if (student.getContact() != null) {
             Contact existingContact = existingStudent.getContact() != null ? existingStudent.getContact() : new Contact();
             Contact newContact = student.getContact();
-            
+
             if (newContact.getPhone() != null) existingContact.setPhone(newContact.getPhone());
             if (newContact.getEmail() != null) existingContact.setEmail(newContact.getEmail());
             if (newContact.getAddress() != null) existingContact.setAddress(newContact.getAddress());
-            
+
             existingStudent.setContact(existingContact);
         }
 
@@ -545,9 +434,6 @@ public class StudentServiceImpl implements StudentService {
         student.setUserId(user.getId());
         return studentRepository.save(student);
     }
-}
-=======
->>>>>>> remotes/origin/Update-UX/UI
     public List<Map<String, Object>> getStudentsByClass(String className) {
         String raw = className == null ? "" : className.trim();
         String classKey = ClassNameUtils.normalizeToKey(raw);
@@ -612,26 +498,4 @@ public class StudentServiceImpl implements StudentService {
         result.sort(Comparator.comparing(m -> String.valueOf(m.getOrDefault("studentCode", ""))));
         return result;
     }
-
-    private static List<String> buildClassIdCandidates(String raw, String classKey, Integer gradeLevel, String classSimpleName) {
-        LinkedHashSet<String> out = new LinkedHashSet<>();
-        if (raw != null && !raw.isBlank()) {
-            out.add(raw.trim());
-            out.add(raw.trim().replaceAll("\\s+", ""));
-            out.add(ClassNameUtils.formatDisplayClassName(raw));
-        }
-        if (classKey != null && !classKey.isBlank()) {
-            out.add(classKey);
-        }
-        if (gradeLevel != null && classSimpleName != null && !classSimpleName.isBlank()) {
-            out.add(String.valueOf(gradeLevel) + classSimpleName);
-            out.add(String.valueOf(gradeLevel) + classSimpleName.toUpperCase(Locale.ROOT));
-        }
-        return new ArrayList<>(out);
-    }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI

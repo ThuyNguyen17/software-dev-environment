@@ -5,11 +5,7 @@ export const AdminRegisterContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-<<<<<<< HEAD
   background: linear-gradient(45deg, #fdfdfa, #9bcbea, #7da1cb); /* New Blue Gradient */
-=======
-  background: linear-gradient(45deg, #FF69B4, #FFA07A, #90EE90); /* Gradient background */
->>>>>>> fix-final
   height: 100vh; /* Full height of the viewport */
 `;
 

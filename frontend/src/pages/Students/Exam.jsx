@@ -1,125 +1,133 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
-import axios from "axios";
-import { Bar } from 'react-chartjs-2';
-import {
-    ExamContainer,
-    SidebarContainer,
-    Content,
-    ExamHeader,
-    ExamResultsContainer,
-    ExamSubject,
-    ExamResult,
-<<<<<<< HEAD
-    ExamChartContainer,
-    ExamContent
-=======
-    ExamChartContainer
->>>>>>> fix-final
-} from "../../styles/ExamStyles";
+import { 
+  Award, 
+  Calendar,
+  Clock,
+  CheckCircle,
+  AlertCircle
+} from "lucide-react";
+import { getExamsByStudent } from "../../api/examApi";
+import "./StudentExams.css";
 
-import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-} from 'chart.js';
+const StudentExams = () => {
+  const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-);
+  // Get student ID from localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const studentId = user.id;
 
-const StudentExamSection = () => {
-    const [isOpen, setIsOpen] = useState(true);
-    const [exams, setExams] = useState([]);
+  useEffect(() => {
+    fetchExams();
+  }, []);
 
-    useEffect(() => {
-        fetchExams();
-    }, []);
+  const fetchExams = async () => {
+    try {
+      setLoading(true);
+      const data = await getExamsByStudent(studentId);
+      setExams(data);
+    } catch (err) {
+      console.error("Error fetching exams:", err);
+      setError("Không th? t?i bài thi. Vui lòng th? l?i sau.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const fetchExams = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/api/v1/exams/getall');
-            setExams(response.data.exams || []);
-        } catch (error) {
-            console.error('Error fetching exams: ', error);
-        }
-    };
+  const getStatusBadge = (status) => {
+    switch(status) {
+      case "upcoming": return { text: "S?p thi", className: "status-upcoming", icon: Clock };
+      case "completed": return { text: "Ðã hoàn thành", className: "status-completed", icon: CheckCircle };
+      default: return { text: "S?p thi", className: "status-upcoming", icon: Clock };
+    }
+  };
 
-    const barChartData = {
-        labels: exams.map(exam => `${exam.examCategory} (${exam.subject})`),
-        datasets: [
-            {
-                label: 'Exam Scores',
-                backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(54, 162, 235, 0.8)',
-                hoverBorderColor: 'rgba(54, 162, 235, 1)',
-                data: exams.map(exam => exam.marks)
-            }
-        ]
-    };
-
-    const chartOptions = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            title: {
-                display: true,
-                text: 'Your Academic Performance',
-            },
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 100
-            }
-        }
-    };
-
+  if (loading) {
     return (
-        <ExamContainer>
-            <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
-            <Content isOpen={isOpen}>
-                <ExamContent>
-                    <ExamHeader>Academic Performance</ExamHeader>
-                    
-                    <ExamResultsContainer>
-                        <h3>Score Summary:</h3>
-                        {exams.length > 0 ? (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px', marginTop: '10px' }}>
-                                {exams.map((exam, index) => (
-                                    <div key={exam.id || index} style={{ background: '#f8f9fa', padding: '15px', borderRadius: '8px', borderLeft: '4px solid #007bff' }}>
-                                        <ExamSubject>{exam.subject}</ExamSubject>
-                                        <ExamResult>{exam.examCategory}: <strong>{exam.marks}%</strong></ExamResult>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p>No exam data available to display.</p>
-                        )}
-                    </ExamResultsContainer>
-
-                    {exams.length > 0 && (
-                        <ExamChartContainer>
-                            <Bar data={barChartData} options={chartOptions} />
-                        </ExamChartContainer>
-                    )}
-                </ExamContent>
-            </Content>
-        </ExamContainer>
+      <div className="student-exams-container">
+        <div className="page-header">
+          <h1 className="page-title">
+            <Award size={28} />
+            Bài thi c?a tôi
+          </h1>
+        </div>
+        <div className="loading-state">Ðang t?i bài thi...</div>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="student-exams-container">
+        <div className="page-header">
+          <h1 className="page-title">
+            <Award size={28} />
+            Bài thi c?a tôi
+          </h1>
+        </div>
+        <div className="error-state">{error}</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="student-exams-container">
+      <div className="page-header">
+        <h1 className="page-title">
+          <Award size={28} />
+          Bài thi c?a tôi
+        </h1>
+      </div>
+
+      <div className="exams-list">
+        {exams.length === 0 ? (
+          <div className="empty-state">
+            <Award size={48} />
+            <p>Chua có bài thi nào</p>
+          </div>
+        ) : (
+          exams.map((exam) => {
+            const status = getStatusBadge(exam.status);
+            const StatusIcon = status.icon;
+            return (
+              <div key={exam.id} className="exam-card">
+                <div className="exam-header">
+                  <div className="subject-badge">{exam.subject}</div>
+                  <div className={`status-badge ${status.className}`}>
+                    <StatusIcon size={14} />
+                    {status.text}
+                  </div>
+                </div>
+                <h3 className="exam-title">{exam.title}</h3>
+                <div className="exam-meta">
+                  <div className="meta-item">
+                    <Calendar size={16} />
+                    <span>{exam.examDate}</span>
+                  </div>
+                  <div className="meta-item">
+                    <Clock size={16} />
+                    <span>{exam.duration} phút</span>
+                  </div>
+                </div>
+                {exam.status === "completed" && (
+                  <div className="score-display">
+                    Ði?m: {exam.score}/{exam.maxScore}
+                  </div>
+                )}
+                {exam.status === "upcoming" && (
+                  <div className="upcoming-notice">
+                    <AlertCircle size={16} />
+                    <span>Chu?n b? cho bài thi s?p t?i</span>
+                  </div>
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default StudentExamSection;
+export default StudentExams;

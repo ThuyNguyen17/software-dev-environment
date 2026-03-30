@@ -12,10 +12,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/assignments")
 @RequiredArgsConstructor
-<<<<<<< HEAD
-@CrossOrigin(origins = "*")
-=======
->>>>>>> fix-final
 public class AssignmentController {
     private final AssignmentService assignmentService;
 
@@ -28,9 +24,35 @@ public class AssignmentController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Assignment> getAssignmentById(@PathVariable String id) {
+        Assignment assignment = assignmentService.getAssignmentById(id);
+        return ResponseEntity.ok(assignment);
+    }
+
     @GetMapping("/getall")
     public ResponseEntity<Map<String, Object>> getAllAssignments() {
         List<Assignment> assignments = assignmentService.getAllAssignments();
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("assignments", assignments);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/teacher/{teacherId}")
+    public ResponseEntity<Map<String, Object>> getAssignmentsByTeacher(@PathVariable String teacherId) {
+        List<Assignment> assignments = assignmentService.getAssignmentsByTeacher(teacherId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("assignments", assignments);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<Map<String, Object>> getAssignmentsByStudent(
+            @PathVariable String studentId, 
+            @RequestParam(required = false) String className) {
+        List<Assignment> assignments = assignmentService.getAssignmentsByStudent(studentId, className);
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("assignments", assignments);

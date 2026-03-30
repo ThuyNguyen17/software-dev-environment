@@ -1,3 +1,24 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -19,11 +40,7 @@ const TeacherSignin = () => {
                 username,
                 password
             });
-<<<<<<< HEAD
             if (response.data && (response.data.role === 'LECTURER' || response.data.role === 'TEACHER')) {
-=======
-            if (response.data && response.data.role === 'LECTURER') {
->>>>>>> fix-final
                 localStorage.setItem('user', JSON.stringify(response.data));
                 navigate('/teacher/dashboard');
             } else {
@@ -53,25 +70,28 @@ const TeacherSignin = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-<<<<<<< HEAD
                 <SubmitButton type="submit">
                     Sign In
                 </SubmitButton>
-=======
-                <button type="submit" style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#1E1E1E',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                }}>
-                    Sign In
-                </button>
->>>>>>> fix-final
             </FormContainer>
         </TeacherSignInContainer>
     )
 }
 
 export default TeacherSignin;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

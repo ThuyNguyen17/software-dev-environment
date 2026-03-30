@@ -1,165 +1,102 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
-<<<<<<< HEAD
-=======
-import EventCalendar from "./EventCalendar";
-import Announcement from "./Announcement";
-import Performance from "./Performance";
->>>>>>> fix-final
-import axios from "axios";
-import {
-    AdminDashboardContainer,
-    Content,
-    TopContent,
-    BottomContent,
-    Section,
-    SectionTitle,
-    CardContainer,
-    Card,
-    CardContent,
-    CardTitle    
-} from "../../styles/DashboardStyles";
+import { Users, GraduationCap, BookOpen, Calendar, TrendingUp } from "lucide-react";
+import "./AdminDashboard.css";
 
-const AdminDashboard = () =>{
-<<<<<<< HEAD
-    const [isOpen, setIsOpen] = useState(true);
-    const [events, setEvents] = useState([]);
-    const [announcements, setAnnouncements] = useState([]);
-=======
+const AdminDashboard = () => {
+  const [counts, setCounts] = useState({ students: 120, teachers: 45, classes: 32 });
+  const [events, setEvents] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
 
-    const [isOpen, setIsOpen] = useState(true);
-    const [events, setEvents] = useState([]);
-    const [announcements, setAnnouncements] = useState([]);
-    const [studentPerformance, setStudentPerformance] = useState([]);
->>>>>>> fix-final
-    const [counts, setCounts] = useState({ students: 0, teachers: 0, classes: 0 });
+  // Mock data
+  useEffect(() => {
+    setEvents([
+      { id: 1, title: "Khai gi?ng nam h?c m?i", date: "2026-09-05" },
+      { id: 2, title: "H?i thao tru?ng", date: "2026-10-15" },
+      { id: 3, title: "Ngày Nhà giáo Vi?t Nam", date: "2026-11-20" },
+    ]);
+    
+    setAnnouncements([
+      { id: 1, title: "Thông báo ngh? T?t", content: "L?ch ngh? T?t Nguyên Ðán 2026", date: "2026-01-25" },
+      { id: 2, title: "K? ho?ch nam h?c m?i", content: "K? ho?ch tuy?n sinh nam 2026-2027", date: "2026-02-01" },
+    ]);
+  }, []);
 
-    useEffect(() => {
-        fetchEvents();
-        fetchAnnouncements();
-<<<<<<< HEAD
-=======
-        fetchStudentPerformance();
->>>>>>> fix-final
-        fetchCounts();
-    }, []);
+  return (
+    <div className="admin-dashboard-container">
+      <div className="page-header">
+        <h1 className="page-title">
+          <TrendingUp size={28} />
+          Admin Dashboard
+        </h1>
+        <p className="page-subtitle">
+          T?ng quan h? th?ng qu?n lý tru?ng h?c
+        </p>
+      </div>
 
-    const fetchCounts = async () => {
-        try {
-            const studentRes = await axios.get('http://localhost:8080/api/students');
-            const teacherRes = await axios.get('http://localhost:8080/api/v1/teachers/getall');
-<<<<<<< HEAD
-            const classRes = await axios.get('http://localhost:8080/api/v1/class/getall');
-            setCounts({
-                students: Array.isArray(studentRes.data) ? studentRes.data.length : 0,
-                teachers: teacherRes.data.teachers?.length || 0,
-                classes: classRes.data.classes?.length || 0
-=======
-            setCounts({
-                students: studentRes.data.length || 0,
-                teachers: teacherRes.data.teachers?.length || 0,
-                classes: 15 // Placeholder
->>>>>>> fix-final
-            });
-        } catch (error) {
-            console.error('Error fetching counts: ', error);
-        }
-    }
+      {/* Stats Cards */}
+      <div className="stats-grid">
+        <div className="stat-card students">
+          <div className="stat-icon">
+            <GraduationCap size={24} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{counts.students}</span>
+            <span className="stat-label">T?ng s? h?c sinh</span>
+          </div>
+        </div>
+        
+        <div className="stat-card teachers">
+          <div className="stat-icon">
+            <Users size={24} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{counts.teachers}</span>
+            <span className="stat-label">T?ng s? giáo viên</span>
+          </div>
+        </div>
+        
+        <div className="stat-card classes">
+          <div className="stat-icon">
+            <BookOpen size={24} />
+          </div>
+          <div className="stat-info">
+            <span className="stat-value">{counts.classes}</span>
+            <span className="stat-label">T?ng s? l?p h?c</span>
+          </div>
+        </div>
+      </div>
 
-    const fetchEvents = async () => {
-        try{
-<<<<<<< HEAD
-=======
-            // Using the new event controller endpoint
->>>>>>> fix-final
-            const response = await axios.get('http://localhost:8080/api/v1/events/getall');
-            setEvents(response.data.events || []);
-        }catch (error){
-            console.error('Error fetching events: ', error);
-        }
-    };
+      {/* Recent Events */}
+      <div className="section">
+        <h2 className="section-title">
+          <Calendar size={20} />
+          S? ki?n s?p t?i
+        </h2>
+        <div className="events-list">
+          {events.map(event => (
+            <div key={event.id} className="event-card">
+              <div className="event-date">{event.date}</div>
+              <div className="event-title">{event.title}</div>
+            </div>
+          ))}
+        </div>
+      </div>
 
-    const fetchAnnouncements = async () => {
-        try{
-            const response = await axios.get('http://localhost:8080/api/v1/announcements/getall');
-            setAnnouncements(response.data.announcements || []);
-        }catch (error){
-            console.error('Error fetching announcements: ', error);
-        }
-    };
-
-<<<<<<< HEAD
-=======
-    const fetchStudentPerformance = async () => {
-        try{
-            const response = await axios.get('http://localhost:8080/api/v1/performance/getall');
-            setStudentPerformance(response.data.performance || []);
-        }catch (error){
-            console.error('Error fetching performance: ', error);
-        }
-    };
-
->>>>>>> fix-final
-    return(
-        <AdminDashboardContainer>
-            <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
-            <Content isOpen={isOpen}>
-                <TopContent>
-                    <Section>
-<<<<<<< HEAD
-                        <SectionTitle>Overview Dashboard</SectionTitle>
-=======
-                        <SectionTitle>Overview</SectionTitle>
->>>>>>> fix-final
-                        <CardContainer>
-                            <Card>
-                                <CardTitle>Total Students</CardTitle>
-                                <CardContent>{counts.students}</CardContent>
-                            </Card>
-                            <Card>
-                                <CardTitle>Total Teachers</CardTitle>
-                                <CardContent>{counts.teachers}</CardContent>
-                            </Card>
-                            <Card>
-                                <CardTitle>Total Classes</CardTitle>
-                                <CardContent>{counts.classes}</CardContent>
-                            </Card>
-                        </CardContainer>
-                    </Section>
-
-                    <Section>
-<<<<<<< HEAD
-                        <SectionTitle>Upcoming Events</SectionTitle>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {events.slice(0, 5).map(e => <li key={e.id} style={{ padding: '10px', borderBottom: '1px solid #eee' }}>{e.events}</li>)}
-                        </ul>
-=======
-                        <SectionTitle>All Events</SectionTitle>
-                        <EventCalendar events={events} />
->>>>>>> fix-final
-                    </Section>
-                </TopContent>
-
-                <BottomContent>
-<<<<<<< HEAD
-                    <Section style={{ flex: 1 }}>
-                        <SectionTitle>Latest Announcements</SectionTitle>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {announcements.slice(0, 5).map(a => (
-                                <li key={a.id} style={{ padding: '10px' }}>
-                                    <strong>{a.announcement}</strong>
-                                </li>
-                            ))}
-                        </ul>
-                    </Section>
-=======
-                    <Performance studentPerformance ={studentPerformance}/>
-                    <Announcement announcements = {announcements}/>
->>>>>>> fix-final
-                </BottomContent>
-            </Content>
-        </AdminDashboardContainer>
-    )
+      {/* Recent Announcements */}
+      <div className="section">
+        <h2 className="section-title">Thông báo g?n dây</h2>
+        <div className="announcements-list">
+          {announcements.map(announcement => (
+            <div key={announcement.id} className="announcement-card">
+              <h3 className="announcement-title">{announcement.title}</h3>
+              <p className="announcement-content">{announcement.content}</p>
+              <span className="announcement-date">{announcement.date}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AdminDashboard;
