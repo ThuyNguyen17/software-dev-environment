@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
-import { BsGraphUp, BsFileText, BsBook, BsGraphDown, BsCalendar, BsGear, BsChatDots, BsSearch, BsMoon, BsSun, BsBell, BsCalendarEvent } from 'react-icons/bs';
+import { BsGraphUp, BsFileText, BsBook, BsGraphDown, BsCalendar, BsGear, BsChatDots, BsSearch, BsMoon, BsSun, BsBell, BsCalendarEvent, BsClipboardData } from 'react-icons/bs';
 
 import bg1 from '../../assets/bg1.png';
 
@@ -207,6 +207,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
     { path: '/student/assignments', label: 'Assignments', icon: <BsFileText /> },
     { path: '/student/exams', label: 'Exams', icon: <BsBook /> },
     { path: '/student/performance', label: 'Performance', icon: <BsGraphDown /> },
+    { path: '/student/scores', label: 'Kết quả học tập', icon: <BsClipboardData /> },
     { path: '/student/attendance', label: 'Attendance', icon: <BsCalendar /> },
     { path: '/student/library', label: 'Library', icon: <BsBook /> },
     { path: '/student/notifications', label: 'Thông báo', icon: <BsBell /> },

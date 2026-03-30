@@ -205,6 +205,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
   const navItems = [
     { path: '/teacher/dashboard', label: 'Dashboard', icon: <BsGraphUp /> },
     { path: '/teacher/students', label: 'Students', icon: <BsPeople /> },
+    { path: '/teacher/seating-chart', label: 'Sơ đồ lớp', icon: <BsPeople /> },
     { path: '/teacher/assignments', label: 'Assignments', icon: <BsFileText /> },
     { path: '/teacher/attendance', label: 'Attendance', icon: <BsCalendar /> },
     { path: '/teacher/communication', label: 'Announcements', icon: <BsChatDots /> },

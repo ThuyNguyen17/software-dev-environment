@@ -12,14 +12,12 @@ import AppLayout from "./components/layout/AppLayout.jsx";
 
 // Admin pages - imported from Admin folder index
 import {
-  AdminClasses,
-  AdminTeachers,
-  AdminStudents,
-  AdminSubjects,
   AdminLibrary,
   AdminAnnouncements,
   AdminEventCalendar,
-  AdminTeachingAssignments
+  AdminTeachingAssignments,
+  AdminSeatingChart,
+  AdminClassScores
 } from "./pages/Admin/index.js";
 
 // Student pages - imported from Students folder index
@@ -27,29 +25,27 @@ import {
   StudentAssignments,
   StudentExams,
   StudentPerformance,
-  StudentAttendance,
   StudentLibrary,
   StudentAnnouncements,
   StudentProfile,
   StudentNotifications,
   StudentEvents,
+  StudentScores,
 } from "./pages/Students/index.js";
 
 // Teacher pages - imported from Teachers folder index
 import {
-  TeacherClasses,
   TeacherStudents,
-  TeachersList,
   TeacherAssignments,
   TeacherAssignmentSubmissions,
   TeacherExams,
   TeacherPerformance,
-  TeacherAttendance,
   TeacherAnnouncements,
   TeacherEvents,
   TeacherProfile,
   TeacherDashboard,
   TeacherNotifications,
+  TeacherSeatingChart
 } from "./pages/Teachers/index.js";
 
 export default function App() {
@@ -69,6 +65,7 @@ export default function App() {
         <Route path="/student/assignments" element={<StudentAssignments />} />
         <Route path="/student/exams" element={<StudentExams />} />
         <Route path="/student/performance" element={<StudentPerformance />} />
+        <Route path="/student/scores" element={<StudentScores />} />
         <Route path="/student/library" element={<StudentLibrary />} />
         <Route path="/student/notifications" element={<StudentNotifications />} />
         <Route path="/student/events" element={<StudentEvents />} />
@@ -87,18 +84,17 @@ export default function App() {
         <Route path="/teacher/events" element={<TeacherEvents />} />
         <Route path="/teacher/communication" element={<TeacherAnnouncements />} />
         <Route path="/teacher/notifications" element={<TeacherNotifications />} />
+        <Route path="/teacher/seating-chart" element={<TeacherSeatingChart />} />
         <Route path="/teacher/settings" element={<TeacherProfile />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Navigate to="dashboard" replace />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/classes" element={<AdminClasses />} />
-        <Route path="/admin/subjects" element={<AdminSubjects />} />
-        <Route path="/admin/teachers" element={<AdminTeachers />} />
-        <Route path="/admin/students" element={<AdminStudents />} />
         <Route path="/admin/library" element={<AdminLibrary />} />
         <Route path="/admin/communication" element={<AdminAnnouncements />} />
         <Route path="/admin/events" element={<AdminEventCalendar />} />
+        <Route path="/admin/seating-chart" element={<AdminSeatingChart />} />
+        <Route path="/admin/class-scores" element={<AdminClassScores />} />
         <Route path="/admin/teaching-assignments" element={<AdminTeachingAssignments />} />
       </Route>
 

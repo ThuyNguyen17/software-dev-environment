@@ -113,6 +113,16 @@ export default function AdminDashboard() {
           </div>
         </button>
 
+        <button className="action-card" onClick={() => navigate('/admin/seating-chart')}>
+          <div className="icon-wrapper">
+            <GraduationCap size={32} />
+          </div>
+          <div className="action-text">
+            <h3>Quản lý sơ đồ lớp</h3>
+            <p>Sắp xếp vị trí chỗ ngồi</p>
+          </div>
+        </button>
+
         <button className="action-card" onClick={() => navigate('/admin/teaching-assignments')}>
           <div className="icon-wrapper">
             <BookOpen size={32} />

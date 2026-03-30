@@ -16,7 +16,8 @@ import {
   GraduationCap,
   Calendar,
   Menu,
-  X
+  X,
+  ClipboardList
 } from "lucide-react";
 import "./AppShell.css";
 
@@ -66,6 +67,7 @@ export default function AppLayout() {
           { to: "/student/scan", icon: QrCode, label: "Điểm danh QR" },
           { to: "/student/history", icon: History, label: "Lịch sử điểm danh" },
           { to: "/student/assignments", icon: FileText, label: "Bài tập" },
+          { to: "/student/scores", icon: ClipboardList, label: "Kết quả học tập" },
           { to: "/student/library", icon: Library, label: "Thư viện" },
           { to: "/student/events", icon: Calendar, label: "Sự kiện" },
           { to: "/student/communication", icon: MessageSquare, label: "Tin tức" },
@@ -81,19 +83,17 @@ export default function AppLayout() {
           { to: "/teacher/performance", icon: BookOpen, label: "Kết quả sinh viên" },
           { to: "/teacher/events", icon: Calendar, label: "Sự kiện" },
           { to: "/teacher/communication", icon: MessageSquare, label: "Gửi thông báo" },
+          { to: "/teacher/seating-chart", icon: GraduationCap, label: "Sơ đồ lớp" },
           { to: "/teacher/settings", icon: Settings, label: "Cài đặt cá nhân" },
         ];
 
       case "ADMIN":
         return [
           { to: "/admin/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-          { to: "/admin/classes", icon: Users, label: "Quản lý lớp học" },
-          { to: "/admin/subjects", icon: BookOpen, label: "Quản lý môn học" },
-          { to: "/admin/teachers", icon: Users, label: "Quản lý giáo viên" },
-          { to: "/admin/students", icon: GraduationCap, label: "Quản lý sinh viên" },
           { to: "/admin/library", icon: Library, label: "Quản lý thư viện" },
           { to: "/admin/communication", icon: MessageSquare, label: "Quản lý thông báo" },
           { to: "/admin/events", icon: Calendar, label: "Quản lý sự kiện" },
+          { to: "/admin/seating-chart", icon: GraduationCap, label: "Quản lý sơ đồ lớp" },
           { to: "/admin/teaching-assignments", icon: BookOpen, label: "Phân công giảng dạy" },
         ];
 

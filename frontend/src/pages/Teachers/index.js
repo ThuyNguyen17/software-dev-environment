@@ -12,3 +12,4 @@ export { default as TeacherEvents } from './EventCalendar.jsx';
 export { default as TeacherProfile } from './Profile.jsx';
 export { default as TeacherDashboard } from '../AdminDashboard.jsx';
 export { default as TeacherNotifications } from './Notifications.jsx';
+export { default as TeacherSeatingChart } from './SeatingChart.jsx';

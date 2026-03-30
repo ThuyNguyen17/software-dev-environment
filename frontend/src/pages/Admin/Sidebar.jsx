@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom'; 
+import { Link, useLocation } from 'react-router-dom'; 
 import { BsGraphUp, 
     BsPeople, 
     BsPerson, 
@@ -160,6 +160,8 @@ const Sidebar = ({ isOpen, onToggle }) => {
   const navItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: <BsGraphUp /> },
     { path: '/admin/classes', label: 'Classes', icon: <BsPeople /> },
+    { path: '/admin/seating-chart', label: 'Seating Chart', icon: <BsPeople /> },
+    { path: '/admin/class-scores', label: 'Class Scores', icon: <BsGraphDown /> },
     { path: '/admin/students', label: 'Students', icon: <BsPeople /> },
     { path: '/admin/teachers', label: 'Teachers', icon: <BsPerson /> },
     { path: '/admin/teaching-assignments', label: 'Teaching Assignments', icon: <BsBook /> },

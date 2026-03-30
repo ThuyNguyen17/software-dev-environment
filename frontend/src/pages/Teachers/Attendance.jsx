@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import axios from "axios";
 import {
+    startSession as startSessionApi,
+    updateQrToken,
+    getAttendances,
+    closeSession as closeSessionApi
+} from "../../api/attendanceApi";
+import {
     AttendanceContainer,
     Content,
     AttendanceContent,
@@ -30,48 +36,65 @@ const CheckAttendanceSection = () => {
     const fetchAssignments = async () => {
         try {
             const storedUser = localStorage.getItem('user');
+            console.log('Stored user:', storedUser);
             if (storedUser) {
                 const user = JSON.parse(storedUser);
-                const response = await axios.get(`http://localhost:8080/api/v1/teaching-assignments/teacher/${user.teacherId || user.userId}`);
+                console.log('Parsed user:', user);
+                console.log('Using teacherId:', user.teacherId || user.userId);
+                const teacherId = user.teacherId || user.userId;
+                if (!teacherId) {
+                    alert('Không tìm thấy teacherId trong user object');
+                    return;
+                }
+                const response = await axios.get(`http://localhost:8080/api/v1/teaching-assignments/teacher/${teacherId}`);
+                console.log('Assignments response:', response.data);
                 setAssignments(response.data || []);
+            } else {
+                alert('Vui lòng đăng nhập lại');
             }
         } catch (error) {
             console.error('Error fetching assignments: ', error);
+            alert('Lỗi lấy danh sách lớp: ' + (error.response?.data?.message || error.message));
         }
     };
 
     const startSession = async () => {
         if (!selectedAssignment) return alert("Vui lòng chọn lớp học!");
         try {
-            const response = await axios.post('http://localhost:8080/api/attendance/session/start', {
-                assignmentId: selectedAssignment,
-                date: new Date().toISOString().split('T')[0],
-                period: 1, // Defaulting to 1 for demo
-                semester: 1
-            });
-            setCurrentSession(response.data);
-            generateToken(response.data.id);
-            startMonitoring(response.data.id);
+            const session = await startSessionApi(
+                selectedAssignment,
+                new Date().toISOString().split('T')[0],
+                1,
+                1,
+                null,
+                null
+            );
+            setCurrentSession(session);
+            generateToken(session.id);
+            startMonitoring(session.id);
         } catch (error) {
             console.error('Error starting session: ', error);
+            const errorMsg = error.response?.data?.message || error.message || 'Unknown error';
+            alert('Failed to create attendance session: ' + errorMsg);
         }
     };
 
     const generateToken = async (sessionId) => {
         const token = Math.random().toString(36).substring(2, 10).toUpperCase();
         try {
-            const response = await axios.post(`http://localhost:8080/api/attendance/session/${sessionId}/token`, { token });
-            setCurrentSession(response.data);
+            const session = await updateQrToken(sessionId, token);
+            setCurrentSession(session);
         } catch (error) {
             console.error('Error generating token:', error);
+            alert('Failed to generate token: ' + (error.response?.data?.message || error.message));
         }
     };
 
     const startMonitoring = (sessionId) => {
         const t = setInterval(async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/attendance/session/${sessionId}/attendances`);
-                setCheckins(response.data);
+                const attendances = await getAttendances(sessionId);
+                setCheckins(attendances);
             } catch (error) {
                 console.error('Error fetching attendances:', error);
             }
@@ -82,7 +105,7 @@ const CheckAttendanceSection = () => {
     const closeSession = async () => {
         if (!currentSession) return;
         try {
-            await axios.post(`http://localhost:8080/api/attendance/session/${currentSession.id}/close`);
+            await closeSessionApi(currentSession.id);
             clearInterval(timer);
             setTimer(null);
             alert("Session closed!");
@@ -90,6 +113,7 @@ const CheckAttendanceSection = () => {
             setCheckins([]);
         } catch (error) {
             console.error('Error closing session:', error);
+            alert('Failed to close session: ' + (error.response?.data?.message || error.message));
         }
     };
 

@@ -440,15 +440,24 @@ public class StudentServiceImpl implements StudentService {
         Integer gradeLevel = ClassNameUtils.parseGradeLevel(classKey);
         String classSimpleName = ClassNameUtils.parseClassSimpleName(classKey);
 
+        log.info("getStudentsByClass called with className='{}', classKey='{}', gradeLevel={}, classSimpleName='{}'", 
+                 raw, classKey, gradeLevel, classSimpleName);
+
         // Prefer querying student_classes by label first. This is more tolerant of datasets where:
         // - "classes" rows are missing/inconsistent
         // - StudentClass.classId stores a human label (e.g. "10A1") instead of SchoolClass.id
         LinkedHashMap<String, StudentClass> unique = new LinkedHashMap<>();
-        for (String candidate : buildClassIdCandidates(raw, classKey, gradeLevel, classSimpleName)) {
+        List<String> candidates = buildClassIdCandidates(raw, classKey, gradeLevel, classSimpleName);
+        log.info("Built classId candidates: {}", candidates);
+        
+        for (String candidate : candidates) {
             if (candidate == null || candidate.isBlank()) continue;
-            for (StudentClass sc : studentClassRepository.findByClassIdIgnoreCase(candidate)) {
+            List<StudentClass> found = studentClassRepository.findByClassIdIgnoreCase(candidate);
+            log.info("Query findByClassIdIgnoreCase('{}') returned {} records", candidate, found.size());
+            for (StudentClass sc : found) {
                 if (sc != null && sc.getId() != null) {
                     unique.putIfAbsent(sc.getId(), sc);
+                    log.info("Found StudentClass: id={}, studentId={}, classId={}", sc.getId(), sc.getStudentId(), sc.getClassId());
                 }
             }
         }
@@ -491,11 +500,31 @@ public class StudentServiceImpl implements StudentService {
             studentMap.put("studentCode", student.getStudentCode());
             studentMap.put("fullName", student.getFullName());
             studentMap.put("className", displayClassName);
+            studentMap.put("seatRow", sc.getSeatRow());
+            studentMap.put("seatColumn", sc.getSeatColumn());
+            studentMap.put("notes", sc.getNotes());
             result.add(studentMap);
         }
 
         // Deterministic ordering for UI.
         result.sort(Comparator.comparing(m -> String.valueOf(m.getOrDefault("studentCode", ""))));
+        log.info("Returning {} students for className='{}'", result.size(), raw);
         return result;
+    }
+    @Override
+    public void updateStudentSeating(String studentId, String className, Integer row, Integer col, String notes) {
+        String classKey = ClassNameUtils.normalizeToKey(className);
+        List<StudentClass> studentClasses = studentClassRepository.findByStudentId(studentId);
+        
+        for (StudentClass sc : studentClasses) {
+            String scClassKey = ClassNameUtils.normalizeToKey(sc.getClassId());
+            if (scClassKey.equals(classKey)) {
+                if (row != null) sc.setSeatRow(row);
+                if (col != null) sc.setSeatColumn(col);
+                if (notes != null) sc.setNotes(notes);
+                studentClassRepository.save(sc);
+                return;
+            }
+        }
     }
 }

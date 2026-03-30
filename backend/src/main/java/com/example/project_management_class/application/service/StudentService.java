@@ -23,4 +23,5 @@ public interface StudentService {
     Student getStudentById(String id);
     Student updateStudent(String id, Student student);
     Student createStudent(Student student);
+    void updateStudentSeating(String studentId, String className, Integer row, Integer col, String notes);
 }

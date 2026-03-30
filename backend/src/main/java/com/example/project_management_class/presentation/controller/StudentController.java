@@ -130,4 +130,22 @@ public class StudentController {
     public ResponseEntity<List<Map<String, Object>>> getStudentsByClass(@PathVariable String className) {
         return ResponseEntity.ok(studentService.getStudentsByClass(className));
     }
+
+    @PutMapping("/{studentId}/className/{className}/seating")
+    public ResponseEntity<Map<String, Object>> updateStudentSeating(
+            @PathVariable String studentId,
+            @PathVariable String className,
+            @RequestBody Map<String, Object> request) {
+        
+        Integer row = (Integer) request.get("seatRow");
+        Integer col = (Integer) request.get("seatColumn");
+        String notes = (String) request.get("notes");
+        
+        studentService.updateStudentSeating(studentId, className, row, col, notes);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("message", "Seating Updated!");
+        return ResponseEntity.ok(response);
+    }
 }

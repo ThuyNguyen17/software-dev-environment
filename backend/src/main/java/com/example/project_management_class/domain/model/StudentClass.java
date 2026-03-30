@@ -13,5 +13,8 @@ public class StudentClass {
     private String studentId;
     private String classId;
     private String academicYearId;
+    private Integer seatRow;
+    private Integer seatColumn;
+    private String notes;
 }
 

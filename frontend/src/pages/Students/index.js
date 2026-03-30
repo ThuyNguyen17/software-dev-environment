@@ -9,3 +9,4 @@ export { default as StudentAnnouncements } from './Announcement.jsx';
 export { default as StudentProfile } from './Profile.jsx';
 export { default as StudentNotifications } from './Notifications.jsx';
 export { default as StudentEvents } from './Events.jsx';
+export { default as StudentScores } from './Scores.jsx';
