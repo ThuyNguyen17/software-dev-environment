@@ -158,7 +158,7 @@ const ScoreInput = styled.input`
 // 2. COMPONENT CHÍNH
 // ==========================================
 
-const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, selectedAssignmentId }) => {
+const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, selectedAssignmentId, userRole = "ADMIN" }) => {
   const [seats, setSeats] = useState([]);
   const [waitingList, setWaitingList] = useState([]);
   const [draggedItem, setDraggedItem] = useState(null);
@@ -169,7 +169,7 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
   
   // State Form nhập điểm cho Modal
   const [currentScoreForm, setCurrentScoreForm] = useState({
-      ORAL: '', QUIZ_15: '', ONE_PERIOD: '', MIDTERM: '', FINAL: ''
+      ORAL: '', QUIZ_15: '', ONE_PERIOD: '', MIDTERM: '', FINAL: '', note: ''
   });
 
   // --- FETCH ĐIỂM SỐ KHI ĐỔI MÔN ---
@@ -235,7 +235,7 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
       
       // Load Điểm từ Context classScores vào form
       const scoreRecord = classScores.find(s => s.studentId === student.studentId);
-      const newForm = { ORAL: '', QUIZ_15: '', ONE_PERIOD: '', MIDTERM: '', FINAL: '' };
+      const newForm = { ORAL: '', QUIZ_15: '', ONE_PERIOD: '', MIDTERM: '', FINAL: '', note: scoreRecord?.note || '' };
       
       if (scoreRecord && scoreRecord.items) {
           scoreRecord.items.forEach(item => {
@@ -277,8 +277,21 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
       }
   };
 
+  const handleNoteBlur = async () => {
+    if (!selectedAssignmentId || !selectedStudent) return;
+    try {
+        await axios.put(`http://localhost:8080/api/scores/student/${selectedStudent.studentId}/assignment/${selectedAssignmentId}/note`, {
+            note: currentScoreForm.note
+        });
+        console.log("Đã cập nhật ghi chú");
+    } catch (e) {
+        console.error("Lưu ghi chú thất bại", e);
+    }
+  };
+
 
   const handleDragStart = (e, source, index) => {
+    if (userRole !== 'ADMIN') return;
     setDraggedItem({ source, index });
     e.dataTransfer.effectAllowed = 'move';
     setTimeout(() => { if(e.target) e.target.style.opacity = '0.5'; }, 0);
@@ -348,7 +361,7 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
         <SeatingGrid cols={config.cols}>
           {seats.map((student, index) => (
             <SeatCard 
-              key={`seat-${index}`} isEmpty={!student} draggable={!!student} 
+              key={`seat-${index}`} isEmpty={!student} draggable={userRole === 'ADMIN' && !!student} 
               onDragStart={(e) => handleDragStart(e, 'SEAT', index)}
               onDragEnd={handleDragEnd} onDragOver={handleDragOver}
               onDragLeave={handleDragLeave} onDrop={(e) => handleDropOnSeat(e, index)}
@@ -377,7 +390,7 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
           ) : (
             waitingList.map((student, index) => (
               <WaitingItemCard
-                key={`wait-${student.id || index}`} draggable
+                key={`wait-${student.id || index}`} draggable={userRole === 'ADMIN'}
                 onDragStart={(e) => handleDragStart(e, 'WAITING', index)} onDragEnd={handleDragEnd}
               >
                 <SeatAvatar style={{ width: 32, height: 32, fontSize: 14 }}>
@@ -445,6 +458,20 @@ const ClassroomSeatingChart = ({ students = [], config = { rows: 3, cols: 3 }, s
                           <InfoLabel style={{ textAlign: 'center', color: '#1d4ed8' }}>CUỐI KỲ</InfoLabel>
                           <ScoreInput type="number" step="0.5" placeholder="--" style={{ borderColor: '#bfdbfe', background: '#eff6ff' }}
                               value={currentScoreForm.FINAL} onChange={e => handleScoreChange('FINAL', e.target.value)} onBlur={() => handleScoreBlur('FINAL')} />
+                      </ScoreField>
+
+                      <ScoreField style={{ gridColumn: '1 / span 2', marginTop: '10px' }}>
+                          <InfoLabel>Ghi Chú về HS ({userRole})</InfoLabel>
+                          <textarea 
+                              placeholder="Ghi chú về học sinh trong giờ học..."
+                              value={currentScoreForm.note}
+                              onChange={e => setCurrentScoreForm({...currentScoreForm, note: e.target.value})}
+                              onBlur={handleNoteBlur}
+                              style={{
+                                  padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1',
+                                  minHeight: '80px', fontFamily: 'inherit', resize: 'vertical'
+                              }}
+                          />
                       </ScoreField>
                   </ScoreGrid>
               )}

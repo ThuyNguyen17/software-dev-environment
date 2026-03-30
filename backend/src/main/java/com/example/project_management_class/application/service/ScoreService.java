@@ -16,4 +16,6 @@ public interface ScoreService {
     
     // Upsert (Tìm hoặc tạo mới)
     Score upsertScoreItems(String studentId, String assignmentId, List<ScoreItem> items);
+
+    Score upsertNote(String studentId, String assignmentId, String note);
 }

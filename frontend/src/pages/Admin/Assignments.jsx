@@ -92,4 +92,4 @@ const Assignments = () =>{
     )
 }
 
-export default Assignments
+export default Assignments;

@@ -14,7 +14,7 @@ const SeatingChart = () => {
 
     const fetchSeatingData = async () => {
         try {
-            // 1. GỌI TẤT CẢ TÀI NGUYÊN (Students, StudentClasses, Môn Học / Phân Công)
+            // 1. GỌI TẤT CẢ TÀI NGUYÊN
             const [classRes, studentRes, assignRes] = await Promise.all([
                 axios.get('http://localhost:8080/api/student-class'),
                 axios.get('http://localhost:8080/api/students'),
@@ -89,10 +89,9 @@ const SeatingChart = () => {
             <Content isOpen={isOpen}>
                 <ClassesContent>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <ClassHeader>Sơ đồ Lớp & Nhập Điểm</ClassHeader>
+                        <ClassHeader>Sơ đồ Lớp & Nhập Điểm (Giáo viên)</ClassHeader>
 
                         <div style={{ display: 'flex', gap: '15px' }}>
-                            {/* Dropdown 1: Chọn Lớp */}
                             {classOptions.length > 0 && (
                                 <select
                                     value={selectedClass}
@@ -110,7 +109,6 @@ const SeatingChart = () => {
                                 </select>
                             )}
 
-                            {/* Dropdown 2: Chọn Môn Học đang Chấm Điểm */}
                             {assignmentsInSelectedClass.length > 0 ? (
                                 <select
                                     value={selectedAssignment}
@@ -142,7 +140,7 @@ const SeatingChart = () => {
                                     students={studentsInSelectedClass}
                                     config={{ rows: 4, cols: 5 }}
                                     selectedAssignmentId={selectedAssignment}
-                                    userRole="ADMIN"
+                                    userRole="TEACHER"
                                 />
                             </div>
                         ) : (

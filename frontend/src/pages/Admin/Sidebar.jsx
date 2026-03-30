@@ -170,6 +170,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
     { path: '/admin/library', label: 'Library', icon: <BsBook /> },
     { path: '/admin/communication', label: 'Announcement', icon: <BsChatDots /> },
     { path: '/admin/events', label: 'Events & Calendar', icon: <BsCalendarEvent /> },
+    { path: '/admin/seating-chart', label: 'Seating Chart', icon: <BsPeople /> },
     { path: '/admin/settings', label: 'Settings & Profile', icon: <BsGear /> },
   ];
 

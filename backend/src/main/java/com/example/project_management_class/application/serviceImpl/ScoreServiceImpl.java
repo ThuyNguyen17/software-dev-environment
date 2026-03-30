@@ -102,4 +102,19 @@ public class ScoreServiceImpl implements ScoreService {
         
         return scoreRepository.save(score);
     }
+
+    @Override
+    public Score upsertNote(String studentId, String assignmentId, String note) {
+        Optional<Score> existingOpt = scoreRepository.findByStudentIdAndTeachingAssignmentId(studentId, assignmentId);
+        Score score;
+        if (existingOpt.isPresent()) {
+            score = existingOpt.get();
+        } else {
+            score = new Score();
+            score.setStudentId(studentId);
+            score.setTeachingAssignmentId(assignmentId);
+        }
+        score.setNote(note);
+        return scoreRepository.save(score);
+    }
 }

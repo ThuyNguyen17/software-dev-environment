@@ -144,4 +144,4 @@ const TeacherSection = () =>{
     )
 }
 
-export default TeacherSection
+export default TeacherSection;

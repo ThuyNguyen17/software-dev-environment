@@ -45,4 +45,20 @@ public class ScoreController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+    // Cập nhật Ghi Chú cho 1 học sinh cụ thể
+    @PutMapping("/student/{studentId}/assignment/{assignmentId}/note")
+    public ResponseEntity<Score> updateStudentNote(
+            @PathVariable String studentId,
+            @PathVariable String assignmentId,
+            @RequestBody Map<String, String> body) {
+        try {
+            String note = body.get("note");
+            Score updated = scoreService.upsertNote(studentId, assignmentId, note);
+            return ResponseEntity.ok(updated);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

@@ -10,4 +10,5 @@ import java.util.List;
 public interface ScoreRepository extends MongoRepository<Score, String> {
     List<Score> findByStudentId(String studentId);
     List<Score> findByTeachingAssignmentId(String teachingAssignmentId);
+    java.util.Optional<Score> findByStudentIdAndTeachingAssignmentId(String studentId, String teachingAssignmentId);
 }

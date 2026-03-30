@@ -18,4 +18,5 @@ public interface AttendanceService {
     AttendanceSession updateQrToken(String sessionId, String newToken);
     void closeSession(String sessionId);
     void deleteAttendancesBySession(String sessionId);
+    
 }

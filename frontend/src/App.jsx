@@ -9,6 +9,8 @@ import StudentTimetable from "./pages/StudentTimetable.jsx";
 import TeacherTimetable from "./pages/TeacherTimetable.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AppLayout from "./components/layout/AppLayout.jsx";
+import AdminSeatingChart from "./pages/Admin/SeatingChart.jsx";
+import TeacherSeatingChart from "./pages/Teachers/SeatingChart.jsx";
 
 // Admin pages - imported from Admin folder index
 import {
@@ -88,6 +90,7 @@ export default function App() {
         <Route path="/teacher/communication" element={<TeacherAnnouncements />} />
         <Route path="/teacher/notifications" element={<TeacherNotifications />} />
         <Route path="/teacher/settings" element={<TeacherProfile />} />
+        <Route path="/teacher/seating-chart" element={<TeacherSeatingChart />} />
 
         {/* ADMIN ROUTES */}
         <Route path="/admin" element={<Navigate to="dashboard" replace />} />
@@ -100,6 +103,7 @@ export default function App() {
         <Route path="/admin/communication" element={<AdminAnnouncements />} />
         <Route path="/admin/events" element={<AdminEventCalendar />} />
         <Route path="/admin/teaching-assignments" element={<AdminTeachingAssignments />} />
+        <Route path="/admin/seating-chart" element={<AdminSeatingChart />} />
       </Route>
 
       <Route path="/attendance" element={<Navigate to="/student/scan" replace />} />

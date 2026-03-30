@@ -84,4 +84,4 @@ const StudentDashboard = () =>{
     )
 }
 
-export default StudentDashboard
+export default StudentDashboard;

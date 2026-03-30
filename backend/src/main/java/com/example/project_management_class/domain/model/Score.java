@@ -19,4 +19,5 @@ public class Score {
     private Integer semester;   // 1 | 2
     private List<ScoreItem> items;
     private String academicYearId;
+    private String note;
 }
