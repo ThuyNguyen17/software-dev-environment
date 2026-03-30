@@ -11,7 +11,7 @@ public class Book {
     @Id
     private String id;
     private String bookname;
-    
-    @Indexed(unique = true)
     private String author;
+    private String pdfUrl;
+    private String coverUrl;
 }

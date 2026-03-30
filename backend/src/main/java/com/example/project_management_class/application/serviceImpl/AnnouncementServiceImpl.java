@@ -23,6 +23,11 @@ public class AnnouncementServiceImpl implements AnnouncementService {
     }
 
     @Override
+    public List<Announcement> getAnnouncementsByAudiences(List<String> audiences) {
+        return announcementRepository.findByTargetAudienceIn(audiences);
+    }
+
+    @Override
     public void deleteAnnouncement(String id) {
         announcementRepository.deleteById(id);
     }

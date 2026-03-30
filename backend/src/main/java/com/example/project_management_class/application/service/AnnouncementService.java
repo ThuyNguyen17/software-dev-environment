@@ -6,6 +6,7 @@ import java.util.List;
 public interface AnnouncementService {
     void addAnnouncement(Announcement announcement);
     List<Announcement> getAllAnnouncements();
+    List<Announcement> getAnnouncementsByAudiences(List<String> audiences);
     void deleteAnnouncement(String id);
     Announcement updateAnnouncement(String id, Announcement announcement);
 }

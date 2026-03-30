@@ -1,130 +1,226 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
-import axios from "axios";
-import {
-    EventCalendarContainer,
-        Content,
-        CalendarContainer,
-        Events,
-        Event,
-        AddEventForm,
-        EventInput,
-        AddEventButton,
-        ErrorText
-} from "../../styles/EventCalendarStyles";
+import { Calendar, Clock, MapPin, CalendarDays, AlertCircle } from "lucide-react";
+import { getEventsForAudience } from "../../api/eventApi";
+import { BASE_URL } from "../../api/config";
+import "./TeacherEvents.css";
 
-const EventSection = () =>{
-    const [isOpen, setIsOpen] = useState(true);
+const TeacherEvents = () => {
     const [events, setEvents] = useState([]);
-    const [newEvent, setNewEvent] = useState('');
-    const [editingEvent, setEditingEvent] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [filter, setFilter] = useState("upcoming"); // all, upcoming, past
 
     useEffect(() => {
         fetchEvents();
     }, []);
 
     const fetchEvents = async () => {
-        try{
-            const response = await axios.get('http://localhost:8080/api/v1/events/getall');
-            setEvents(response.data.events || []);
-        }catch (error){
-            console.error('Error fetching events: ', error);
-        }
-    };
-
-    const addEvent = async (e) => {
-        e.preventDefault();
-        if(!newEvent.trim()) return;
-        try{
-            await axios.post('http://localhost:8080/api/v1/events', {
-                event: newEvent,
-            });
-            setNewEvent('');
-            fetchEvents();
-            alert('Event added!');
-        }catch (error){
-            console.error("Error adding event: ", error);
-            setError('Error adding event. Please try again.');
-        }
-    };
-
-    const handleDelete = async (id) => {
-        if (window.confirm('Delete this event?')) {
-            try {
-                await axios.delete(`http://localhost:8080/api/v1/events/${id}`);
-                fetchEvents();
-            } catch (error) {
-                console.error('Error deleting event: ', error);
-            }
-        }
-    };
-
-    const handleUpdate = async (e) => {
-        e.preventDefault();
         try {
-            await axios.put(`http://localhost:8080/api/v1/events/${editingEvent.id}`, editingEvent);
-            setEditingEvent(null);
-            fetchEvents();
-            alert('Event updated!');
+            setLoading(true);
+            setError(null);
+
+            const allEvents = await getEventsForAudience('teachers');
+
+            // Sort by date (put events with dates first, then null dates)
+            const sortedEvents = allEvents.sort((a, b) => {
+                if (!a.date && !b.date) return 0;
+                if (!a.date) return 1;
+                if (!b.date) return -1;
+                return new Date(a.date) - new Date(b.date);
+            });
+
+            setEvents(sortedEvents);
         } catch (error) {
-            console.error('Error updating event: ', error);
+            console.error("Error fetching events: ", error);
+            setError("Không thể tải sự kiện. Vui lòng thử lại sau.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    return(
-        <EventCalendarContainer>
-            <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
-            <Content isOpen={isOpen}>
-                <h1>Event and Calendar</h1>               
-                <CalendarContainer>
-                    <p>Coming Soon: Interactive Calendar Integration</p>
-                </CalendarContainer>
+    const getEventTypeLabel = (type) => {
+        const types = {
+            academic: "Học thuật",
+            cultural: "Văn hóa",
+            sports: "Thể thao",
+            meeting: "Họp",
+            other: "Khác",
+        };
+        return types[type] || type || "Khác";
+    };
 
-                {editingEvent ? (
-                    <AddEventForm onSubmit={handleUpdate}>
-                        <h2>Edit Event</h2>
-                        <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
-                            <EventInput 
-                                type="text"
-                                value={editingEvent.event}
-                                onChange={(e) => setEditingEvent({ ...editingEvent, event: e.target.value })}
-                            />
-                            <AddEventButton type="submit">Update</AddEventButton>
-                            <AddEventButton type="button" onClick={() => setEditingEvent(null)} style={{ backgroundColor: '#6c757d' }}>Cancel</AddEventButton>
-                        </div>
-                    </AddEventForm>
-                ) : (
-                    <AddEventForm onSubmit={addEvent}>
-                        <h2>Add New Event</h2>
-                        <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
-                            <EventInput 
-                                type="text"
-                                value={newEvent}
-                                onChange={(e) => setNewEvent(e.target.value)}
-                                placeholder="Describe the event..."
-                            />
-                            <AddEventButton type="submit">Add Event</AddEventButton>
-                        </div>
-                    </AddEventForm>
-                )}
-                {error && <ErrorText>{error}</ErrorText>}
+    const getEventTypeColor = (type) => {
+        const colors = {
+            academic: { bg: "#dbeafe", color: "#1e40af" },
+            cultural: { bg: "#fce7f3", color: "#be185d" },
+            sports: { bg: "#dcfce7", color: "#16a34a" },
+            meeting: { bg: "#fef3c7", color: "#d97706" },
+            other: { bg: "#f3f4f6", color: "#6b7280" },
+        };
+        return colors[type] || colors.other;
+    };
 
-                <Events>
-                    <h2>Upcoming Events</h2>
-                    {events.length > 0 ? events.map((item, index) => (
-                        <Event key={item.id || index}>
-                            <div>{item.event}</div>
-                            <div style={{ marginTop: '10px' }}>
-                                <button onClick={() => setEditingEvent(item)} style={{ marginRight: '10px', padding: '5px 10px', cursor: 'pointer' }}>Edit</button>
-                                <button onClick={() => handleDelete(item.id)} style={{ padding: '5px 10px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Delete</button>
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "Chưa xác định";
+        try {
+            const date = new Date(dateStr);
+            if (isNaN(date.getTime())) return "Chưa xác định";
+            return date.toLocaleDateString("vi-VN", {
+                weekday: "long",
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            });
+        } catch {
+            return dateStr || "Chưa xác định";
+        }
+    };
+
+    const formatTime = (timeStr) => {
+        if (!timeStr) return "";
+        return timeStr;
+    };
+
+    const isUpcoming = (dateStr) => {
+        if (!dateStr) return false;
+        try {
+            const eventDate = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return eventDate >= today;
+        } catch {
+            return false;
+        }
+    };
+
+    const filteredEvents = events.filter((event) => {
+        // Filter by target audience - teachers should see events for "all" or "teachers"
+        const targetAudience = event.targetAudience || 'all';
+        const isVisibleToTeacher = targetAudience === 'all' || targetAudience === 'teachers';
+        
+        if (!isVisibleToTeacher) return false;
+        
+        if (filter === "upcoming") return isUpcoming(event.date);
+        if (filter === "past") return !isUpcoming(event.date);
+        return true;
+    });
+
+    return (
+        <div className="teacher-events-page">
+            <div className="page-header">
+                <div className="header-title">
+                    <CalendarDays size={28} />
+                    <h1>Sự kiện</h1>
+                </div>
+            </div>
+
+            <div className="filter-tabs">
+                <button
+                    className={filter === "upcoming" ? "active" : ""}
+                    onClick={() => setFilter("upcoming")}
+                >
+                    Sắp diễn ra
+                </button>
+                <button
+                    className={filter === "all" ? "active" : ""}
+                    onClick={() => setFilter("all")}
+                >
+                    Tất cả
+                </button>
+                <button
+                    className={filter === "past" ? "active" : ""}
+                    onClick={() => setFilter("past")}
+                >
+                    Đã diễn ra
+                </button>
+            </div>
+
+            {loading && (
+                <div className="loading-state">
+                    <div className="spinner"></div>
+                    <p>Đang tải sự kiện...</p>
+                </div>
+            )}
+
+            {error && (
+                <div className="error-state">
+                    <AlertCircle size={48} />
+                    <p>{error}</p>
+                </div>
+            )}
+
+            {!loading && !error && filteredEvents.length === 0 && (
+                <div className="empty-state">
+                    <Calendar size={64} />
+                    <h3>Chưa có sự kiện</h3>
+                    <p>Hiện tại chưa có sự kiện nào {filter === "upcoming" ? "sắp diễn ra" : ""}</p>
+                </div>
+            )}
+
+            <div className="events-grid">
+                {filteredEvents.map((event) => {
+                    const typeStyle = getEventTypeColor(event.eventType);
+                    const upcoming = isUpcoming(event.date);
+                    return (
+                        <div
+                            key={event.id}
+                            className={`event-card ${upcoming ? "upcoming" : "past"}`}
+                        >
+                            <div className="event-header">
+                                <span
+                                    className="event-type-badge"
+                                    style={{
+                                        backgroundColor: typeStyle.bg,
+                                        color: typeStyle.color,
+                                    }}
+                                >
+                                    {getEventTypeLabel(event.eventType)}
+                                </span>
                             </div>
-                        </Event>
-                    )) : <p>No events scheduled.</p>}
-                </Events>
-            </Content>
-        </EventCalendarContainer>
-    )
-}
 
-export default EventSection
+                            <h3 className="event-title">{event.title || event.events}</h3>
+                            {event.description && <p className="event-description">{event.description}</p>}
+
+                            <div className="event-details">
+                                <div className="detail-item">
+                                    <Calendar size={16} />
+                                    <span>{formatDate(event.date)}</span>
+                                </div>
+                                {event.startTime && (
+                                    <div className="detail-item">
+                                        <Clock size={16} />
+                                        <span>
+                                            {formatTime(event.startTime)}
+                                            {event.endTime && ` - ${formatTime(event.endTime)}`}
+                                        </span>
+                                    </div>
+                                )}
+                                {event.location && (
+                                    <div className="detail-item">
+                                        <MapPin size={16} />
+                                        <span>{event.location}</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {event.targetAudience && event.targetAudience !== "all" && (
+                                <div className="target-audience">
+                                    <span>
+                                        Dành cho: {" "}
+                                        {event.targetAudience === "students"
+                                            ? "Học sinh"
+                                            : event.targetAudience === "teachers"
+                                            ? "Giảng viên"
+                                            : "Tất cả"}
+                                    </span>
+                                </div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+export default TeacherEvents;

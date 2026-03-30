@@ -1,14 +1,3 @@
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getStudentSubjects } from '../api/studentApi';
@@ -73,7 +62,7 @@ const AttendanceHistory = () => {
                 <button onClick={() => navigate('/student/dashboard')} className="back-btn">
                     <ArrowLeft size={24} />
                 </button>
-                <h2>Môn Học Đã Điểm Danh</h2>
+                <h2>Lịch sử điểm danh</h2>
             </header>
 
             <main className="history-main">

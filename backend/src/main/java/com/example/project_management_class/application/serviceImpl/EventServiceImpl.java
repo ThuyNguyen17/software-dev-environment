@@ -13,8 +13,8 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
 
     @Override
-    public void addEvent(Event event) {
-        eventRepository.save(event);
+    public Event addEvent(Event event) {
+        return eventRepository.save(event);
     }
 
     @Override
@@ -23,13 +23,37 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Event getEventById(String id) {
+        return eventRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Event updateEvent(Event event) {
+        return eventRepository.save(event);
+    }
+
+    @Override
     public void deleteEvent(String id) {
         eventRepository.deleteById(id);
     }
 
     @Override
-    public Event updateEvent(String id, Event event) {
-        event.setId(id);
-        return eventRepository.save(event);
+    public List<Event> getActiveEvents() {
+        return eventRepository.findByIsActiveTrueOrderByDateAsc();
+    }
+
+    @Override
+    public List<Event> getEventsByType(String eventType) {
+        return eventRepository.findByEventTypeAndIsActiveTrueOrderByDateAsc(eventType);
+    }
+
+    @Override
+    public List<Event> getEventsByAudience(String targetAudience) {
+        return eventRepository.findByTargetAudienceAndIsActiveTrueOrderByDateAsc(targetAudience);
+    }
+
+    @Override
+    public List<Event> getEventsByAudiences(List<String> audiences) {
+        return eventRepository.findByTargetAudienceInAndIsActiveTrueOrderByDateAsc(audiences);
     }
 }

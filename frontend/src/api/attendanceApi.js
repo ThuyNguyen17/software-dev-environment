@@ -1,28 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import axios from 'axios';
 
 // Khi dùng Vite Proxy, ta chỉ cần gọi đường dẫn tương đối.

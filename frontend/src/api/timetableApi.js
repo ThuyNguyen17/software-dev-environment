@@ -1,20 +1,3 @@
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import axios from "axios";
 
 export const getTeacherTimetable = async (teacherId, week, academicYear, semester) => {
@@ -22,13 +5,6 @@ export const getTeacherTimetable = async (teacherId, week, academicYear, semeste
     `/api/teacher/${teacherId}/timetable?week=${week}&year=${academicYear}&semester=${semester}`
   );
   return response.data;
-};
-
-
-
-
-
-
 };
 
 export const getClassTimetable = async (className, week, academicYear, semester) => {

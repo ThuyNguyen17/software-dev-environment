@@ -30,4 +30,16 @@ public class TeachingAssignmentController {
     public ResponseEntity<List<TeachingAssignment>> getAll() {
         return ResponseEntity.ok(repository.findAll());
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TeachingAssignment> update(@PathVariable String id, @RequestBody TeachingAssignment assignment) {
+        assignment.setId(id);
+        return ResponseEntity.ok(repository.save(assignment));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        repository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

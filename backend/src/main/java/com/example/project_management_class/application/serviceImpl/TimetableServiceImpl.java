@@ -1,14 +1,3 @@
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 package com.example.project_management_class.application.serviceImpl;
 
 import com.example.project_management_class.application.dto.TimetableResponseDTO;
@@ -38,7 +27,7 @@ public class TimetableServiceImpl implements TimetableService {
         // 1. Lấy danh sách phân công giảng dạy của giáo viên trong năm học và học kỳ cụ thể
         List<TeachingAssignment> assignments = teachingAssignmentRepository
                 .findByTeacherIdAndAcademicYearAndSemester(teacherId, academicYear, semester);
-        
+
         if (assignments.isEmpty()) {
             return Collections.emptyList();
         }
@@ -64,72 +53,13 @@ public class TimetableServiceImpl implements TimetableService {
                             .dayOfWeek(timetable.getDayOfWeek())
                             .period(timetable.getPeriod())
                             .subject(assignment != null ? assignment.getSubjectName() : "Unknown Subject")
-                            .className(assignment != null ? assignment.getClassName() : "Unknown Class")
-                    .className(assignment != null ? ClassNameUtils.formatDisplayClassName(assignment.getClassName()) : "Unknown Class")
+                            .className(assignment != null ? ClassNameUtils.formatDisplayClassName(assignment.getClassName()) : "Unknown Class")
                             .room(timetable.getRoom())
                             .note(timetable.getNote())
                             .build();
                 })
                 .collect(Collectors.toList());
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public List<TimetableResponseDTO> getClassTimetable(String className, int week, int academicYear, int semester) {

@@ -1,55 +1,8 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import axios from 'axios';
+import { BASE_URL } from './config';
 
-const API_URL = '/api/students';
+const API_URL = `${BASE_URL}/api/students`;
 
 export const loginStudent = async (studentCode) => {
     const response = await axios.post(`${API_URL}/login`, { studentCode });

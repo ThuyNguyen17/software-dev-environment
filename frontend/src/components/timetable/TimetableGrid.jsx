@@ -1,28 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import React from 'react';
 import './Timetable.css';
 

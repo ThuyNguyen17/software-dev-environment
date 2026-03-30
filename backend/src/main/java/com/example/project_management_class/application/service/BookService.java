@@ -6,4 +6,6 @@ import java.util.List;
 public interface BookService {
     Book addBook(Book book);
     List<Book> getAllBooks();
+    Book updateBook(String id, Book book);
+    void deleteBook(String id);
 }

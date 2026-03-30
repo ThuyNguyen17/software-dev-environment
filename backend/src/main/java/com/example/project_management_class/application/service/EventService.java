@@ -4,8 +4,13 @@ import com.example.project_management_class.domain.model.Event;
 import java.util.List;
 
 public interface EventService {
-    void addEvent(Event event);
+    Event addEvent(Event event);
     List<Event> getAllEvents();
+    Event getEventById(String id);
+    Event updateEvent(Event event);
     void deleteEvent(String id);
-    Event updateEvent(String id, Event event);
+    List<Event> getActiveEvents();
+    List<Event> getEventsByType(String eventType);
+    List<Event> getEventsByAudience(String targetAudience);
+    List<Event> getEventsByAudiences(List<String> audiences);
 }

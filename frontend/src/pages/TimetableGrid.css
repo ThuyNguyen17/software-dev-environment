@@ -1,11 +1,4 @@
-<<<<<<< HEAD
 
-
-
-
-
-=======
->>>>>>> remotes/origin/Update-UX/UI
 .timetable-container {
     background-color: var(--bg-body);
     padding: 2rem 1rem;
@@ -86,7 +79,7 @@
     position: relative;
 }
 
-/* Hover effect cho dòng */
+/* Hover effect cho dï¿½ng */
 .timetable-grid tbody tr:hover td {
     background-color: #f8fafc;
 .timetable-grid tr:nth-child(even) {
@@ -163,8 +156,5 @@
     margin-top: 4px;
     display: block;
 }
-<<<<<<< HEAD
 }
-=======
 }
->>>>>>> remotes/origin/Update-UX/UI

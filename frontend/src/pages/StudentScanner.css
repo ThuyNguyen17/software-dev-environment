@@ -1,7 +1,7 @@
 .scanner-page {
     min-height: 100vh;
-    background: #0f172a;
-    color: white;
+    background: #f8fafc;
+    color: #0f172a;
     display: flex;
     flex-direction: column;
     font-family: 'Inter', sans-serif;
@@ -12,12 +12,13 @@
     align-items: center;
     padding: 1.25rem 1.5rem;
     gap: 1rem;
-    background: rgba(15, 23, 42, 0.8);
+    background: white;
     backdrop-filter: blur(12px);
     position: sticky;
     top: 0;
     z-index: 10;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .scanner-header h2 {
@@ -25,13 +26,13 @@
     font-size: 1.125rem;
     font-weight: 700;
     letter-spacing: -0.025em;
-    color: white;
+    color: #0f172a;
 }
 
 .back-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: white;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 12px;
@@ -42,7 +43,7 @@
 }
 
 .back-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: #e2e8f0;
     transform: translateX(-2px);
 }
 
@@ -59,12 +60,12 @@
 .scanner-container {
     width: 100%;
     max-width: 450px;
-    background: rgba(255, 255, 255, 0.03);
+    background: white;
     border-radius: 32px;
     overflow: hidden;
     padding: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.15);
     position: relative;
 }
 
@@ -85,10 +86,10 @@
     display: flex;
     align-items: center;
     gap: 0.625rem;
-    color: #94a3b8;
+    color: #64748b;
     font-size: 0.813rem;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: #f1f5f9;
     padding: 0.75rem 1.25rem;
     border-radius: 999px;
     width: fit-content;
