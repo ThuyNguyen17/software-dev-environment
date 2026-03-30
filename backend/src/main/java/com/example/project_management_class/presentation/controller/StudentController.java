@@ -1,30 +1,9 @@
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
->>>>>>> remotes/origin/Update-UX/UI
 
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
 package com.example.project_management_class.presentation.controller;
 
 import com.example.project_management_class.application.dto.LoginResponse;
 import com.example.project_management_class.application.dto.StudentLoginResponse;
 import com.example.project_management_class.application.service.StudentService;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -36,17 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.project_management_class.domain.model.Student;
 
 import java.util.HashMap;
-=======
->>>>>>> remotes/origin/Update-UX/UI
 import com.example.project_management_class.presentation.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
 import java.util.List;
 import java.util.Map;
 
@@ -59,68 +31,38 @@ public class StudentController {
     private final StudentService studentService;
     @PostMapping("/login-new")
     public ResponseEntity<LoginResponse> loginNew(@RequestBody Map<String, String> request) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
         String username = request.get("username");
         String password = request.get("password");
-=======
->>>>>>> remotes/origin/Update-UX/UI
         if (request == null) {
             throw new BadRequestException("Request body la bat buoc");
         }
-        String username = request.get("username");
-        String password = request.get("password");
         if (username == null || username.isBlank() || password == null || password.isBlank()) {
             throw new BadRequestException("username va password la bat buoc");
         }
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.login(username, password));
     }
 
     @PostMapping("/login")
     public ResponseEntity<StudentLoginResponse> login(@RequestBody Map<String, String> request) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
+
         String studentCode = request.get("studentCode");
-=======
->>>>>>> remotes/origin/Update-UX/UI
+
         if (request == null) {
             throw new BadRequestException("Request body la bat buoc");
         }
-        String studentCode = request.get("studentCode");
         if (studentCode == null || studentCode.isBlank()) {
             throw new BadRequestException("studentCode la bat buoc");
         }
-<<<<<<< HEAD
-=======
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.login(studentCode));
     }
 
     @GetMapping("/{studentId}/subjects")
-<<<<<<< HEAD
     public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable("studentId") String studentId) {
-=======
-<<<<<<< HEAD
-    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable String studentId) {
-=======
-    public ResponseEntity<List<Map<String, Object>>> getSubjects(@PathVariable("studentId") String studentId) {
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI
         return ResponseEntity.ok(studentService.getStudentSubjects(studentId));
     }
 
     @GetMapping("/{studentId}/subjects/{assignmentId}/attendance")
     public ResponseEntity<List<Map<String, Object>>> getAttendanceDetails(
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
             @PathVariable String studentId,
             @PathVariable String assignmentId) {
         return ResponseEntity.ok(studentService.getAttendanceDetails(studentId, assignmentId));
@@ -184,48 +126,8 @@ public class StudentController {
         response.put("message", "Student Updated!");
         return ResponseEntity.ok(response);
     }
-}
-=======
->>>>>>> remotes/origin/Update-UX/UI
-            @PathVariable("studentId") String studentId,
-            @PathVariable("assignmentId") String assignmentId) {
-        return ResponseEntity.ok(studentService.getAttendanceDetails(studentId, assignmentId));
-    }
-
     @GetMapping("/class/{className}")
     public ResponseEntity<List<Map<String, Object>>> getStudentsByClass(@PathVariable String className) {
         return ResponseEntity.ok(studentService.getStudentsByClass(className));
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-<<<<<<< HEAD
-=======
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> fix-final
->>>>>>> remotes/origin/Update-UX/UI

@@ -1,20 +1,11 @@
-<<<<<<< HEAD
-=======
-// TeachersStyles.js
->>>>>>> fix-final
 import styled from 'styled-components';
 
 export const TeachersContainer = styled.div`
   display: flex;
-<<<<<<< HEAD
-=======
-  
->>>>>>> fix-final
 `;
 
 export const Content = styled.div`
   flex: 1;
-<<<<<<< HEAD
   padding: 20px;
   margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
   transition: margin-left 0.3s ease;
@@ -27,21 +18,11 @@ export const TeachersContent = styled.div`
   padding: 24px;
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-=======
-  margin-left: ${({ isOpen }) => (isOpen ? '250px' : '80px')};
-  transition: margin-left 0.3s ease;
-  padding: 20px;
-`;
-
-export const TeachersContent = styled.div`
-  padding: 20px;
->>>>>>> fix-final
 `;
 
 export const TeachersHeader = styled.h2`
   font-size: 24px;
   margin-bottom: 20px;
-<<<<<<< HEAD
   color: #333;
 `;
 
@@ -91,39 +72,67 @@ export const AddTeacherButton = styled.button`
   &:hover {
     background-color: #7da1cb; /* Medium Blue hover */
   }
-=======
 `;
 
-export const TeacherList = styled.ul`
-  list-style: none;
-  padding: 0;
+export const ActionButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
 `;
 
-export const TeacherItem = styled.li`
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-export const AddTeacherForm = styled.form`
-  margin-bottom: 20px;
-`;
-
-export const AddTeacherInput = styled.input`
-  padding: 8px;
-  margin-right: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-export const AddTeacherButton = styled.button`
+export const EditButton = styled.button`
   padding: 8px 16px;
-  background-color: #007bff;
+  background-color: #f59e0b;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
->>>>>>> fix-final
+  font-size: 14px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #d97706;
+  }
+`;
+
+export const DeleteButton = styled.button`
+  padding: 8px 16px;
+  background-color: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #dc2626;
+  }
+`;
+
+export const CancelButton = styled.button`
+  padding: 8px 16px;
+  background-color: #6b7280;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background-color: #4b5563;
+  }
+`;
+
+export const TeacherName = styled.h3`
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 8px 0;
+`;
+
+export const TeacherInfo = styled.p`
+  font-size: 14px;
+  color: #666;
+  margin: 4px 0;
 `;

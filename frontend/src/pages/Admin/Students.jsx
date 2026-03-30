@@ -1,111 +1,74 @@
-<<<<<<< HEAD
-import React, { useState, useEffect, useRef } from "react";
-=======
 import React, { useState, useEffect } from "react";
->>>>>>> fix-final
-import Sidebar from "./Sidebar";
 import axios from "axios";
 import {
     StudentsContainer,
     Content,
     StudentsContent,
     StudentsHeader,
-<<<<<<< HEAD
-    StudentsPageHeader,
-    StudentsHeaderDescription,
-    ActionRow,
-    PrimaryButton,
-    SecondaryButton,    DangerButton,    SectionCard,
     StudentList,
     StudentItem,
-    StudentInfo,
     StudentName,
     StudentCode,
-    StudentActions,
-    FileLabel,
-=======
-    StudentList,
-    StudentItem,
->>>>>>> fix-final
     AddStudentForm,
     AddStudentInput,
     AddStudentButton,
+    StudentActions,
+    PrimaryButton,
+    DangerButton,
+    EditButton,
+    CancelButton,
+    Select,
+    ClassBadge
 } from "../../styles/StudentsStyles";
 
-const Students = () =>{
+const Students = () => {
     const [isOpen, setIsOpen] = useState(true);
-<<<<<<< HEAD
-    const [newStudent, setNewStudent] = useState({fullName: '', studentCode: ''});
+    const [newStudent, setNewStudent] = useState({ fullName: '', studentCode: '', grade: '', classId: '' });
     const [students, setStudents] = useState([]);
+    const [classes, setClasses] = useState([]);
     const [editingStudent, setEditingStudent] = useState(null);
-    const [importFile, setImportFile] = useState(null);
-    const [importing, setImporting] = useState(false);
-    const [exporting, setExporting] = useState(false);
-    const fileInputRef = useRef(null);
-=======
-    const [newStudent, setNewStudent] = useState({fullName: '', studentCode: '', grade: ''});
-    const [students, setStudents] = useState([]);
->>>>>>> fix-final
+    const [editForm, setEditForm] = useState({ fullName: '', studentCode: '', grade: '', classId: '' });
 
     useEffect(() => {
         fetchStudents();
+        fetchClasses();
     }, []);
 
     const fetchStudents = async () => {
-        try{
-<<<<<<< HEAD
-            const response = await axios.get('http://localhost:8080/api/students');
-            setStudents(response.data || []);
-=======
+        try {
             const response = await axios.get('http://localhost:4000/api/students');
-            // From cuatoi backend, response is just a List<Student>
-            setStudents(response.data);
->>>>>>> fix-final
-        }catch (error){
+            setStudents(response.data || []);
+        } catch (error) {
             console.error('Error fetching students: ', error);
+        }
+    };
+
+    const fetchClasses = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/v1/class/getall');
+            setClasses(response.data.classes || []);
+        } catch (error) {
+            console.error('Error fetching classes: ', error);
         }
     };
 
     const handleAddStudent = async (e) => {
         e.preventDefault();
-        if(newStudent.fullName.trim() !== '' && newStudent.studentCode.trim() !== ''){
-            try{
-<<<<<<< HEAD
-                const response = await axios.post('http://localhost:8080/api/students', newStudent);
-                setStudents([...students, response.data]);
-                setNewStudent({ fullName: '', studentCode: '' });
-                alert('Student added!');
-=======
+        if (newStudent.fullName.trim() !== '' && newStudent.studentCode.trim() !== '') {
+            try {
                 const response = await axios.post('http://localhost:4000/api/students', newStudent);
-                console.log('Response data: ', response.data)
                 setStudents([...students, response.data]);
-                setNewStudent({ fullName: '', studentCode: '', grade: '' });
->>>>>>> fix-final
-            }catch (error){
+                setNewStudent({ fullName: '', studentCode: '', grade: '', classId: '' });
+            } catch (error) {
                 console.error("Error adding student: ", error);
             }
         }
     };
 
-<<<<<<< HEAD
-    const handleUpdateStudent = async (e) => {
-        e.preventDefault();
-        if (editingStudent.fullName.trim() !== '' && editingStudent.studentCode.trim() !== '') {
-            try {
-                await axios.put(`http://localhost:8080/api/students/${editingStudent.id}`, editingStudent);
-                fetchStudents();
-                setEditingStudent(null);
-                alert('Student updated!');
-            } catch (error) {
-                console.error('Error updating student: ', error);
-            }
-        }
-    };
-
     const handleDeleteStudent = async (id) => {
-        if (window.confirm('Are you sure you want to delete this student?')) {
+        if (window.confirm('B?n cÛ ch?c ch?n mu?n xÛa sinh viÍn n‡y?')) {
             try {
-                await axios.delete(`http://localhost:8080/api/students/${id}`);
+                await axios.delete(`http://localhost:4000/api/students/${id}`);
                 fetchStudents();
             } catch (error) {
                 console.error("Error deleting student: ", error);
@@ -113,192 +76,127 @@ const Students = () =>{
         }
     };
 
-    const handleFileSelection = (e) => {
-        if (e.target.files && e.target.files[0]) {
-            setImportFile(e.target.files[0]);
-        }
+    const startEdit = (student) => {
+        setEditingStudent(student.id);
+        setEditForm({
+            fullName: student.fullName,
+            studentCode: student.studentCode,
+            grade: student.grade,
+            classId: student.classId || ''
+        });
     };
 
-    const handleImportStudents = async (e) => {
+    const cancelEdit = () => {
+        setEditingStudent(null);
+        setEditForm({ fullName: '', studentCode: '', grade: '', classId: '' });
+    };
+
+    const handleUpdateStudent = async (e, id) => {
         e.preventDefault();
-        if (!importFile) {
-            alert('Vui l√≤ng ch·ªçn file Excel tr∆∞·ªõc khi import.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('file', importFile);
         try {
-            setImporting(true);
-            await axios.post('http://localhost:8080/api/students/import', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
-            setImportFile(null);
-            if (fileInputRef.current) fileInputRef.current.value = null;
+            await axios.put(`http://localhost:4000/api/students/${id}`, editForm);
             fetchStudents();
-            alert('Import h·ªçc sinh th√†nh c√¥ng.');
+            setEditingStudent(null);
         } catch (error) {
-            console.error('Error importing students: ', error);
-            alert('Import th·∫•t b·∫°i: ' + (error.response?.data?.message || error.message));
-        } finally {
-            setImporting(false);
+            console.error("Error updating student: ", error);
         }
     };
 
-    const handleExportStudents = async () => {
-        try {
-            setExporting(true);
-            const response = await axios.get('http://localhost:8080/api/students/export', {
-                responseType: 'blob'
-            });
-            const blob = new Blob([response.data], { type: response.headers['content-type'] || 'application/octet-stream' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'students.xlsx');
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error('Error exporting students: ', error);
-            alert('Xu·∫•t file th·∫•t b·∫°i: ' + (error.response?.data?.message || error.message));
-        } finally {
-            setExporting(false);
-        }
+    const getClassName = (classId) => {
+        const cls = classes.find(c => c.id === classId);
+        return cls ? cls.grade : 'Chua ph‚n l?p';
     };
 
-=======
->>>>>>> fix-final
-    return(
+    return (
         <StudentsContainer>
-            <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
             <Content isOpen={isOpen}>
                 <StudentsContent>
-<<<<<<< HEAD
-                    <StudentsPageHeader>
-                        <div>
-                            <StudentsHeader>Students Management</StudentsHeader>
-                            <StudentsHeaderDescription>
-                                Qu·∫£n l√Ω sinh vi√™n, nh·∫≠p/xu·∫•t danh s√°ch b·∫±ng file Excel v√† c·∫≠p nh·∫≠t th√¥ng tin nhanh ch√≥ng.
-                            </StudentsHeaderDescription>
-                        </div>
-                        <ActionRow>
-                            <SecondaryButton type="button" onClick={() => fileInputRef.current?.click()}>
-                                Ch·ªçn file Excel
-                            </SecondaryButton>
-                            <PrimaryButton type="button" onClick={handleImportStudents} disabled={!importFile || importing}>
-                                {importing ? 'ƒêang import...' : 'Import Excel'}
-                            </PrimaryButton>
-                            <PrimaryButton type="button" onClick={handleExportStudents} disabled={exporting}>
-                                {exporting ? 'ƒêang xu·∫•t...' : 'Export Excel'}
-                            </PrimaryButton>
-                        </ActionRow>
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            accept=".xlsx, .xls"
-                            style={{ display: 'none' }}
-                            onChange={handleFileSelection}
-                        />
-                    </StudentsPageHeader>
-                    <FileLabel>{importFile ? importFile.name : 'Ch∆∞a ch·ªçn file Excel'}</FileLabel>
-                    <SectionCard>
-                    {editingStudent ? (
-                        <AddStudentForm onSubmit={handleUpdateStudent}>
-                            <h3>Edit Student</h3>
-                            <AddStudentInput 
-                                type="text"
-                                placeholder="Full Name"
-                                value={editingStudent.fullName}
-                                onChange={(e) => setEditingStudent({ ...editingStudent, fullName: e.target.value })}
-                                required
-                            />
-                            <AddStudentInput 
-                                type="text"
-                                placeholder="Student Code"
-                                value={editingStudent.studentCode}
-                                onChange={(e) => setEditingStudent({ ...editingStudent, studentCode: e.target.value })}
-                                required
-                            />
-                            <AddStudentButton type="submit">Update Student</AddStudentButton>
-                            <AddStudentButton type="button" onClick={() => setEditingStudent(null)} style={{ marginLeft: '10px', backgroundColor: '#6c757d' }}>Cancel</AddStudentButton>
-                        </AddStudentForm>
-                    ) : (
-                        <AddStudentForm onSubmit={handleAddStudent}>
-                            <h3>Add New Student</h3>
-                            <AddStudentInput 
-                                type="text"
-                                placeholder="Enter Student Full Name"
-                                value={newStudent.fullName}
-                                onChange={(e) => setNewStudent({ ...newStudent, fullName: e.target.value })}
-                                required
-                            />
-                            <AddStudentInput 
-                                type="text"
-                                placeholder="Enter Student Code"
-                                value={newStudent.studentCode}
-                                onChange={(e) => setNewStudent({ ...newStudent, studentCode: e.target.value })}
-                                required
-                            />
-                            <AddStudentButton type="submit">Add Student</AddStudentButton>
-                        </AddStudentForm>
-                    )}
-                    </SectionCard>
-                    <SectionCard>
-                    <StudentList>
-                        {Array.isArray(students) && students.map((student) => (
-                            <StudentItem key={student.id}>
-                                <StudentInfo>
-                                    <StudentName>{student.fullName}</StudentName>
-                                    <StudentCode>{student.studentCode}</StudentCode>
-                                </StudentInfo>
-                                <StudentActions>
-                                    <SecondaryButton type="button" onClick={() => setEditingStudent(student)}>
-                                        Edit
-                                    </SecondaryButton>
-                                    <DangerButton type="button" onClick={() => handleDeleteStudent(student.id)}>
-                                        Delete
-                                    </DangerButton>
-                                </StudentActions>
-                            </StudentItem>
-                        ))}
-                    </StudentList>
-                    </SectionCard>
-=======
-                    <StudentsHeader>
-                        <AddStudentForm onSubmit={handleAddStudent}>
-                        <AddStudentInput 
-                            type="Text"
-                            placeholder="Enter Student Full Name"
+                    <StudentsHeader>Qu?n l˝ Sinh viÍn</StudentsHeader>
+
+                    <AddStudentForm onSubmit={handleAddStudent}>
+                        <AddStudentInput
+                            type="text"
+                            placeholder="H? tÍn sinh viÍn"
                             value={newStudent.fullName}
                             onChange={(e) => setNewStudent({ ...newStudent, fullName: e.target.value })}
                         />
-                        <AddStudentInput 
-                            type="Text"
-                            placeholder="Enter Student Code"
+                        <AddStudentInput
+                            type="text"
+                            placeholder="M„ sinh viÍn"
                             value={newStudent.studentCode}
                             onChange={(e) => setNewStudent({ ...newStudent, studentCode: e.target.value })}
                         />
-                        <AddStudentInput 
-                            type="Text"
-                            placeholder="Enter Grade" 
+                        <AddStudentInput
+                            type="text"
+                            placeholder="KhÛa/Khoa"
                             value={newStudent.grade}
                             onChange={(e) => setNewStudent({ ...newStudent, grade: e.target.value })}
                         />
-                        <AddStudentButton type="submit">Add Student</AddStudentButton>
-                        </AddStudentForm>
-
-                        <StudentList>
-                            {students.map((student) => (
-                                <StudentItem key={student.id}>{student.fullName} - {student.studentCode} - {student.grade}</StudentItem>
+                        <Select
+                            value={newStudent.classId}
+                            onChange={(e) => setNewStudent({ ...newStudent, classId: e.target.value })}
+                        >
+                            <option value="">Ch?n l?p</option>
+                            {classes.map((cls) => (
+                                <option key={cls.id} value={cls.id}>{cls.grade}</option>
                             ))}
-                        </StudentList>
-                    </StudentsHeader>       
->>>>>>> fix-final
+                        </Select>
+                        <AddStudentButton type="submit">ThÍm sinh viÍn</AddStudentButton>
+                    </AddStudentForm>
+
+                    <StudentList>
+                        {students.map((student) => (
+                            <StudentItem key={student.id}>
+                                {editingStudent === student.id ? (
+                                    <form onSubmit={(e) => handleUpdateStudent(e, student.id)}>
+                                        <AddStudentInput
+                                            type="text"
+                                            value={editForm.fullName}
+                                            onChange={(e) => setEditForm({ ...editForm, fullName: e.target.value })}
+                                        />
+                                        <AddStudentInput
+                                            type="text"
+                                            value={editForm.studentCode}
+                                            onChange={(e) => setEditForm({ ...editForm, studentCode: e.target.value })}
+                                        />
+                                        <AddStudentInput
+                                            type="text"
+                                            value={editForm.grade}
+                                            onChange={(e) => setEditForm({ ...editForm, grade: e.target.value })}
+                                        />
+                                        <Select
+                                            value={editForm.classId}
+                                            onChange={(e) => setEditForm({ ...editForm, classId: e.target.value })}
+                                        >
+                                            <option value="">Ch?n l?p</option>
+                                            {classes.map((cls) => (
+                                                <option key={cls.id} value={cls.id}>{cls.grade}</option>
+                                            ))}
+                                        </Select>
+                                        <StudentActions>
+                                            <PrimaryButton type="submit">Luu</PrimaryButton>
+                                            <CancelButton type="button" onClick={cancelEdit}>H?y</CancelButton>
+                                        </StudentActions>
+                                    </form>
+                                ) : (
+                                    <>
+                                        <StudentName>{student.fullName}</StudentName>
+                                        <StudentCode>M„ SV: {student.studentCode}</StudentCode>
+                                        <StudentCode>KhÛa: {student.grade}</StudentCode>
+                                        <ClassBadge>L?p: {getClassName(student.classId)}</ClassBadge>
+                                        <StudentActions>
+                                            <EditButton onClick={() => startEdit(student)}>S?a</EditButton>
+                                            <DangerButton onClick={() => handleDeleteStudent(student.id)}>XÛa</DangerButton>
+                                        </StudentActions>
+                                    </>
+                                )}
+                            </StudentItem>
+                        ))}
+                    </StudentList>
                 </StudentsContent>
             </Content>
         </StudentsContainer>
-    )
-}
+    );
+};
 
 export default Students;

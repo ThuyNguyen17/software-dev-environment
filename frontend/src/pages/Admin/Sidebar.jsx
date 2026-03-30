@@ -1,94 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
-import { BsGraphUp, BsPeople, BsPerson, BsFileText, BsBook, BsGraphDown, BsCalendar, BsGear, BsChatDots, BsCalendarEvent, BsSearch, BsMoon, BsSun } from 'react-icons/bs';
-
-import bg1 from '../../assets/bg1.png';
-
-const SidebarContainer = styled.aside`
-  position: sticky;
-  top: 0;
-  left: 0;
-  width: ${({ isOpen }) => (isOpen ? '270px' : '90px')};
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: var(--color-bg-sidebar);
-  border-right: 1px solid var(--color-border-hr);
-  box-shadow: 0 3px 15px var(--color-shadow);
-  transition: width 0.4s ease, background 0.4s ease;
-  z-index: 1000;
-`;
-
-const SidebarHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 18px;
-  border-bottom: 1px solid var(--color-border-hr);
-`;
-
-const Logo = styled.img`
-  width: ${({ isOpen }) => (isOpen ? '42px' : '36px')};
-  height: auto;
-  transition: width 0.3s ease, opacity 0.3s ease;
-  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
-`;
-
-const SidebarToggleButton = styled.button`
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  border: none;
-  background: var(--color-bg-secondary);
-  color: var(--color-text-primary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s ease;
-
-  &:hover {
-    background: var(--color-hover-secondary);
-  }
-`;
-
-const SidebarContent = styled.div`
-  flex: 1;
-  padding: 20px 18px;
-  overflow-y: auto;
-`;
-
-const SearchForm = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 16px;
-  background: var(--color-bg-secondary);
-  margin-bottom: 20px;
-  transition: background 0.3s ease;
-`;
-
-const SearchIcon = styled.div`
-  color: var(--color-text-placeholder);
-  font-size: 18px;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: var(--color-text-primary);
-  font-size: 0.95rem;
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
-
-  &::placeholder {
-    color: var(--color-text-placeholder);
-  }
-=======
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom'; 
@@ -133,7 +42,6 @@ const SidebarHeader = styled.div`
   font-size: 24px;
   font-weight: bold;
   text-align: center;
->>>>>>> fix-final
 `;
 
 const SidebarNav = styled.ul`
@@ -143,7 +51,6 @@ const SidebarNav = styled.ul`
 `;
 
 const SidebarNavItem = styled.li`
-<<<<<<< HEAD
   margin-bottom: 6px;
 `;
 
@@ -167,39 +74,10 @@ const SidebarLink = styled(Link)`
 const SidebarIcon = styled.div`
   display: flex;
   align-items: center;
-=======
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
-  font-size: 18px;
-  border-bottom: 1px solid #34495e; /* Darker border */
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #34495e; /* Darker background on hover */
-  }
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: white;
-  margin-left: 10px;
-  white-space: nowrap;
-  display: ${({ isOpen }) => (isOpen ? 'inline' : 'none')};
-  opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
-  transition: opacity 0.3s ease;
-`;
-
-const SidebarIcon = styled.div`
-  min-width: 25px;
-  display: flex;
->>>>>>> fix-final
   justify-content: center;
   font-size: 20px;
 `;
 
-<<<<<<< HEAD
 const Label = styled.span`
   display: ${({ isOpen }) => (isOpen ? 'inline' : 'none')};
   opacity: ${({ isOpen }) => (isOpen ? '1' : '0')};
@@ -340,103 +218,6 @@ const Sidebar = ({ isOpen, onToggle }) => {
       </SidebarFooter>
     </SidebarContainer>
   );
-=======
-const Logo = styled.img`
-  width: ${({ isOpen }) => (isOpen ? '50px' : '30px')};
-  height: auto;
-  transition: width 0.3s ease;
-`;
-
-const ToggleButton = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 0;
-  width: 30px;
-  height: 30px;
-  background-color: #34495e; /* Darker background */
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateX(50%);
-`;
-
-const ToggleIcon = styled.span`
-  color: white;
-  font-size: 16px;
-  transform: ${({ isOpen }) => (isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
-  transition: transform 0.3s ease;
-`;
-
-const Sidebar = ({ isOpen, onToggle }) => {
-    const handleToggle = () => {
-        if (onToggle) {
-            onToggle();
-        }
-    };
-    
-    return (
-        <SidebarContainer isOpen={isOpen}>
-            <SidebarHeader>
-                <Logo src={bg1} alt="Logo" isOpen={isOpen} />
-            </SidebarHeader>
-            <SidebarNav>
-                <SidebarNavItem>
-                    <SidebarIcon title="Dashboard"><BsGraphUp /></SidebarIcon>
-                    <StyledLink to="/admin/dashboard" isOpen={isOpen}>Dashboard</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Classes"><BsPeople /></SidebarIcon>
-                    <StyledLink to="/admin/classes" isOpen={isOpen}>Classes</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Students"><BsPeople /></SidebarIcon>
-                    <StyledLink to="/admin/students" isOpen={isOpen}>Students</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Teachers"><BsPerson /></SidebarIcon>
-                    <StyledLink to="/admin/teachers" isOpen={isOpen}>Teachers</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Assignments"><BsFileText /></SidebarIcon>
-                    <StyledLink to="/admin/assignments" isOpen={isOpen}>Assignments</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Exams"><BsBook /></SidebarIcon>
-                    <StyledLink to="/admin/exams" isOpen={isOpen}>Exams</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Performance"><BsGraphDown /></SidebarIcon>
-                    <StyledLink to="/admin/performance" isOpen={isOpen}>Performance</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Attendance"><BsCalendar /></SidebarIcon>
-                    <StyledLink to="/admin/attendance" isOpen={isOpen}>Attendance</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Library"><BsBook /></SidebarIcon>
-                    <StyledLink to="/admin/library" isOpen={isOpen}>Library</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Announcement"><BsChatDots /></SidebarIcon>
-                    <StyledLink to="/admin/communication" isOpen={isOpen}>Announcement</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Events"><BsCalendarEvent /></SidebarIcon>
-                    <StyledLink to="/admin/events" isOpen={isOpen}>Events & Calendar</StyledLink>
-                </SidebarNavItem>
-                <SidebarNavItem>
-                    <SidebarIcon title="Settings"><BsGear /></SidebarIcon>
-                    <StyledLink to="/admin/settings" isOpen={isOpen}>Settings & Profile</StyledLink>
-                </SidebarNavItem>
-            </SidebarNav>
-            <ToggleButton onClick={handleToggle}>
-                <ToggleIcon isOpen={isOpen}>▶</ToggleIcon>
-            </ToggleButton>
-        </SidebarContainer>
-    );
->>>>>>> fix-final
 };
 
 export default Sidebar;

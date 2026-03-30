@@ -10,14 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-<<<<<<< HEAD
 @RequestMapping("/api/v1/announcements")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
-=======
-@RequestMapping("/api/v1/announcement")
-@RequiredArgsConstructor
->>>>>>> fix-final
 public class AnnouncementController {
     private final AnnouncementService announcementService;
 
@@ -33,6 +28,28 @@ public class AnnouncementController {
     @GetMapping("/getall")
     public ResponseEntity<Map<String, Object>> getAllAnnouncements() {
         List<Announcement> announcements = announcementService.getAllAnnouncements();
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", true);
+        response.put("announcements", announcements);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/audience/{targetAudience}")
+    public ResponseEntity<Map<String, Object>> getAnnouncementsByAudience(@PathVariable String targetAudience) {
+        List<String> audiences = new java.util.ArrayList<>(java.util.Arrays.asList("all", "All", "ALL"));
+        String lCase = targetAudience.toLowerCase();
+        audiences.add(lCase);
+        audiences.add(targetAudience.toUpperCase());
+        audiences.add(lCase.substring(0, 1).toUpperCase() + lCase.substring(1));
+        
+        // Handle variations (e.g., student vs students, teacher vs teachers)
+        if (lCase.endsWith("s")) {
+            audiences.add(lCase.substring(0, lCase.length() - 1));
+        } else {
+            audiences.add(lCase + "s");
+        }
+        
+        List<Announcement> announcements = announcementService.getAnnouncementsByAudiences(audiences);
         Map<String, Object> response = new HashMap<>();
         response.put("success", true);
         response.put("announcements", announcements);

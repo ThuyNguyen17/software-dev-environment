@@ -1,38 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./Sidebar";
 import axios from "axios";
-import {
-    ProfileContainer,
-    Content,
-    ProfileContent,
-    ProfileHeader,
-<<<<<<< HEAD
-    ProfileCard,
-    ProfileAvatar,
-    ProfileDetails,
-    ProfileDetailRow,
-    Label,
-    Value,
-    ButtonContainer,
-=======
-    ProfileDetails,
-    ProfileLabel,
-    ProfileInfo,
->>>>>>> fix-final
-    EditButton
-} from "../../styles/SettingsProfileStyles";
+import { Edit2, LogOut } from "lucide-react";
+import "./TeacherProfile.css";
 
 const TeacherProfileSection = () =>{
-    const [isOpen, setIsOpen] = useState(true);
-<<<<<<< HEAD
     const [teacherInfo, setTeacherInfo] = useState({
         name: "",
         email: "",
         phone: "N/A",
-        address: "N/A",
         qualification: "Giảng viên"
     });
-    const [teacherId, setTeacherId] = useState("");
     const [currentTeacher, setCurrentTeacher] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editFullName, setEditFullName] = useState("");
@@ -44,12 +21,10 @@ const TeacherProfileSection = () =>{
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             const user = JSON.parse(storedUser);
-            setTeacherId(user.teacherId || "");
             setTeacherInfo({
                 name: user.fullName || "N/A",
                 email: (user.username ? user.username + "@school.edu.vn" : "") || "N/A",
                 phone: "N/A",
-                address: "N/A",
                 qualification: "Giảng viên"
             });
         }
@@ -66,8 +41,6 @@ const TeacherProfileSection = () =>{
                 const storedUser = localStorage.getItem('user');
                 if (!storedUser) return;
                 const loginUser = JSON.parse(storedUser);
-                const idToUse = loginUser.teacherId || loginUser.userId || loginUser.username;
-                if (!idToUse) return;
 
                 const response = await axios.get("http://localhost:8080/api/v1/teachers/getall");
                 const teachers = response.data?.teachers || [];
@@ -81,7 +54,6 @@ const TeacherProfileSection = () =>{
                 if (!found) return;
 
                 setCurrentTeacher(found);
-                setTeacherId(found.id || loginUser.teacherId || "");
                 setTeacherInfo((prev) => ({
                     ...prev,
                     name: found.fullName || prev.name,
@@ -139,165 +111,119 @@ const TeacherProfileSection = () =>{
             }
 
             setIsEditing(false);
-            alert("Teacher profile updated!");
+            alert("Cập nhật thành công!");
         } catch (error) {
             console.error("Update teacher profile error:", error);
-            alert("Cập nhật profile thất bại: " + (error.response?.data?.message || error.message || ""));
+            alert("Cập nhật thất bại: " + (error.response?.data?.message || error.message || ""));
         } finally {
             setSaving(false);
         }
-=======
-    const teacherInfo = {
-        name: "John Doe",
-        email: "abc123@gmail.com",
-        phone: "123-456-7890",
-        address: "123 Main St, City, State",
-        qualification: "Master's Degree"
->>>>>>> fix-final
+    };
+
+    const getInitials = (name) => {
+        if (!name) return "GV";
+        return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
     };
 
     return(
-        <ProfileContainer>
-            <Sidebar isOpen={isOpen} onToggle={() => setIsOpen(!isOpen)} />
-            <Content isOpen={isOpen}>
-                <ProfileContent>
-<<<<<<< HEAD
-                    <ProfileHeader>Teacher Profile Details</ProfileHeader>
-                    <ProfileCard>
+        <div className="teacher-profile-container">
+            <div className="profile-simple">
+                {/* Header */}
+                <div className="profile-header-bar">
+                    <div className="profile-avatar-small">
+                        {getInitials(isEditing ? editFullName : teacherInfo.name)}
+                    </div>
+                    <div className="profile-title">
+                        <h2>{isEditing ? editFullName || "Giáo viên" : teacherInfo.name}</h2>
+                        <p>Giáo viên</p>
+                    </div>
+                </div>
+
+                {/* Body */}
+                <div className="profile-body">
+                    {/* Info Section */}
+                    <div className="profile-section">
+                        <div className="section-header">
+                            <h3>Thông tin cá nhân</h3>
+                            {!isEditing && (
+                                <button className="edit-btn" onClick={handleStartEdit} disabled={!currentTeacher}>
+                                    <Edit2 size={14} />
+                                    Chỉnh sửa
+                                </button>
+                            )}
+                        </div>
+
                         {!isEditing ? (
-                            <>
-                                <ProfileAvatar>
-                                    {teacherInfo.name ? teacherInfo.name.charAt(0).toUpperCase() : 'T'}
-                                </ProfileAvatar>
-                                <ProfileDetails>
-                                    <ProfileDetailRow>
-                                        <Label>Name</Label>
-                                        <Value>{teacherInfo.name}</Value>
-                                    </ProfileDetailRow>
-                                    <ProfileDetailRow>
-                                        <Label>Email</Label>
-                                        <Value>{teacherInfo.email}</Value>
-                                    </ProfileDetailRow>
-                                    <ProfileDetailRow>
-                                        <Label>Phone</Label>
-                                        <Value>{teacherInfo.phone || "N/A"}</Value>
-                                    </ProfileDetailRow>
-                                    <ProfileDetailRow>
-                                        <Label>Qualification</Label>
-                                        <Value>{teacherInfo.qualification}</Value>
-                                    </ProfileDetailRow>
-                                </ProfileDetails>
-                                <ButtonContainer>
-                                    <EditButton
-                                        onClick={handleStartEdit}
-                                        style={{ marginRight: "10px" }}
-                                        disabled={!currentTeacher}
-                                    >
-                                        Edit Profile
-                                    </EditButton>
-                                    <EditButton onClick={handleLogout} style={{ backgroundColor: '#dc3545' }}>
-                                        Logout
-                                    </EditButton>
-                                </ButtonContainer>
-                            </>
+                            <div className="info-list">
+                                <div className="info-line">
+                                    <label>Họ và tên</label>
+                                    <span>{teacherInfo.name}</span>
+                                </div>
+                                <div className="info-line">
+                                    <label>Email</label>
+                                    <span>{teacherInfo.email}</span>
+                                </div>
+                                <div className="info-line">
+                                    <label>Số điện thoại</label>
+                                    <span>{teacherInfo.phone || "Chưa cập nhật"}</span>
+                                </div>
+                                <div className="info-line">
+                                    <label>Chức vụ</label>
+                                    <span>{teacherInfo.qualification}</span>
+                                </div>
+                            </div>
                         ) : (
-                            <form onSubmit={handleSave}>
-                                <ProfileAvatar>
-                                    {(editFullName || teacherInfo.name || "T").charAt(0).toUpperCase()}
-                                </ProfileAvatar>
-                                <ProfileDetails>
-                                    <ProfileDetailRow>
-                                        <Label>Name</Label>
-                                        <Value style={{ textAlign: "right" }}>
-                                            <input
-                                                value={editFullName}
-                                                onChange={(e) => setEditFullName(e.target.value)}
-                                                style={{
-                                                    width: "100%",
-                                                    maxWidth: 320,
-                                                    padding: "10px 12px",
-                                                    borderRadius: 8,
-                                                    border: "1px solid #ccc"
-                                                }}
-                                                required
-                                            />
-                                        </Value>
-                                    </ProfileDetailRow>
-                                    <ProfileDetailRow>
-                                        <Label>Email</Label>
-                                        <Value style={{ textAlign: "right" }}>
-                                            <input
-                                                value={editEmail}
-                                                onChange={(e) => setEditEmail(e.target.value)}
-                                                style={{
-                                                    width: "100%",
-                                                    maxWidth: 320,
-                                                    padding: "10px 12px",
-                                                    borderRadius: 8,
-                                                    border: "1px solid #ccc"
-                                                }}
-                                            />
-                                        </Value>
-                                    </ProfileDetailRow>
-                                    <ProfileDetailRow>
-                                        <Label>Phone</Label>
-                                        <Value style={{ textAlign: "right" }}>
-                                            <input
-                                                value={editPhone}
-                                                onChange={(e) => setEditPhone(e.target.value)}
-                                                style={{
-                                                    width: "100%",
-                                                    maxWidth: 320,
-                                                    padding: "10px 12px",
-                                                    borderRadius: 8,
-                                                    border: "1px solid #ccc"
-                                                }}
-                                            />
-                                        </Value>
-                                    </ProfileDetailRow>
-                                </ProfileDetails>
-                                <ButtonContainer>
-                                    <EditButton
-                                        type="submit"
-                                        disabled={saving}
-                                        style={{ backgroundColor: saving ? "#5a9acb" : "#28a745" }}
-                                    >
-                                        {saving ? "Saving..." : "Save"}
-                                    </EditButton>
-                                    <EditButton
-                                        type="button"
-                                        onClick={handleCancelEdit}
-                                        style={{ backgroundColor: "#6c757d", marginLeft: "10px" }}
-                                    >
-                                        Cancel
-                                    </EditButton>
-                                </ButtonContainer>
+                            <form onSubmit={handleSave} className="edit-form">
+                                <div className="form-field">
+                                    <label>Họ và tên</label>
+                                    <input
+                                        type="text"
+                                        value={editFullName}
+                                        onChange={(e) => setEditFullName(e.target.value)}
+                                        placeholder="Nhập họ và tên"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <label>Email</label>
+                                    <input
+                                        type="email"
+                                        value={editEmail}
+                                        onChange={(e) => setEditEmail(e.target.value)}
+                                        placeholder="Nhập email"
+                                    />
+                                </div>
+                                <div className="form-field">
+                                    <label>Số điện thoại</label>
+                                    <input
+                                        type="tel"
+                                        value={editPhone}
+                                        onChange={(e) => setEditPhone(e.target.value)}
+                                        placeholder="Nhập số điện thoại"
+                                    />
+                                </div>
+                                <div className="form-btns">
+                                    <button type="submit" className="save-btn" disabled={saving}>
+                                        {saving ? "Đang lưu..." : "Lưu"}
+                                    </button>
+                                    <button type="button" className="cancel-btn" onClick={handleCancelEdit}>
+                                        Hủy
+                                    </button>
+                                </div>
                             </form>
                         )}
-                    </ProfileCard>
-=======
-                    <ProfileHeader>Profile Details</ProfileHeader>
-                    <ProfileDetails>
-                        <ProfileLabel>Name: </ProfileLabel>
-                        <ProfileInfo>{teacherInfo.name}</ProfileInfo>
+                    </div>
 
-                        <ProfileLabel>Email: </ProfileLabel>
-                        <ProfileInfo>{teacherInfo.email}</ProfileInfo>
-
-                        <ProfileLabel>Phone: </ProfileLabel>
-                        <ProfileInfo>{teacherInfo.phone}</ProfileInfo>
-
-                        <ProfileLabel>Address: </ProfileLabel>
-                        <ProfileInfo>{teacherInfo.address}</ProfileInfo>
-
-                        <ProfileLabel>Qualification: </ProfileLabel>
-                        <ProfileInfo>{teacherInfo.qualification}</ProfileInfo>
-                    </ProfileDetails>
-                    <EditButton>Edit Profile</EditButton>
->>>>>>> fix-final
-                </ProfileContent>
-            </Content>
-        </ProfileContainer>
+                    {/* Logout Section */}
+                    <div className="logout-section">
+                        <button className="logout-btn" onClick={handleLogout}>
+                            <LogOut size={16} />
+                            Đăng xuất
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     )
 }
 
