@@ -7,7 +7,6 @@ import java.util.Optional;
 
 public interface AttendanceRepository extends MongoRepository<Attendance, String> {
     List<Attendance> findByAttendanceSessionId(String sessionId);
-    List<Attendance> findByStudentId(String studentId);
-    Optional<Attendance> findByAttendanceSessionIdAndStudentId(String sessionId, String studentId);
+    Optional<Attendance> findFirstByAttendanceSessionIdAndStudentId(String sessionId, String studentId);
     void deleteAllByAttendanceSessionId(String sessionId);
 }
